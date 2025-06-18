@@ -73,6 +73,7 @@ export async function POST(request: Request) {
         fileUrl: fileData.url || "",
         filePublicId: fileData.public_id || "",
         fileType: fileData.type || "",
+        type:validatedData.serviceType,
         formDetails: {
           type: validatedData.serviceType,
           material: validatedData.material,

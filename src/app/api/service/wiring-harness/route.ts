@@ -42,6 +42,7 @@ export async function POST(request: Request) {
         fileUrl: fileData.url || "",
         filePublicId: fileData.public_id || "",
         fileType: fileData.type || "",
+        type:"wiringHarness", 
         // Store wiring harness form details in the formDetails JSON field
         formDetails: {
           type: "wiringHarness", // Identify the form type
