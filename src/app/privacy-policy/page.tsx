@@ -144,16 +144,16 @@ export default function PrivacyPolicy() {
             <p>
               Email:{" "}
               <Link href="mailto:privacy@sgtmake.com" className="text-blue-600 hover:underline">
-                privacy@sgtmake.com
+                support@sgtmake.com
               </Link>
             </p>
             <p>
               Phone:{" "}
-              <Link href="tel:+1234567890" className="text-blue-600 hover:underline">
-                +1234567890
+              <Link href="tel:9462223735" className="text-blue-600 hover:underline">
+              +91 94622 23735
               </Link>
             </p>
-            <p>Address: 123 Manufacturing Way, Industrial District, City, Country</p>
+            <p>Address: G-152, Fourth Phase, Riico Industrial Area, Near Rajendra Toyota Service Center, Bhilwara, Rajasthan 311001, India.</p>
           </div>
         </section>
       </div>

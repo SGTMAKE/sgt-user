@@ -214,7 +214,7 @@ export default function ContactForm() {
 
           {/* Contact Information */}
          
-            <div className=" flex flex-col md:grid grid-cols-1  gap-x-3 gap-y-6">
+            <div className="  grid grid-cols-1 md:grid-cols-2  gap-x-3 gap-y-6">
               {/* Email */}
               <Link  href="mailto:business@sgtmake.com" className="flex items-center gap-3">
                 <div className="bg-orange-100 p-3 rounded-full">
@@ -289,30 +289,7 @@ export default function ContactForm() {
                 </div>
               </Link>
 
-              {/* X (Twitter) */}
-              <div className="flex items-center gap-3 col-span-2">
-                <div className="bg-orange-100 p-3 rounded-full">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="text-orange-500"
-                  >
-                    <path d="M4 4l11.733 16h4.267l-11.733 -16z"></path>
-                    <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772"></path>
-                  </svg>
-                </div>
-                <div>
-                  <p className="font-medium">X</p>
-                  <p className="text-sm text-gray-600">@sgtmake25</p>
-                </div>
-              </div>
+              
             </div>
           
         </div>

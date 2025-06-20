@@ -15,8 +15,6 @@ import CustomerReview from "@/app/components/Review";
 import GlobalDelivery from "@/app/components/GlobalDelivery";
 
 
-
-
 const rows = ["popular"];
 function makeRowTitle(title: string) {
   if (title === "popular") return "Our Featured Products";
