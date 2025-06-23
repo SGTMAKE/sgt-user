@@ -16,7 +16,6 @@ const fastenerCategories = [
   { id: "nuts", name: "Nuts", href: "/fasteners/nuts" },
   { id: "stand-offs", name: "Stand Offs", href: "/fasteners/stand-offs" },
   { id: "washers", name: "Washers", href: "/fasteners/washers" },
-  { id: "brass-inserts", name: "Brass Inserts", href: "/fasteners/brass-inserts" },
   { id: "rev-nuts", name: "Rev Nuts", href: "/fasteners/rev-nuts" },
   { id: "screw", name: "Screw", href: "/fasteners/screw" },
 ]

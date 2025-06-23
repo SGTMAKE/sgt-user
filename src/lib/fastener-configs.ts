@@ -198,26 +198,7 @@ export const washerConfig: FastenerConfig = {
   },
 }
 
-// Brass insert configuration
-export const brassInsertConfig: FastenerConfig = {
-  type: "Brass Insert",
-  image: "/images/fasteners/brass-insert.png", // Replace with your actual image path
-  basePrice: 0.4, // Base price for the simplest brass insert
-  description:
-    "Heat or ultrasonic-fit threaded inserts for plastic parts. Provide strong, reusable threads in 3D prints and molded components.   ",
-  options: {
-    size: {
-      label: "Size",
-      required: true,
-      options: [
-        { id: "m3", name: "M3" },
-        { id: "m4", name: "M4" },
-        { id: "m5", name: "M5" },
-        { id: "m6", name: "M6" },
-      ],
-    },
-  },
-}
+
 
 // Rev Nuts configuration
 export const revNutsConfig: FastenerConfig = {

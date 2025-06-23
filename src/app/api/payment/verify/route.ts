@@ -43,7 +43,6 @@ export async function POST(req: NextRequest) {
     if (digest === headers().get("x-razorpay-signature")) {
       console.log("payment verifed")
       const successOrder = await updateOrder(order_id)
-      console.log(successOrder)
 
       // Update product stock for regular products only
       for (const order of successOrder.orderItems) {
@@ -58,6 +57,9 @@ export async function POST(req: NextRequest) {
                 stock: {
                   decrement: order.quantity,
                 },
+                purchases:{
+                  increment:order.quantity
+                }
               },
             })
           } catch (error) {
