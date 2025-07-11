@@ -4,7 +4,6 @@ import { z } from "zod"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 
-type WireType = "Harness Wires" | "Silicon Wires"
 
 // Wire schema
 const wireSchema = z.object({
@@ -16,7 +15,7 @@ const wireSchema = z.object({
 })
 
 interface WireFormProps {
-  wireType: WireType
+  wireType: String
   onSubmit: (data: any) => void
   isLoading: boolean
 }

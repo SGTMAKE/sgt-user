@@ -21,10 +21,7 @@ export const navItems: NavItem[] = [
     label: "Products",
     link: "#",
     children: [
-      {
-        label: "Fasteners",
-        link: "/fasteners",
-      },
+      
       {
         label: "Tools & Equipment",
         link: "/store/c/tools-and-equipments",
@@ -34,9 +31,17 @@ export const navItems: NavItem[] = [
         link: "/store/c/ev-parts",
       },
       {
+        label: "Fasteners",
+        link: "/fasteners",
+      },{
         label: "Connectors & Wires",
         link: "/connectors-wires",
-      }
+      },
+      
+        {
+        label: "Battery Packs",
+        link: "/store/c/battery-packs",
+      },
     ]
   },
   {
@@ -102,7 +107,7 @@ export default function Navlist() {
               href={d.link ?? "#"}
               className="relative group  px-2 py-3 transition-all "
             >
-              <span className="flex cursor-pointer items-center gap-2 text-gray-700 group-hover:text-black ">
+              <span className="flex cursor-pointer items-center gap-2 text-gray-900 group-hover:text-black ">
                 <span>{d.label}</span>
                 {d.children && (
                   <IoIosArrowUp className=" rotate-180  transition-all group-hover:rotate-0" />
@@ -116,7 +121,7 @@ export default function Navlist() {
                     <Link
                       key={i}
                       href={ch.link ?? "#"}
-                      className=" flex cursor-pointer items-center  py-1 pl-6 pr-8  text-neutral-400 hover:text-black  "
+                      className=" flex cursor-pointer items-center  py-1 pl-6 pr-8  text-gray-600 hover:text-black  "
                     >
                       {/* image */}
                       {ch.iconImage && (
@@ -124,7 +129,7 @@ export default function Navlist() {
                       )}
                       {/* item */}
                       
-                      <span className="whitespace-nowrap  p-2 hover:bg-gray-50 rounded-md w-full hover:text-orange-300 ">
+                      <span className="whitespace-nowrap  p-2 hover:bg-orange-50  rounded-md w-full hover:text-orange-500 ">
                         {ch.label}
                       </span>
                     </Link>

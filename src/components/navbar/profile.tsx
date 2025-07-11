@@ -6,7 +6,7 @@ import {
   DropdownMenu,
   DropdownTrigger,
 } from "@nextui-org/dropdown";
-import { LogOut, Package, Quote, UserCircle } from "lucide-react";
+import { LogOut, MessageSquare, Package, UserCircle, Wrench } from "lucide-react";
 import { Session } from "next-auth";
 
 const Profile = ({ session }: { session: Session }) => {
@@ -41,7 +41,15 @@ const Profile = ({ session }: { session: Session }) => {
           key="orders"
           href="/account/services/"
           color="secondary"
-          startContent={<Quote />}
+          startContent={<Wrench />}
+        >
+          My Service
+        </DropdownItem>
+        <DropdownItem
+          key="orders"
+          href="/quotes/"
+          color="secondary"
+          startContent={<MessageSquare />}
         >
           My Quotations
         </DropdownItem>

@@ -2,6 +2,7 @@ import { createZohoTransporter } from "./zoho-config"
 import { generateOrderEmailTemplate } from "./templates/order-email-template"
 import { generateServiceEmailTemplate } from "./templates/service-email-template"
 import type { ItemSummary, AddressProps, ServiceStatus } from "@/lib/types/types"
+import { generateQuoteRequestEmailTemplate } from "./templates/quote-request-email-template"
 
 interface OrderEmailData {
   orderId: string
@@ -15,7 +16,23 @@ interface OrderEmailData {
   paymentStatus: boolean
   paymentMethod?: string
 }
-
+interface QuoteRequestNotificationData {
+  quoteRequestId: string
+  customerName: string
+  customerEmail: string
+  customerPhone: string
+  submissionDate: Date
+  items: Array<{
+    type: "fastener" | "connector" | "wire"
+    categoryName: string
+    title: string
+    quantity: number
+    specifications: Record<string, any>
+    image?: string
+  }>
+  totalItems: number
+  notes: string
+}
 interface ServiceEmailData extends ServiceStatus {
   customerName: string
   customerEmail: string
@@ -76,20 +93,14 @@ export class EmailService {
 
       const mailOptions = {
         from: {
-          name: "ezyZip Services",
+          name: "SGTMAKE Services",
           address: process.env.ZOHO_EMAIL_USER!,
         },
         to: process.env.ADMIN_EMAIL || process.env.ZOHO_EMAIL_USER,
         cc: process.env.ADMIN_CC_EMAILS?.split(",").filter(Boolean) || [],
         subject: `${emoji} New Service Request - ${data.formDetails.type.toUpperCase()} (#${data.id})`,
         html: htmlContent,
-        attachments: [
-          {
-            filename: "ezyzip-logo.png",
-            path: process.env.NEXT_PUBLIC_IMAGE_URL + "/logo.png",
-            cid: "logo",
-          },
-        ],
+        
       }
 
       const result = await this.transporter.sendMail(mailOptions)
@@ -110,7 +121,7 @@ export class EmailService {
     try {
       const mailOptions = {
         from: {
-          name: "ezyZip",
+          name: "SGTMAKE",
           address: process.env.ZOHO_EMAIL_USER!,
         },
         to,
@@ -126,6 +137,17 @@ export class EmailService {
       console.error("Failed to send custom email:", error)
       return false
     }
+  }
+
+  async sendQuoteRequestNotification(data: QuoteRequestNotificationData): Promise<void> {
+    const html = generateQuoteRequestEmailTemplate(data)
+
+    await this.transporter.sendMail({
+      to: process.env.ADMIN_EMAIL || "admin@sgtmake.com",
+      cc: process.env.ADMIN_CC_EMAILS?.split(",") || [],
+      subject: `New Quote Request #${data.quoteRequestId.slice(-8)} from ${data.customerName}`,
+      html,
+    })
   }
 
   async testConnection(): Promise<boolean> {

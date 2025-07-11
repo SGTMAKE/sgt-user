@@ -4,7 +4,7 @@ import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
-import { ArrowUpRight, Mail, Phone } from "lucide-react"
+import { ArrowUpRight, Mail, Phone, PhoneCall } from "lucide-react"
 import Image from "next/image"
 import emailjs from "@emailjs/browser"
 import Link from "next/link"
@@ -174,42 +174,15 @@ export default function ContactForm() {
         {/* Right Column - Locations and Contact Info */}
         <div className="space-y-6 text-sm md:text-base">
           {/* London Location */}
-          <div className="relative rounded-2xl overflow-hidden h-48">
-            <Image src="/london.png" alt="London"  width={800} height={300} className="object-cover h-full" />
-            <div className="absolute bottom-4 left-4 bg-white py-2 px-4 rounded-full flex items-center gap-2">
-              <span className="font-medium">London, UK</span>
-              <ArrowUpRight size={16} />
-            </div>
+          <div className="relative rounded-2xl overflow-hidden h-96">
+            <Image src="/contact.png" alt="London"  width={800} height={300} className="object-cover h-full" />
+            <Link href="tel:9462223735" className="absolute bottom-4 left-4 bg-white py-2 px-4 rounded-full flex items-center gap-2">
+              <span className="font-medium">Call Us</span>
+              <PhoneCall size={16} />
+            </Link>
           </div>
 
-          {/* Two Locations Side by Side */}
-          <div className="grid grid-cols-2 gap-4">
-            {/* California Location */}
-            <div className="relative rounded-2xl overflow-hidden h-40">
-              <Image src="/usa.png" alt="usa" width={500} height={300} className="object-cover h-full" />
-              <div className="absolute bottom-4 left-4 bg-white py-2 px-4 rounded-full flex items-center gap-2">
-                <span className="font-medium">California, USA</span>
-                <ArrowUpRight size={16} />
-              </div>
-            </div>
-
-            {/* Shanghai Location */}
-            <div className="relative rounded-2xl overflow-hidden h-40">
-              <Image src="/contact/australia.avif" width={500} height={500} alt="australia"  className="object-cover h-full" />
-              <div className="absolute bottom-4 left-4 bg-white py-2 px-4 rounded-full flex items-center gap-2">
-                <span className="font-medium">Sydney, Australia</span>
-                <ArrowUpRight size={16} />
-              </div>
-            </div>
-            <div className="relative rounded-2xl overflow-hidden h-48">
-            <Image src="/contact/Europe.webp" alt="Europe" width={500} height={300} className="object-cover h-full" />
-            <div className="absolute bottom-4 left-4 bg-white py-2 px-4 rounded-full flex items-center gap-2">
-              <span className="font-medium">Europe</span>
-              <ArrowUpRight size={16} />
-            </div>
-          </div>
-          </div>
-
+          
           
 
           {/* Contact Information */}

@@ -3,6 +3,7 @@ const nextConfig = {
     images: {
         domains: ["res.cloudinary.com","pagedone.io","images.unsplash.com"]
     },
+   
     redirects: async () => {
         return [
             {

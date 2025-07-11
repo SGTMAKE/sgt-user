@@ -50,7 +50,7 @@ export default function FastenerSelector({ config, activeCategory }: FastenerSel
   // Dynamically build the Zod schema based on the config
   const buildValidationSchema = () => {
     const schemaFields: Record<string, any> = {
-      quantity: z.number().min(1, "Quantity must be at least 1").max(100, "Maximum quantity is 100"),
+      quantity: z.number().min(1, "Quantity must be at least 1").max(100000, "Maximum quantity is 100"),
       remarks: z.string().optional(),
     }
 
@@ -116,7 +116,7 @@ export default function FastenerSelector({ config, activeCategory }: FastenerSel
   }
 
   const handleQuantityChange = (change: number) => {
-    const newQuantity = Math.max(1, Math.min(100, quantity + change))
+    const newQuantity = Math.max(1, Math.min(100000, quantity + change))
     setQuantity(newQuantity)
     setValue("quantity", newQuantity)
   }
@@ -250,24 +250,24 @@ export default function FastenerSelector({ config, activeCategory }: FastenerSel
           </button>
           <input
             type="number"
-            className="px-4 py-2 border rounded w-16 text-center"
+            className="px-4 py-2 border rounded w-max text-center"
             value={quantity}
             {...register("quantity", { valueAsNumber: true })}
             onChange={(e) => {
               const value = Number.parseInt(e.target.value)
-              if (!isNaN(value) && value >= 1 && value <= 100) {
+              if (!isNaN(value) && value >= 1 && value <= 100000) {
                 setQuantity(value)
                 setValue("quantity", value)
               }
             }}
             min="1"
-            max="100"
+            max="100000"
           />
           <button
             type="button"
             className="p-2 border rounded-md hover:bg-gray-100"
             onClick={() => handleQuantityChange(1)}
-            disabled={quantity >= 100}
+            disabled={quantity >= 100000}
           >
             <Plus size={16} />
           </button>
