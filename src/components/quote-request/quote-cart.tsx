@@ -196,7 +196,7 @@ export default function QuoteCart({
                 Submit Quote Request
               </Button>
               <p className="text-xs text-gray-500 text-center mt-2">
-                We'll review your request and send you a detailed quote within 24 hours
+                We will review your request and send you a detailed quote within 24 hours
               </p>
             </div>
           </motion.div>

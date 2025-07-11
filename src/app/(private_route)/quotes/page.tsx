@@ -198,7 +198,7 @@ export default function UserQuotesPage() {
           <CardContent>
             <Package className="w-16 h-16 text-gray-400 mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">No Quote Requests</h3>
-            <p className="text-gray-600 dark:text-gray-400 mb-6">You haven't submitted any quote requests yet.</p>
+            <p className="text-gray-600 dark:text-gray-400 mb-6">You have not submitted any quote requests yet.</p>
             <div className="flex gap-4 justify-center">
               <Link href="/fasteners">
                 <Button className="bg-orange-500 hover:bg-orange-600">Browse Fasteners</Button>
