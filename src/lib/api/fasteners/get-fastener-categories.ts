@@ -6,19 +6,8 @@ export async function getFastenerCategories() {
       where: {
         isActive: true,
       },
-      select: {
-        id: true,
-        name: true,
-        description: true,
-        image: true,
+      include: {
         options: {
-          select: {
-            id: true,
-            name: true,
-            label: true,
-            type: true,
-            required: true,
-          },
           orderBy: {
             createdAt: 'asc',
           },
@@ -50,19 +39,8 @@ export async function getFastenerCategory(id: string) {
         id,
         isActive: true,
       },
-      select: {
-        id: true,
-        name: true,
-        description: true,
-        image: true,
+      include: {
         options: {
-          select: {
-            id: true,
-            name: true,
-            label: true,
-            type: true,
-            required: true,
-          },
           orderBy: {
             createdAt: 'asc',
           },

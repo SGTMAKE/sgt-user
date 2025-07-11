@@ -1,20 +1,54 @@
-import { NextResponse } from "next/server"
-import { getFastenerCategories } from "@/lib/api/fasteners/get-fastener-categories"
+import { NextRequest, NextResponse } from 'next/server'
+import { db } from '@/lib/prisma'
 
-export async function GET() {
+// GET all categories or a single category by ID (via query param)
+export async function GET(req: NextRequest) {
+  const id = req.nextUrl.searchParams.get('id')
+
   try {
-    const result = await getFastenerCategories()
+    if (id) {
+      // Fetch single category
+      const category = await db.fastenerCategory.findUnique({
+        where: {
+          id,
+          isActive: true,
+        },
+        include: {
+          options: {
+            orderBy: {
+              createdAt: 'asc',
+            },
+          },
+        },
+      })
 
-    if (!result.success) {
-      return NextResponse.json({ error: result.error }, { status: 500 })
+      if (!category) {
+        return NextResponse.json({ success: false, error: 'Category not found' }, { status: 404 })
+      }
+
+      return NextResponse.json({ success: true, category })
+    } else {
+      // Fetch all categories
+      const categories = await db.fastenerCategory.findMany({
+        where: {
+          isActive: true,
+        },
+        include: {
+          options: {
+            orderBy: {
+              createdAt: 'asc',
+            },
+          },
+        },
+        orderBy: {
+          name: 'asc',
+        },
+      })
+
+      return NextResponse.json({ success: true, categories })
     }
-
-    return NextResponse.json({
-      success: true,
-      categories: result.categories,
-    })
   } catch (error) {
-    console.error("API Error:", error)
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 })
+    console.error('GET error:', error)
+    return NextResponse.json({ success: false, error: 'Server error' }, { status: 500 })
   }
 }
