@@ -12,10 +12,10 @@ interface FAQ {
 
 const faqs: FAQ[] = [
   { question: "What is SGTMake?", answer: "SGTMake is your trusted partner for high-quality industrial components, equipment, and manufacturing services." },
-  { question: "What industries do you serve?", answer: "We serve industries such as automotive, aerospace, and telecommunications..." },
-  { question: "How can I contact your customer support?", answer: "You can contact us via email at support@sgtmake.com or call us at +91 9462223735" },
-  { question: "What are your business hours?", answer: "Our business hours are Monday to Friday, 9 AM - 5 PM..." },
-  { question: "How can I track my orders?", answer: "You can track your orders using the tracking ID sent to your email..." },
+  { question: "What industries do you serve?", answer: "We serve industries such as automotive, aerospace, and telecommunications." },
+  { question: "How can I contact your customer support?", answer: "You can contact us via email at support@sgtmake.com or call us at +91 9462223735." },
+  { question: "What are your business hours?", answer: "Our business hours are Monday to Friday, 9 AM - 5 PM." },
+  { question: "How can I track my orders?", answer: "You can track your orders using the tracking ID sent to your email." },
 ];
 
 export function FAQSection() {

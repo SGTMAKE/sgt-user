@@ -160,10 +160,10 @@ export default function QuoteCartDropdown() {
                   {items.length === 0 ? (
                     <div className="p-6 text-center space-y-3">
                       <div className="w-12 h-12 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto">
-                        <ShoppingCart className="w-6 h-6 text-gray-400" />
+                        <MessageSquareIcon className="w-6 h-6 text-gray-400" />
                       </div>
                       <div>
-                        <h3 className="font-medium text-gray-900 dark:text-white">Your cart is empty</h3>
+                        <h3 className="font-medium text-gray-900 dark:text-white">Your Quotes cart is empty</h3>
                         <p className="text-sm text-gray-500 dark:text-gray-400">Add products to request a quote</p>
                       </div>
                     </div>
