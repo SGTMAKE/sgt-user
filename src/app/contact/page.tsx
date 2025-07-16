@@ -205,7 +205,7 @@ export default function ContactForm() {
                   <Phone className="h-5 w-5 text-orange-500" />
                 </div>
                 <div>
-                  <p className="font-medium">Phone</p>
+                  <p className="font-medium">Phone </p>
                   <p className="text-sm text-gray-600">+91 94622 23735</p>
                 </div>
               </Link>
