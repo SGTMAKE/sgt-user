@@ -447,9 +447,9 @@ export const generateOrderEmailTemplate = (data: OrderEmailData) => {
             </div>
             
             <div class="footer">
-                <p><strong>ezyZip Admin Panel</strong></p>
+                <p><strong>SGTMAKE Admin Panel</strong></p>
                 <p>This is an automated notification. Please log in to your admin panel to manage this order.</p>
-                <p>© ${new Date().getFullYear()} ezyZip. All rights reserved.</p>
+                <p>© ${new Date().getFullYear()} SGTMAKE. All rights reserved.</p>
             </div>
         </div>
     </body>

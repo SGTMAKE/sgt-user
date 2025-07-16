@@ -8,11 +8,13 @@ import SidebarNav from "./navbarSM/sidebar-nav"
 import Search from "./search"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
-// import { getMarqueeOffers } from "@/lib/api/get-marquee-offers";
+import { getMarqueeOffers } from "@/lib/api/get-marquee-offers";
 import Image from "next/image"
 import Navlist from "./navlist"
 import LinkButton from "../shared/link-button"
 import QuoteCartDropdown from "./quote-cart-dropdown"
+import Marquee from "./marquee"
+
 
 export default async function Navbar() {
   const navItems = await getNavbarCategories()
@@ -22,11 +24,11 @@ export default async function Navbar() {
     sort: "popular",
   })
 
-  // const marqueeOffers = await getMarqueeOffers();
+  const marqueeOffers = await getMarqueeOffers();
 
   return (
     <>
-      {/* {marqueeOffers && <Marquee offers={marqueeOffers.offers} />} */}
+      {marqueeOffers?.offers.length ? <Marquee offers={marqueeOffers.offers} /> : ""}
       <NextNavbar
         shouldHideOnScroll
         classNames={{

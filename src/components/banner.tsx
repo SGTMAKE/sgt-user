@@ -12,12 +12,12 @@ const Banner = async () => {
     <div className="bg-black py-5">
       <Container className="py-10 md:py-20">
         <div className="flex justify-between gap-10">
-          <div className="flex flex-col justify-between text-white md:max-w-[40%]">
+          <div className="flex flex-col justify-between text-white md:max-w-[50%]">
             <div>
               <span className="text-sm font-light text-gray-400 md:text-lg">
                 <span className="border-b-2 border-red-500">Best</span> deal
               </span>
-              <h1 className="my-3 flex-1 text-3xl md:my-0 md:mt-5 md:text-5xl">
+              <h1 className="my-3 flex-1 text-3xl md:my-0 md:mt-5 md:text-4xl bg-gradient-to-r from-orange-500 to-white bg-clip-text text-transparent ">
                 {deal?.deal?.title}
               </h1>
               {deal?.deal?.imageUrl && (
@@ -46,8 +46,8 @@ const Banner = async () => {
               </LinkButton>
             </div>
           </div>
-          <div className="relative hidden h-96 w-[60%] md:block">
-            <Image src={deal?.deal?.imageUrl || "/"} alt="Banner image" fill />
+          <div className="relative hidden h-96 min-w-[40%]  md:block">
+            <Image src={deal?.deal?.imageUrl || "/"} alt="Banner image" fill className="h-full" />
           </div>
         </div>
       </Container>

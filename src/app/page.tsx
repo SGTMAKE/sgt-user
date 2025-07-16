@@ -1,11 +1,9 @@
 import Banner from "@/components/banner";
-import Latest from "@/components/latest";
 import Hero from "@/components/hero/hero";
 import ProductRow from "@/components/products/product-row";
 import { getHeroBanner } from "@/lib/api/get-hero-banner";
 import { getFilteredProduct } from "@/lib/api/products/get-filtered-products";
 import { capitalizeSearchParam } from "@/lib/utils";
-import Navbar from "./components/Navbar";
 import Services from "@/app/components/Services";
 import IndustryComponent from "@/app/components/IndustryComponent";
 import Footer from "@/app/components/Footer";
@@ -55,14 +53,11 @@ export default async function page() {
           <ProductRow {...productRow} />
         </div>
       ))}
-      {/* <FeatureProduct/> */}
-      {/* <Latest /> */}
 
       <Choose/>
       <Serve/>
       <CustomerReview/>
       <GlobalDelivery/>
-      {/* <ContactUs/> */}
       <Footer/>
 
  

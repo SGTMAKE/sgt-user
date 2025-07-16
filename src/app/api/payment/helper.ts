@@ -92,7 +92,16 @@ async function updateOrder(order_id: string) {
       orderID: order_id,
     },
     include: {
-      orderItems: true,
+      orderItems: {
+        include:{
+          product:{
+            include:{
+              images:true
+            }
+          }
+        }
+      },
+      address:true,
     },
   })
 }

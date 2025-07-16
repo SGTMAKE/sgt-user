@@ -260,8 +260,6 @@ model Service {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   status        String   @default("pending")
-  quotation     Json?
-  timeline      Json?
 
   @@map("services")
 }

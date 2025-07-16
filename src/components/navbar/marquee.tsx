@@ -7,7 +7,7 @@ const Marquee = ({ offers }: { offers: MarqueeOffers[] }) => {
   return (
     <ReactFastMarquee
       pauseOnHover={true}
-      className="bg-black py-2 text-white md:py-3"
+      className="bg-orange-600 py-2 text-white md:py-3"
     >
       {offers.map((offer, i) => (
         <React.Fragment key={i}>

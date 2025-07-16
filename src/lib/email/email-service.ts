@@ -53,19 +53,13 @@ export class EmailService {
       const mailOptions = {
         from: {
           name: "SGTMake Orders",
-          address: process.env.ZOHO_EMAIL_USER!,
+          address: process.env.ZOHO_EMAIL!,
         },
-        to: process.env.ADMIN_EMAIL || process.env.ZOHO_EMAIL_USER,
+        to: process.env.ADMIN_EMAIL || process.env.ZOHO_EMAIL,
         cc: process.env.ADMIN_CC_EMAILS?.split(",").filter(Boolean) || [],
         subject: `🎉 New Order Received - #${data.orderId} (₹${data.totalAmount.toLocaleString()})`,
         html: htmlContent,
-        attachments: [
-          {
-            filename: "ezyzip-logo.png",
-            path: process.env.NEXT_PUBLIC_IMAGE_URL + "/logo.png",
-            cid: "logo",
-          },
-        ],
+    
       }
 
       const result = await this.transporter.sendMail(mailOptions)
@@ -122,7 +116,7 @@ export class EmailService {
       const mailOptions = {
         from: {
           name: "SGTMAKE",
-          address: process.env.ZOHO_EMAIL_USER!,
+          address: process.env.ZOHO_EMAIL!,
         },
         to,
         subject,
@@ -143,7 +137,7 @@ export class EmailService {
     const html = generateQuoteRequestEmailTemplate(data)
 
     await this.transporter.sendMail({
-      to: process.env.ADMIN_EMAIL || "admin@sgtmake.com",
+      to: process.env.ADMIN_EMAIL || "support@sgtmake.com",
       cc: process.env.ADMIN_CC_EMAILS?.split(",") || [],
       subject: `New Quote Request #${data.quoteRequestId.slice(-8)} from ${data.customerName}`,
       html,

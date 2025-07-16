@@ -11,14 +11,8 @@ interface OrderStatusStepperProps {
 const OrderStatusStepper = ({ currentStatus, paymentVerified, orderDate }: OrderStatusStepperProps) => {
   const steps = [
     {
-      id: "placed",
-      label: "Order Placed",
-      icon: CheckCircle,
-      description: "Your order has been placed successfully",
-    },
-    {
       id: "confirmed",
-      label: "Order Confirmed",
+      label: "Order Placed",
       icon: CheckCircle,
       description: "Your order has been confirmed and is being prepared",
     },
@@ -29,7 +23,7 @@ const OrderStatusStepper = ({ currentStatus, paymentVerified, orderDate }: Order
       description: "Your order is being processed",
     },
     {
-      id: "ongoing",
+      id: "shipped",
       label: "Shipped",
       icon: Truck,
       description: "Your order has been shipped",
@@ -57,9 +51,9 @@ const OrderStatusStepper = ({ currentStatus, paymentVerified, orderDate }: Order
   const getStatusColor = (status: string) => {
     switch (status) {
       case "completed":
-        return "text-green-600 bg-green-100 border-green-600"
+        return "text-orange-600 bg-orange-100 border-orange-600"
       case "current":
-        return "text-blue-600 bg-blue-100 border-blue-600"
+        return "text-gray-600 bg-gray-300 border-gray-600"
       default:
         return "text-gray-400 bg-gray-100 border-gray-300"
     }
@@ -67,7 +61,7 @@ const OrderStatusStepper = ({ currentStatus, paymentVerified, orderDate }: Order
 
   const getLineColor = (index: number) => {
     const status = getStepStatus(steps[index].id)
-    return status === "completed" ? "bg-green-600" : "bg-gray-300"
+    return status === "completed" ? "bg-orange-600" : "bg-gray-300"
   }
 
   if (!paymentVerified) {
@@ -131,9 +125,9 @@ const OrderStatusStepper = ({ currentStatus, paymentVerified, orderDate }: Order
                   <h4
                     className={`text-sm font-medium ${
                       status === "completed"
-                        ? "text-green-800"
+                        ? "text-orange-800"
                         : status === "current"
-                          ? "text-blue-800"
+                          ? "text-gray-800"
                           : "text-gray-500"
                     }`}
                   >
@@ -142,9 +136,9 @@ const OrderStatusStepper = ({ currentStatus, paymentVerified, orderDate }: Order
                   <p
                     className={`text-xs mt-1 ${
                       status === "completed"
-                        ? "text-green-600"
+                        ? "text-orange-600"
                         : status === "current"
-                          ? "text-blue-600"
+                          ? "text-gray-600"
                           : "text-gray-400"
                     }`}
                   >
@@ -158,11 +152,11 @@ const OrderStatusStepper = ({ currentStatus, paymentVerified, orderDate }: Order
                       transition={{ duration: 0.3, delay: 0.5 }}
                     >
                       <div className="flex items-center">
-                        <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-blue-600"></div>
-                        <span className="ml-2 text-xs text-blue-600">In Progress</span>
+                        <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-gray-600"></div>
+                        <span className="ml-2 text-xs text-gray-600">In Progress</span>
                       </div>
                     </motion.div>
-                  )}
+                  )} 
                 </motion.div>
               </div>
             </div>
