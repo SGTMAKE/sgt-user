@@ -1,8 +1,7 @@
 import { JsxElement } from "typescript";
 import { z } from "zod";
 import { ZodAddressSchema } from "../zodSchemas";
-import { UseFormReturn } from "react-hook-form";
-import { Dispatch, SetStateAction } from "react";
+
 import { BestDeal, Image, MarqueeOffers, Product } from "@prisma/client";
 
 type Res = {
@@ -325,34 +324,88 @@ export interface ServiceFormData {
   file?: File
   [key: string]: any
 }
+export type ServiceType = "cnc-machining" | "laser-cutting" | "3d-printing" | "wiringHarness" | "batteryPack"
 
+export type ServiceStatusType = "pending" | "in-progress" | "completed" | "rejected" | "quoted"
+
+// Base form details interface
+interface BaseFormDetails {
+  type: ServiceType
+  remarks?: string
+}
+
+// 3D Printing specific details
+export interface ThreeDPrintingDetails extends BaseFormDetails {
+  type: "3d-printing"
+  printType: "fdm" | "sla"
+  material: string
+  color: string
+  quantity: number
+  surfaceFinish: boolean
+}
+
+// Battery Pack specific details
+export interface BatteryPackDetails extends BaseFormDetails {
+  type: "batteryPack"
+  chemistry: "NCM" | "NCA" | "LifePO4" | "LIPO"
+  cellBrand: string
+  seriesConfig: string
+  parallelConfig: string
+  normalDischarge: string
+  peakDischarge: string
+  charging: string
+  lifeCycle: string
+  packVoltage: string
+  bmsChoice: string
+  modulusCount: string
+  dimensions: {
+    H: string
+    W: string
+    L: string
+  }
+  additionalInfo?: string
+}
+
+// Wiring Harness specific details
+export interface WiringHarnessDetails extends BaseFormDetails {
+  type: "wiringHarness"
+  description: string
+  quantity: number
+  wireGauge?: string
+  connectorType?: string
+  harnessLength?: string
+  numberOfWires?: string
+  voltage?: string
+  current?: string
+  operatingTemperature?: string
+}
+
+// CNC/Laser specific details
+export interface CNCLaserDetails extends BaseFormDetails {
+  type: "cnc-machining" | "laser-cutting"
+  material: string
+  quantity: number
+  surfaceFinish: boolean
+  dimensions?: string
+  tolerance?: string
+  finish?: string
+  additionalRequirements?: string
+}
+
+// Union type for all service form details
+export type ServiceFormDetails = ThreeDPrintingDetails | BatteryPackDetails | WiringHarnessDetails | CNCLaserDetails
 export interface ServiceStatus {
   id: string
   status: string
-  createdAt: string
-  updatedAt: string
+  createdAt: string | Date
+  updatedAt: string | Date
   userId: string
   fileUrl: string
   filePublicId: string
   fileType: string
-  formDetails: {
-    type: string
-    material: string
-    quantity: number
-    surfaceFinish: boolean
-    remarks?: string
-    [key: string]: any
-  }
-  quotation?: {
-    amount: number
-    currency: string
-    validUntil: string
-    details: string
-  }
-  timeline?: {
-    estimatedCompletion: string
-    productionStartDate?: string
-  }
+  type: string
+  formDetails : any
+ 
 }
 export type MarqueeOffersRes = Res & {
   offers: MarqueeOffers[];

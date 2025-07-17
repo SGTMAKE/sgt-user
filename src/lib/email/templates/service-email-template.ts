@@ -1,113 +1,121 @@
 import { formateDateString } from "@/lib/utils"
-import type { ServiceStatus } from "@/lib/types/types"
-
+import type { ServiceType } from "@/lib/types/types"
+export interface ServiceStatus {
+  id: string
+  status: string
+  createdAt: string | Date
+  updatedAt: string | Date
+  userId: string
+  fileUrl: string
+  filePublicId: string
+  fileType: string
+  type:  string
+  formDetails : any
+ 
+}
 interface ServiceEmailData extends ServiceStatus {
   customerName: string
   customerEmail: string
   customerPhone?: string
 }
+export const generateServiceEmailTemplate = (data: ServiceEmailData): string => {
+  const { id, customerName, customerEmail, customerPhone, createdAt, formDetails, fileUrl, fileType, type  } = data
 
-export const generateServiceEmailTemplate = (data: ServiceEmailData) => {
-  const { id, customerName, customerEmail, customerPhone, createdAt, formDetails, fileUrl, fileType } = data
-
-  const getServiceTypeDisplay = (type: string) => {
-    const types: Record<string, string> = {
+  const getServiceTypeDisplay = (serviceType: ServiceType): string => {
+    const types: Record<ServiceType, string> = {
       "cnc-machining": "🔧 CNC Machining",
       "laser-cutting": "⚡ Laser Cutting",
       "3d-printing": "🖨️ 3D Printing",
       wiringHarness: "🔌 Wiring Harness",
       batteryPack: "🔋 Battery Pack",
     }
-    return types[type] || type
+    return types[serviceType] || serviceType
   }
 
-  const renderServiceDetails = () => {
-    switch (formDetails.type) {
-      case "3d-printing":
-        return `
-          <div class="service-details">
-            <div class="detail-row">
-              <span class="detail-label">Print Type:</span>
-              <span class="detail-value">${formDetails.printType?.toUpperCase()}</span>
-            </div>
-            <div class="detail-row">
-              <span class="detail-label">Material:</span>
-              <span class="detail-value">${formDetails.material}</span>
-            </div>
-            <div class="detail-row">
-              <span class="detail-label">Color:</span>
-              <span class="detail-value">${formDetails.color}</span>
-            </div>
-            <div class="detail-row">
-              <span class="detail-label">Quantity:</span>
-              <span class="detail-value">${formDetails.quantity}</span>
-            </div>
-            <div class="detail-row">
-              <span class="detail-label">Surface Finish:</span>
-              <span class="detail-value">${formDetails.surfaceFinish ? "Yes" : "No"}</span>
-            </div>
-          </div>
-        `
-      case "batteryPack":
-        return `
-          <div class="service-details">
-            <div class="detail-row">
-              <span class="detail-label">Chemistry:</span>
-              <span class="detail-value">${formDetails.chemistry}</span>
-            </div>
-            <div class="detail-row">
-              <span class="detail-label">Cell Brand:</span>
-              <span class="detail-value">${formDetails.cellBrand}</span>
-            </div>
-            <div class="detail-row">
-              <span class="detail-label">Configuration:</span>
-              <span class="detail-value">${formDetails.seriesConfig}S${formDetails.parallelConfig}P</span>
-            </div>
-            <div class="detail-row">
-              <span class="detail-label">Pack Voltage:</span>
-              <span class="detail-value">${formDetails.packVoltage}</span>
-            </div>
-            <div class="detail-row">
-              <span class="detail-label">BMS Choice:</span>
-              <span class="detail-value">${formDetails.bmsChoice}</span>
-            </div>
-            <div class="detail-row">
-              <span class="detail-label">Dimensions:</span>
-              <span class="detail-value">${formDetails.dimensions?.L} × ${formDetails.dimensions?.W} × ${formDetails.dimensions?.H}</span>
-            </div>
-          </div>
-        `
-      case "wiringHarness":
-        return `
-          <div class="service-details">
-            <div class="detail-row">
-              <span class="detail-label">Description:</span>
-              <span class="detail-value">${formDetails.description}</span>
-            </div>
-            <div class="detail-row">
-              <span class="detail-label">Quantity:</span>
-              <span class="detail-value">${formDetails.quantity}</span>
-            </div>
-          </div>
-        `
-      default:
-        return `
-          <div class="service-details">
-            <div class="detail-row">
-              <span class="detail-label">Material:</span>
-              <span class="detail-value">${formDetails.material}</span>
-            </div>
-            <div class="detail-row">
-              <span class="detail-label">Quantity:</span>
-              <span class="detail-value">${formDetails.quantity}</span>
-            </div>
-            <div class="detail-row">
-              <span class="detail-label">Surface Finish:</span>
-              <span class="detail-value">${formDetails.surfaceFinish ? "Yes" : "No"}</span>
-            </div>
-          </div>
-        `
+  const formatFieldName = (key: string): string => {
+    // Convert camelCase to readable format
+    return key
+      .replace(/([A-Z])/g, " $1")
+      .replace(/^./, (str) => str.toUpperCase())
+      .replace(/Id$/, " ID")
+      .replace(/Url$/, " URL")
+      .replace(/Api$/, " API")
+  }
+
+  const formatFieldValue = (value: any): string => {
+    if (value === null || value === undefined) {
+      return "Not specified"
     }
+
+    if (typeof value === "boolean") {
+      return value ? "Yes" : "No"
+    }
+
+    if (typeof value === "object") {
+      if (Array.isArray(value)) {
+        return value.join(", ")
+      }
+
+      // Handle nested objects like dimensions
+      if (value && typeof value === "object") {
+        return Object.entries(value)
+          .map(([k, v]) => `${formatFieldName(k)}: ${v}`)
+          .join(", ")
+      }
+    }
+
+    return String(value)
+  }
+
+  const renderServiceDetails = (): string => {
+    if (!formDetails || typeof formDetails !== "object") {
+      return '<div class="service-details"><p>No service details available</p></div>'
+    }
+
+    // Filter out common fields that don't need to be displayed or are displayed elsewhere
+    const excludeFields = ["type", "remarks", "additionalInfo", "notes"]
+
+    const detailRows = Object.entries(formDetails)
+      .filter(([key, value]) => !excludeFields.includes(key) && value !== null && value !== undefined && value !== "")
+      .map(
+        ([key, value]) => `
+        <div class="detail-row">
+          <span class="detail-label">${formatFieldName(key)}:</span>
+          <span class="detail-value">${formatFieldValue(value)}</span>
+        </div>
+      `,
+      )
+      .join("")
+
+    return `
+      <div class="service-details">
+        ${detailRows || "<p>No specifications provided</p>"}
+      </div>
+    `
+  }
+
+  const renderAdditionalNotes = (): string => {
+    // Look for common note fields
+    const noteFields = ["remarks", "additionalInfo", "notes", "description"]
+    const notes = noteFields
+      .map((field) => formDetails[field])
+      .filter((note) => note && typeof note === "string" && note.trim().length > 0)
+
+    if (notes.length === 0) {
+      return ""
+    }
+
+    return `
+      <h2 class="section-title">💬 Additional Notes</h2>
+      <div class="service-details">
+        ${notes.map((note) => `<p style="color: #666; font-style: italic; margin-bottom: 10px;">"${note}"</p>`).join("")}
+      </div>
+    `
+  }
+
+  const formatDate = (date: Date | string): string => {
+    const dateObj = typeof date === "string" ? new Date(date) : date
+    return formateDateString(dateObj)
   }
 
   return `
@@ -217,7 +225,7 @@ export const generateServiceEmailTemplate = (data: ServiceEmailData) => {
             .detail-row {
                 display: flex;
                 justify-content: space-between;
-                align-items: center;
+                align-items: flex-start;
                 padding: 12px 0;
                 border-bottom: 1px solid #e9ecef;
             }
@@ -230,6 +238,7 @@ export const generateServiceEmailTemplate = (data: ServiceEmailData) => {
                 font-weight: 600;
                 color: #666;
                 flex: 1;
+                min-width: 150px;
             }
             
             .detail-value {
@@ -237,6 +246,7 @@ export const generateServiceEmailTemplate = (data: ServiceEmailData) => {
                 color: #333;
                 flex: 2;
                 text-align: right;
+                word-break: break-word;
             }
             
             .file-section {
@@ -365,7 +375,7 @@ export const generateServiceEmailTemplate = (data: ServiceEmailData) => {
         <div class="container">
             <div class="header">
                 <h1>🛠️ New Service Request!</h1>
-                <p>Request #${id} • ${formateDateString(new Date(createdAt))}</p>
+                <p>Request #${id.slice(-8)} • ${formatDate(createdAt)}</p>
             </div>
             
             <div class="content">
@@ -376,20 +386,20 @@ export const generateServiceEmailTemplate = (data: ServiceEmailData) => {
                 
                 <div class="service-summary">
                     <div class="service-type-badge">
-                        ${getServiceTypeDisplay(formDetails.type)}
+                        ${getServiceTypeDisplay(type as ServiceType)}
                     </div>
                     <div class="service-info">
                         <div class="info-item">
                             <div class="info-label">Request ID</div>
-                            <div class="info-value">#${id}</div>
+                            <div class="info-value">#${id.slice(-8)}</div>
                         </div>
                         <div class="info-item">
                             <div class="info-label">Service Type</div>
-                            <div class="info-value">${getServiceTypeDisplay(formDetails.type)}</div>
+                            <div class="info-value">${getServiceTypeDisplay(type as ServiceType)}</div>
                         </div>
                         <div class="info-item">
                             <div class="info-label">Submitted Date</div>
-                            <div class="info-value">${formateDateString(new Date(createdAt))}</div>
+                            <div class="info-value">${formatDate(createdAt)}</div>
                         </div>
                         <div class="info-item">
                             <div class="info-label">Status</div>
@@ -410,16 +420,7 @@ export const generateServiceEmailTemplate = (data: ServiceEmailData) => {
                 <h2 class="section-title">📋 Service Specifications</h2>
                 ${renderServiceDetails()}
                 
-                ${
-                  formDetails.remarks
-                    ? `
-                <h2 class="section-title">💬 Additional Remarks</h2>
-                <div class="service-details">
-                    <p style="color: #666; font-style: italic;">"${formDetails.remarks}"</p>
-                </div>
-                `
-                    : ""
-                }
+                ${renderAdditionalNotes()}
                 
                 ${
                   fileUrl
@@ -440,9 +441,9 @@ export const generateServiceEmailTemplate = (data: ServiceEmailData) => {
             </div>
             
             <div class="footer">
-                <p><strong>ezyZip Admin Panel</strong></p>
+                <p><strong>SGTMAKE Admin Panel</strong></p>
                 <p>This is an automated notification. Please log in to your admin panel to manage this service request.</p>
-                <p>© ${new Date().getFullYear()} ezyZip. All rights reserved.</p>
+                <p>© ${new Date().getFullYear()} SGTMAKE. All rights reserved.</p>
             </div>
         </div>
     </body>

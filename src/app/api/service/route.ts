@@ -4,6 +4,8 @@ import {db} from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { error404 } from "@/lib/utils";
 import { authOptions } from "@/lib/auth";
+import { emailService } from "@/lib/email/email-service";
+// import { emailService } from "@/lib/email/email-service"
 // ----------------------
 // Zod Schemas
 // ----------------------
@@ -89,6 +91,17 @@ export async function POST(request: Request) {
         },
       },
     });
+
+    try {
+      await emailService.sendServiceNotification({
+        ...service,
+        customerName: session.user.name || "Unknown Customer",
+        customerEmail: session.user.email ?? "",
+      })
+    } catch (emailError) {
+      console.error("Failed to send service notification email:", emailError)
+      // Don't fail the request if email fails
+    }
 
     return NextResponse.json({ success: true, data: service });
   } catch (error) {

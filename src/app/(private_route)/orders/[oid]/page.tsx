@@ -111,12 +111,12 @@ const Order = async ({ params }: { params: { oid: string } }) => {
             <hr className="py-3 md:hidden" />
             <h1 className="text-sm font-semibold uppercase tracking-widest text-muted-foreground">Need Help?</h1>
             <Link
-              href="https://mail.google.com/mail/?view=cm&fs=1&to=gadgexhub.store@gmail.com"
+              href="https://mail.google.com/mail/?view=cm&fs=1&to=support@sgtmake.com"
               target="_blank"
               className="my-2 flex items-center gap-1.5"
             >
               <Mail size={15} />
-              <span className="text-sm font-medium text-gray-400">Contact us</span>
+              <span className="text-sm font-medium text-gray-400 underline hover:text-orange-400">Contact us</span>
             </Link>
           </div>
           <div className="-order-1 md:order-2">

@@ -11,7 +11,7 @@ const Banner = async () => {
   return (
     <div className="bg-black py-5">
       <Container className="py-10 md:py-20">
-        <div className="flex justify-between gap-10">
+        <div className="flex justify-evenly gap-10">
           <div className="flex flex-col justify-between text-white md:max-w-[50%]">
             <div>
               <span className="text-sm font-light text-gray-400 md:text-lg">

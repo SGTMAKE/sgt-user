@@ -1,7 +1,7 @@
 import { createZohoTransporter } from "./zoho-config"
 import { generateOrderEmailTemplate } from "./templates/order-email-template"
 import { generateServiceEmailTemplate } from "./templates/service-email-template"
-import type { ItemSummary, AddressProps, ServiceStatus } from "@/lib/types/types"
+import type { ItemSummary, AddressProps, ServiceStatus, ServiceType } from "@/lib/types/types"
 import { generateQuoteRequestEmailTemplate } from "./templates/quote-request-email-template"
 
 interface OrderEmailData {
@@ -83,14 +83,14 @@ export class EmailService {
         batteryPack: "🔋",
       }
 
-      const emoji = serviceTypeEmojis[data.formDetails.type] || "🛠️"
+      const emoji = serviceTypeEmojis[data.type ] || "🛠️"
 
       const mailOptions = {
         from: {
           name: "SGTMAKE Services",
-          address: process.env.ZOHO_EMAIL_USER!,
+          address: process.env.ZOHO_EMAIL!,
         },
-        to: process.env.ADMIN_EMAIL || process.env.ZOHO_EMAIL_USER,
+        to: process.env.ADMIN_EMAIL || process.env.ZOHO_EMAIL,
         cc: process.env.ADMIN_CC_EMAILS?.split(",").filter(Boolean) || [],
         subject: `${emoji} New Service Request - ${data.formDetails.type.toUpperCase()} (#${data.id})`,
         html: htmlContent,

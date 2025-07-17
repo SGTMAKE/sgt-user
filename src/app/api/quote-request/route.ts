@@ -2,6 +2,7 @@ import { type NextRequest, NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import { db } from "@/lib/prisma"
+import { emailService } from "@/lib/email/email-service"
 // import { emailService } from "@/lib/email/email-service"
 
 export async function POST(request: NextRequest) {
@@ -69,29 +70,29 @@ export async function POST(request: NextRequest) {
     })
 
     // Send email notification to admin
-    // try {
-    //   await emailService.sendQuoteRequestNotification({
-    //     quoteRequestId: quoteRequest.id,
-    //     customerName: user.name || "Unknown Customer",
-    //     customerEmail: user.email,
-    //     customerPhone: user.phone || "",
-    //     submissionDate: new Date(),
-    //     items: items,
-    //     totalItems: quoteRequest.totalItems,
-    //     notes: notes || "",
-    //   })
+    try {
+      await emailService.sendQuoteRequestNotification({
+        quoteRequestId: quoteRequest.id,
+        customerName: user.name || "Unknown Customer",
+        customerEmail: user.email,
+        customerPhone: user.phone || "",
+        submissionDate: new Date(),
+        items: items,
+        totalItems: quoteRequest.totalItems,
+        notes: notes || "",
+      })
 
-    //   // Update email sent status
-    //   await db.quoteRequest.update({
-    //     where: { id: quoteRequest.id },
-    //     data: { emailSent: true },
-    //   })
+      // Update email sent status
+      await db.quoteRequest.update({
+        where: { id: quoteRequest.id },
+        data: { emailSent: true },
+      })
 
-    //   console.log("Quote request notification email sent successfully")
-    // } catch (emailError) {
-    //   console.log("Failed to send quote request notification email:", emailError)
-    //   // Don't fail the request if email fails
-    // }
+      console.log("Quote request notification email sent successfully")
+    } catch (emailError) {
+      console.log("Failed to send quote request notification email:", emailError)
+      // Don't fail the request if email fails
+    }
 
     return NextResponse.json({
       success: true,
