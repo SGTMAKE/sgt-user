@@ -83,7 +83,7 @@ export default function ContactForm() {
           {submitStatus === "success" && (
             <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
               <p className="text-green-800 font-medium">✅ Message sent successfully!</p>
-              <p className="text-green-600 text-sm">We'll get back to you within 24 hours.</p>
+              <p className="text-green-600 text-sm">We will get back to you within 24 hours.</p>
             </div>
           )}
 

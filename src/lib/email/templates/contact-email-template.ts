@@ -224,9 +224,13 @@ export function generateContactEmailTemplate(data: ContactFormEmailData): string
           }
 
           <div style="text-align: center; margin: 30px 0;">
-            <a href="mailto:${data.customerEmail}?subject=${encodeURIComponent("Re: Your inquiry to SGTMake")}&body=${encodeURIComponent("Dear ${data.customerName},%0D%0A%0D%0AThank you for contacting SGTMake. We have received your inquiry and will respond within 24 hours.%0D%0A%0D%0ABest regards,%0D%0ASGTMake Team")}" class="action-button">
-              📧 Reply to Customer
-            </a>
+          <a
+  href="mailto:${data.customerEmail}?subject=&body=Dear%20Customer,%0D%0A%0D%0AThank%20you%20for%20contacting%20SGTMake.%20We%20have%20received%20your%20inquiry%20and%20will%20respond%20within%2024%20hours.%0D%0A%0D%0ABest%20regards,%0D%0ASGTMake%20Team"
+  class="action-button"
+>
+  📧 Reply to Customer
+</a>
+
           </div>
 
           <div style="background: #f0f9ff; border: 1px solid #0ea5e9; border-radius: 8px; padding: 20px; margin: 20px 0;">
