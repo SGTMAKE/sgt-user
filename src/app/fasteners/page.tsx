@@ -8,6 +8,7 @@ import { Package, ChevronRight } from "lucide-react"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
+import SmartImage from "@/components/ui/ImageCorrector"
 
 interface FastenerCategory {
   id: string
@@ -113,7 +114,7 @@ export default function FastenersPage() {
                     <CardContent className="p-6 space-y-4">
                       {category.image ? (
                         <div className="relative w-full h-48 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800">
-                          <Image
+                          <SmartImage
                             src={category.image || "/placeholder.svg"}
                             alt={category.name}
                             fill

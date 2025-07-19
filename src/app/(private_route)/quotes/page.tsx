@@ -11,6 +11,7 @@ import { Package, Clock, CheckCircle, XCircle, Mail, ShoppingCart, Calendar, Ind
 import { toast } from "sonner"
 import Image from "next/image"
 import Link from "next/link"
+import SmartImage from "@/components/ui/ImageCorrector"
 
 interface QuoteRequest {
   id: string
@@ -252,7 +253,7 @@ export default function UserQuotesPage() {
                           >
                             <div className="w-12 h-12 bg-white dark:bg-gray-700 rounded-md flex items-center justify-center flex-shrink-0">
                               {item.image ? (
-                                <Image
+                                <SmartImage
                                   src={item.image || "/placeholder.svg"}
                                   alt={item.categoryName}
                                   width={32}

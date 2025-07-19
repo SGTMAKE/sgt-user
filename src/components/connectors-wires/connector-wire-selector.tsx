@@ -15,6 +15,7 @@ import { ShoppingCart, Package, Loader2 } from "lucide-react"
 import { toast } from "sonner"
 import { useQuoteCart } from "@/hooks/use-quote-cart"
 import Image from "next/image"
+import SmartImage from "../ui/ImageCorrector"
 
 interface Category {
   _id: string
@@ -261,7 +262,7 @@ export default function ConnectorWireSelector({ type }: ConnectorWireSelectorPro
                       <div className="flex items-center gap-3">
                         {category.image ? (
                           <div className="w-10 h-10 rounded-md overflow-hidden bg-gray-100 dark:bg-gray-800 flex-shrink-0">
-                            <Image
+                            <SmartImage
                               src={category.image || "/placeholder.svg"}
                               alt={category.name}
                               width={40}
@@ -313,7 +314,7 @@ export default function ConnectorWireSelector({ type }: ConnectorWireSelectorPro
                 <div className="flex items-start gap-4">
                   {selectedCategory.image ? (
                     <div className="w-16 h-16 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800 flex-shrink-0">
-                      <Image
+                      <SmartImage
                         src={selectedCategory.image || "/placeholder.svg"}
                         alt={selectedCategory.name}
                         width={64}

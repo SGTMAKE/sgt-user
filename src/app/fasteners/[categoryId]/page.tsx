@@ -15,6 +15,7 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Textarea } from "@/components/ui/textarea"
 import Image from "next/image"
+import SmartImage from "@/components/ui/ImageCorrector"
 
 interface FastenerCategory {
   id: string
@@ -221,7 +222,7 @@ export default function FastenerCategoryPage() {
               >
                 {optionValue.image && (
                   <div className="w-8 h-8 flex items-center justify-center">
-                    <Image
+                    <SmartImage
                       src={optionValue.image || "/placeholder.svg"}
                       alt={optionValue.value}
                       width={24}
@@ -260,7 +261,7 @@ export default function FastenerCategoryPage() {
                 >
                   {optionValue.image && (
                     <div className="w-8 h-8 flex items-center justify-center">
-                      <Image
+                      <SmartImage
                         src={optionValue.image || "/placeholder.svg"}
                         alt={optionValue.value}
                         width={24}
@@ -467,7 +468,7 @@ export default function FastenerCategoryPage() {
                 <CardContent className="p-6">
                   <div className="aspect-square bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center mb-4">
                     {category.image ? (
-                      <Image
+                      <SmartImage
                         src={category.image || "/placeholder.svg"}
                         alt={category.name}
                         width={200}

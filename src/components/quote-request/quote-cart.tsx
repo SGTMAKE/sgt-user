@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { X, Send, FileText } from "lucide-react"
 import { Button } from "@nextui-org/button"
 import { toast } from "sonner"
+import SmartImage from "../ui/ImageCorrector"
 
 interface QuoteItem {
   id: string
@@ -126,7 +127,7 @@ export default function QuoteCart({
                   <div className="flex items-start gap-3">
                     <div className="flex-shrink-0">
                       {item.image ? (
-                        <img
+                        <SmartImage
                           src={item.image || "/placeholder.svg"}
                           alt={item.title}
                           className="w-12 h-12 object-cover rounded-md"

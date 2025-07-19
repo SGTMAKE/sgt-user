@@ -14,6 +14,7 @@ import { useQuoteCart } from "@/hooks/use-quote-cart"
 import { toast } from "sonner"
 import Image from "next/image"
 import { useSession, signIn } from "next-auth/react";
+import SmartImage from "../ui/ImageCorrector"
 
 export default function QuoteCartDropdown() {
   const { items, removeItem, clearCart, getTotalItems } = useQuoteCart()
@@ -185,7 +186,7 @@ export default function QuoteCartDropdown() {
                                   <div className="flex gap-3">
                                     {item.image && (
                                       <div className="relative w-10 h-10 rounded-md overflow-hidden bg-gray-100 dark:bg-gray-800 flex-shrink-0">
-                                        <img
+                                        <SmartImage
                                           src={item.image || "/placeholder.svg"}
                                           alt={item.title}
                                           className="object-cover"

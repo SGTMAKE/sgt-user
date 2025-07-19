@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button } from "@nextui-org/button"
 import { toast } from "sonner"
+import SmartImage from "../ui/ImageCorrector"
 
 interface ConnectorCategory {
   id: string
@@ -286,7 +287,7 @@ export default function DynamicConnectorSelector({
               onClick={() => setSelectedCategory(category)}
             >
               {category.image && (
-                <img
+                <SmartImage
                   src={category.image || "/placeholder.svg"}
                   alt={category.name}
                   className="w-full h-32 object-cover rounded-md mb-3"
