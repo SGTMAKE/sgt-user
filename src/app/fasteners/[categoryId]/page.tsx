@@ -208,12 +208,12 @@ export default function FastenerCategoryPage() {
     switch (option.type) {
       case "select":
         return (
-          <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+          <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
             {option.values.map((optionValue: FastenerOptionValue, index: number) => (
               <button
                 key={`${option.name}-${optionValue.value}-${index}`}
                 type="button"
-                className={`p-3 border rounded-lg transition text-sm font-medium flex flex-col items-center gap-2 min-h-[80px] ${
+                className={`p-3 border rounded-lg w-full transition text-sm font-medium flex flex-col items-center gap-2 ${
                   value === optionValue.value
                     ? "bg-orange-500 text-white border-orange-500 shadow-md"
                     : "hover:bg-gray-50 border-gray-300 dark:hover:bg-gray-800 dark:border-gray-600"
@@ -239,14 +239,14 @@ export default function FastenerCategoryPage() {
 
       case "multiselect":
         return (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
             {option.values.map((optionValue: FastenerOptionValue, index: number) => {
               const isSelected = Array.isArray(value) && value.includes(optionValue.value)
               return (
                 <button
                   key={`${option.name}-${optionValue.value}-${index}`}
                   type="button"
-                  className={`p-3 border rounded-lg transition text-sm font-medium flex flex-col items-center gap-2 min-h-[80px] ${
+                  className={`p-3 border rounded-lg transition text-sm font-medium flex flex-col items-center gap-2  ${
                     isSelected
                       ? "bg-orange-500 text-white border-orange-500 shadow-md"
                       : "hover:bg-gray-50 border-gray-300 dark:hover:bg-gray-800 dark:border-gray-600"
@@ -260,12 +260,11 @@ export default function FastenerCategoryPage() {
                   }}
                 >
                   {optionValue.image && (
-                    <div className="w-8 h-8 flex items-center justify-center">
+                    <div className=" flex items-center justify-center">
                       <SmartImage
                         src={optionValue.image || "/placeholder.svg"}
                         alt={optionValue.value}
-                        width={24}
-                        height={24}
+                        
                         className="object-contain"
                       />
                     </div>
