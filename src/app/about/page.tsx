@@ -10,7 +10,7 @@ export default function AboutPage() {
             <div className="container px-4 py-12">
 
                         <div className="max-w-2xl">
-                            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight">
+                            <h1 className="text-4xl md:text-5xl md:leading-[4rem] font-bold text-gray-900 ">
                                 Empowering Innovation <br /> Through Precision Manufacturing
                             </h1>
                             <p className="mt-4 text-lg text-gray-600">

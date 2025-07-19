@@ -410,3 +410,15 @@ export interface ServiceStatus {
 export type MarqueeOffersRes = Res & {
   offers: MarqueeOffers[];
 };
+// Contact form email data
+export interface ContactFormEmailData {
+  contactId: string
+  customerName: string
+  customerEmail: string
+  company?: string
+  country: string
+  inquiryDetails: string
+  submissionDate: Date
+  userAgent?: string
+  ipAddress?: string
+}

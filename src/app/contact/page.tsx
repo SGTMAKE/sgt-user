@@ -4,9 +4,8 @@ import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
-import { ArrowUpRight, Mail, Phone, PhoneCall } from "lucide-react"
+import { Mail, Phone, PhoneCall } from "lucide-react"
 import Image from "next/image"
-import emailjs from "@emailjs/browser"
 import Link from "next/link"
 
 // Define the validation schema with Zod
@@ -23,6 +22,7 @@ type FormValues = z.infer<typeof formSchema>
 
 export default function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle")
 
   // Initialize React Hook Form with Zod resolver
   const {
@@ -43,32 +43,28 @@ export default function ContactForm() {
 
   const onSubmit = async (data: FormValues) => {
     setIsSubmitting(true)
+    setSubmitStatus("idle")
 
     try {
-      // Replace these with your actual EmailJS service ID, template ID, and public key
-      const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!;
-      const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!;
-      const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!;
-      
-
-      await emailjs.send(
-        serviceId,
-        templateId,
-        {
-          from_name: data.name,
-          from_email: data.email,
-          company: data.company,
-          country: data.country,
-          message: data.inquiryDetails,
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-        publicKey,
-      )
+        body: JSON.stringify(data),
+      })
 
-      alert("Message sent successfully!")
-      reset() // Reset form after successful submission
+      const result = await response.json()
+
+      if (response.ok && result.success) {
+        setSubmitStatus("success")
+        reset() // Reset form after successful submission
+      } else {
+        throw new Error(result.error || "Failed to send message")
+      }
     } catch (error) {
-      console.error("Error sending email:", error)
-      alert("Failed to send message. Please try again later.")
+      console.error("Error sending message:", error)
+      setSubmitStatus("error")
     } finally {
       setIsSubmitting(false)
     }
@@ -80,7 +76,23 @@ export default function ContactForm() {
         {/* Left Column - Form */}
         <div>
           <h1 className="text-3xl md:text-4xl font-bold mb-2">Contact with Our Specialized Team</h1>
-          <p className="text-gray-600 mb-8">Please fill out the form below with your details so we can assist you better.</p>
+          <p className="text-gray-600 mb-8">
+            Please fill out the form below with your details so we can assist you better.
+          </p>
+
+          {submitStatus === "success" && (
+            <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+              <p className="text-green-800 font-medium">✅ Message sent successfully!</p>
+              <p className="text-green-600 text-sm">We'll get back to you within 24 hours.</p>
+            </div>
+          )}
+
+          {submitStatus === "error" && (
+            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+              <p className="text-red-800 font-medium">❌ Failed to send message</p>
+              <p className="text-red-600 text-sm">Please try again or contact us directly.</p>
+            </div>
+          )}
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -163,7 +175,7 @@ export default function ContactForm() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white font-medium rounded-full transition-colors disabled:opacity-70"
+                className="px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white font-medium rounded-full transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 {isSubmitting ? "Sending..." : "Send Message"}
               </button>
@@ -173,98 +185,106 @@ export default function ContactForm() {
 
         {/* Right Column - Locations and Contact Info */}
         <div className="space-y-6 text-sm md:text-base">
-          {/* London Location */}
+          {/* Contact Image */}
           <div className="relative rounded-2xl overflow-hidden h-96">
-            <Image src="/contact.png" alt="London"  width={800} height={300} className="object-cover h-full" />
-            <Link href="tel:9462223735" className="absolute bottom-4 left-4 bg-white py-2 px-4 rounded-full flex items-center gap-2">
+            <Image src="/contact.png" alt="Contact Us" width={800} height={300} className="object-cover h-full" />
+            <Link
+              href="tel:9462223735"
+              className="absolute bottom-4 left-4 bg-white py-2 px-4 rounded-full flex items-center gap-2 hover:bg-gray-50 transition-colors"
+            >
               <span className="font-medium">Call Us</span>
               <PhoneCall size={16} />
             </Link>
           </div>
 
-          
-          
-
           {/* Contact Information */}
-         
-            <div className="  grid grid-cols-1 md:grid-cols-2  gap-x-3 gap-y-6">
-              {/* Email */}
-              <Link  href="mailto:business@sgtmake.com" className="flex items-center gap-3">
-                <div className="bg-orange-100 p-3 rounded-full">
-                  <Mail className="h-5 w-5 text-orange-500" />
-                </div>
-                <div>
-                  <p className="font-medium">Email</p>
-                  <p className="text-sm text-gray-600">business@sgtmake.com</p>
-                </div>
-              </Link>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-3 gap-y-6">
+            {/* Email */}
+            <Link
+              href="mailto:business@sgtmake.com"
+              className="flex items-center gap-3 hover:bg-gray-50 p-2 rounded-lg transition-colors"
+            >
+              <div className="bg-orange-100 p-3 rounded-full">
+                <Mail className="h-5 w-5 text-orange-500" />
+              </div>
+              <div>
+                <p className="font-medium">Email</p>
+                <p className="text-sm text-gray-600">business@sgtmake.com</p>
+              </div>
+            </Link>
 
-              {/* Phone */}
-              <Link href="tel:9462223735"  className="flex items-center gap-3">
-                <div className="bg-orange-100 p-3 rounded-full">
-                  <Phone className="h-5 w-5 text-orange-500" />
-                </div>
-                <div>
-                  <p className="font-medium">Phone </p>
-                  <p className="text-sm text-gray-600">+91 94622 23735</p>
-                </div>
-              </Link>
+            {/* Phone */}
+            <Link
+              href="tel:9462223735"
+              className="flex items-center gap-3 hover:bg-gray-50 p-2 rounded-lg transition-colors"
+            >
+              <div className="bg-orange-100 p-3 rounded-full">
+                <Phone className="h-5 w-5 text-orange-500" />
+              </div>
+              <div>
+                <p className="font-medium">Phone</p>
+                <p className="text-sm text-gray-600">+91 94622 23735</p>
+              </div>
+            </Link>
 
-              {/* LinkedIn */}
-              <Link href="https://www.linkedin.com/company/sgtmake/" className="flex items-center gap-3">
-                <div className="bg-orange-100 p-3 rounded-full">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="text-orange-500"
-                  >
-                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-                    <rect x="2" y="9" width="4" height="12"></rect>
-                    <circle cx="4" cy="4" r="2"></circle>
-                  </svg>
-                </div>
-                <div>
-                  <p className="font-medium">LinkedIn</p>
-                  <p className="text-sm text-gray-600">SGT MAKE | Solus Global Trade LLP</p>
-                </div>
-              </Link>
+            {/* LinkedIn */}
+            <Link
+              href="https://www.linkedin.com/company/sgtmake/"
+              className="flex items-center gap-3 hover:bg-gray-50 p-2 rounded-lg transition-colors"
+            >
+              <div className="bg-orange-100 p-3 rounded-full">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="text-orange-500"
+                >
+                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                  <rect x="2" y="9" width="4" height="12"></rect>
+                  <circle cx="4" cy="4" r="2"></circle>
+                </svg>
+              </div>
+              <div>
+                <p className="font-medium">LinkedIn</p>
+                <p className="text-sm text-gray-600">SGT MAKE | Solus Global Trade LLP</p>
+              </div>
+            </Link>
 
-              {/* Instagram */}
-              <Link href="https://www.instagram.com/sgt.make?igsh=MTNhZXJnZm5iMDZzdA==" className="flex items-center gap-3">
-                <div className="bg-orange-100 p-3 rounded-full">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="text-orange-500"
-                  >
-                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-                  </svg>
-                </div>
-                <div>
-                  <p className="font-medium">Instagram</p>
-                  <p className="text-sm text-gray-600">@sgt.make</p>
-                </div>
-              </Link>
-
-              
-            </div>
-          
+            {/* Instagram */}
+            <Link
+              href="https://www.instagram.com/sgt.make?igsh=MTNhZXJnZm5iMDZzdA=="
+              className="flex items-center gap-3 hover:bg-gray-50 p-2 rounded-lg transition-colors"
+            >
+              <div className="bg-orange-100 p-3 rounded-full">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="text-orange-500"
+                >
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                </svg>
+              </div>
+              <div>
+                <p className="font-medium">Instagram</p>
+                <p className="text-sm text-gray-600">@sgt.make</p>
+              </div>
+            </Link>
+          </div>
         </div>
       </div>
     </div>

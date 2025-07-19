@@ -1,9 +1,14 @@
 import { createZohoTransporter } from "./zoho-config"
 import { generateOrderEmailTemplate } from "./templates/order-email-template"
 import { generateServiceEmailTemplate } from "./templates/service-email-template"
-import type { ItemSummary, AddressProps, ServiceStatus, ServiceType } from "@/lib/types/types"
+import type { ItemSummary, AddressProps, ServiceStatus, ServiceType, ContactFormEmailData  } from "@/lib/types/types"
 import { generateQuoteRequestEmailTemplate } from "./templates/quote-request-email-template"
-
+import { generateContactEmailTemplate } from "./templates/contact-email-template"
+export interface EmailResponse {
+  success: boolean
+  messageId?: string
+  error?: string
+}
 interface OrderEmailData {
   orderId: string
   customerName: string
@@ -142,6 +147,31 @@ export class EmailService {
       subject: `New Quote Request #${data.quoteRequestId.slice(-8)} from ${data.customerName}`,
       html,
     })
+  }
+
+   async sendContactFormNotification(data: ContactFormEmailData): Promise<EmailResponse> {
+    try {
+      const htmlContent = generateContactEmailTemplate(data)
+
+      const mailOptions = {
+        from: {
+          name: "SGTMake Contact Form",
+          address: process.env.ZOHO_EMAIL!,
+        },
+        to: process.env.ADMIN_EMAIL || process.env.ZOHO_EMAIL,
+        cc: process.env.ADMIN_CC_EMAILS?.split(",").filter(Boolean) || [],
+        subject: `📞 New Contact Form Submission from ${data.customerName} (${data.country})`,
+        html: htmlContent,
+        replyTo: data.customerEmail,
+      }
+
+      const result = await this.transporter.sendMail(mailOptions)
+      console.log("Contact form email sent successfully:", result.messageId)
+      return { success: true, messageId: result.messageId }
+    } catch (error) {
+      console.error("Failed to send contact form email:", error)
+      return { success: false, error: error instanceof Error ? error.message : "Unknown error" }
+    }
   }
 
   async testConnection(): Promise<boolean> {
