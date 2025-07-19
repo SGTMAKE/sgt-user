@@ -6,7 +6,7 @@ async function getSearchResult(query: string) {
   if (!query) return null;
   const { data } = await axios.get("/api/search", { params: { q: query } });
   if (data && data.result) return data.result as CategoryProduct[] | null;
-  return null;
+  return null;  
 }
 
 export function useSearch(search: string) {
