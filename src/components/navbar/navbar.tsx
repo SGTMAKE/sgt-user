@@ -14,7 +14,7 @@ import Navlist from "./navlist"
 import LinkButton from "../shared/link-button"
 import QuoteCartDropdown from "./quote-cart-dropdown"
 import Marquee from "./marquee"
-
+import { CurrencySelector } from "@/components/currency/currency-selector"
 
 export default async function Navbar() {
   const navItems = await getNavbarCategories()
@@ -52,6 +52,7 @@ export default async function Navbar() {
             </div>
           </NavbarContent>
           <NavbarContent className="flex items-center gap-4 md:!flex-grow-0 w-[70%]" justify="end">
+             <CurrencySelector />
             <div className="hidden gap-4 lg:block">
               <Search bestSeller={popular} />
             </div>

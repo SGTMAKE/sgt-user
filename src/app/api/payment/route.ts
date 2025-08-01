@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
   const orderItems: any[] = []
 
   try {
-    const { addressId } = await req.json()
+    const { addressId ,currency = "INR", exchangeRate = 1  } = await req.json()
     if (!addressId) return error400("Missing delivery address id", {})
 
     const checkoutCookie = req.cookies.get("checkout")?.value || ""
@@ -113,15 +113,17 @@ export async function POST(req: NextRequest) {
       }
     }
 
+    const totalInSelectedCurrency =  amount * exchangeRate
+
     const response = await razorpay.orders.create({
-      amount: Math.round(amount * 100), // Convert to smallest currency unit (paise)
-      currency: "INR",
+      amount: Math.round(totalInSelectedCurrency * 100), // Convert to smallest currency unit (paise)
+      currency: currency,
       receipt: uid(),
       payment_capture: true,
     })
 
     const order_id = response.id.split("_")[1].toUpperCase()
-    await createOrder(order_id, amount, userId, addressId, orderItems)
+    await createOrder(order_id, amount, userId, addressId, orderItems, currency!== "INR" ? currency :undefined)
 
     if (checkoutCookie === "") {
       // Delete the cart after creating the order

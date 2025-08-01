@@ -161,7 +161,8 @@ export type SingleOrderRes = Res & {
     orderItems: ItemSummary[];
     method?: string;
     via?: string;
-    status : string
+    status : string;
+    currency : string;
   } | null;
 };
 

@@ -21,27 +21,26 @@ export const navItems: NavItem[] = [
     label: "Products",
     link: "#",
     children: [
-      
-      {
-        label: "Tools & Equipment",
-        link: "/store/c/tools-and-equipments",
-      },
       {
         label: "EV Parts",
         link: "/store/c/ev-parts",
       },
       {
-        label: "Fasteners",
-        link: "/fasteners",
-      },{
-        label: "Connectors & Wires",
-        link: "/connectors-wires",
-      },
-      
-        {
         label: "Battery Packs",
         link: "/store/c/battery-packs",
       },
+      {
+        label: "Tools & Equipment",
+        link: "/store/c/tools-and-equipments",
+      },
+      {
+        label: "Connectors & Wires",
+        link: "/connectors-wires",
+      },
+      {
+        label: "Fasteners",
+        link: "/fasteners",
+      }, 
     ]
   },
   {

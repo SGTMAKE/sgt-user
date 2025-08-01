@@ -47,7 +47,7 @@ const Profile = ({ session }: { session: Session }) => {
         </DropdownItem>
         <DropdownItem
           key="orders"
-          href="/quotes/"
+          href="/account/quotes/"
           color="secondary"
           startContent={<MessageSquare />}
         >

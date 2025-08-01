@@ -1,10 +1,11 @@
 import Container from "./container";
 import Image from "next/image";
-import { formatCurrency } from "@/lib/utils";
 import LinkButton from "./shared/link-button";
 import { getBestDeal } from "@/lib/api/get-best-deal";
+import { ProductPrice } from "./currency/price-display";
 
 const Banner = async () => {
+  
   const deal = await getBestDeal();
   if (!deal) return;
 
@@ -36,7 +37,9 @@ const Banner = async () => {
             </div>
             <div>
               <span className="mb-3 block font-Roboto">
-                At {formatCurrency(deal?.deal?.price || 0)}
+                <ProductPrice
+                  amount={deal?.deal?.price||0}
+                />
               </span>
               <LinkButton
                 href={deal?.deal?.url || "/"}

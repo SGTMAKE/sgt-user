@@ -1,5 +1,6 @@
 import { formatCurrency } from "@/lib/utils"
 import Image from "next/image"
+import { ProductPrice } from "../currency/price-display"
 
 interface ItemSummaryProps {
   imageUrl: string
@@ -61,7 +62,8 @@ const ItemSummary = ({
             <span className="text-xs">&#x2716;</span>
             {quantity}
           </p>
-          <h1 className="text-right font-Roboto font-medium">{formatCurrency(offerPrice)}</h1>
+                      <div className="text-right "><ProductPrice amount={offerPrice} className="font-medium font-Roboto text-[.9rem] text-right" /></div>
+
         </div>
       </div>
     </div>

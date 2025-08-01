@@ -1,4 +1,5 @@
 import Container from "@/components/container"
+import { ProductPrice } from "@/components/currency/price-display"
 import ItemSummary from "@/components/orders/item-summary"
 import OrderStatusStepper from "@/components/orders/order-status-stepper"
 import { getOrder } from "@/lib/api/order/get-order"
@@ -81,6 +82,7 @@ const Order = async ({ params }: { params: { oid: string } }) => {
               <>
                 <p className="mt-3 text-sm">{order.order.method}</p>
                 <p className="text-sm">{order.order.via}</p>
+                
               </>
             ) : (
               <>
@@ -124,20 +126,21 @@ const Order = async ({ params }: { params: { oid: string } }) => {
             <div className="col-span-2 md:col-start-2">
               <div className="my-2 grid grid-cols-2 text-[.9rem]">
                 <p className="text-muted-foreground">Item Subtotal</p>
-                <span className="text-right font-Roboto font-medium">{formatCurrency(subtotal)}</span>
+                <div className="text-right "><ProductPrice amount={subtotal} className="font-medium font-Roboto text-[.9rem] text-right" /></div>
+                
               </div>
               <div className="my-2 grid grid-cols-2 text-[.9rem]">
                 <p className="text-muted-foreground">Item Discount</p>
-                <span className="text-right font-Roboto font-medium">&#8722; {formatCurrency(subtotal - total)}</span>
+            <div className="text-right "><ProductPrice amount={subtotal-total} className="font-medium font-Roboto text-[.9rem] text-right" /></div>
               </div>
               <div className="my-2 grid grid-cols-2 text-[.9rem]">
                 <p className="text-muted-foreground">Shipping Fee</p>
-                <span className="text-right font-Roboto font-medium">{formatCurrency(0)}</span>
+                <span className="text-right font-Roboto font-medium text-green-500">Free</span>
               </div>
               <hr className="my-5" />
               <div className="my-2 grid grid-cols-2 items-center text-[.9rem]">
                 <p className="text-muted-foreground">Total</p>
-                <span className="font-roboto text-right font-Roboto text-xl font-medium">{formatCurrency(total)}</span>
+            <div className="text-right "><ProductPrice amount={total} className="font-medium font-Roboto text-[.9rem] text-right" /></div>
               </div>
             </div>
           </div>

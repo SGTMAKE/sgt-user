@@ -67,6 +67,7 @@ export async function GET(req: NextRequest) {
         orderDate: order.orderDate,
         status: order.status,
         payment_verified: order.payment_verified,
+        currency: order.currency || "INR",
       }
     })
 

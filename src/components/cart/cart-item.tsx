@@ -10,6 +10,8 @@ import { toast } from "sonner"
 import { useUpdateQuantity } from "@/api-hooks/cart/update-quantity"
 import { useQueryClient } from "@tanstack/react-query"
 import { motion } from "framer-motion"
+import { it } from "node:test"
+import { ProductPrice } from "../currency/price-display"
 
 // Extended CartItemProps to include customProduct
 interface CartItemProps {
@@ -81,7 +83,7 @@ const CartItem = (item: CartItemProps & { session: Session | null }) => {
   // For fasteners, we'll use a different URL structure
   const productUrl = isCustomProduct
     ? "/fasteners"
-    : `${item.url}${item.color !== null ? "&" + new URLSearchParams({ color: item.color.toLowerCase() }) : ""}`
+    : item.url || ""
 
   return (
     <motion.div
@@ -159,8 +161,7 @@ const CartItem = (item: CartItemProps & { session: Session | null }) => {
         </div>
       </div>
       <div className="text-right">
-        <h1 className="font-Roboto text-sm text-success md:text-base">{formatCurrency(offerPrice ?? 0)}</h1>
-        <span className="font-Roboto text-sm line-through md:text-base">{formatCurrency(basePrice ?? 0)}</span>
+        <ProductPrice amount={item.offerPrice} originalPrice={item.basePrice} />
       </div>
     </motion.div>
   )

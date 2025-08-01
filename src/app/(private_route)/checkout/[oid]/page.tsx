@@ -1,3 +1,4 @@
+import { ProductPrice } from "@/components/currency/price-display"
 import LinkButton from "@/components/shared/link-button"
 import { getOrder } from "@/lib/api/order/get-order"
 import type { ItemSummary } from "@/lib/types/types"
@@ -55,7 +56,8 @@ const OrderConfirmed = async ({ params }: { params: { oid: string } }) => {
       <div className="flex w-full justify-between">
         <p className="text-sm font-medium tracking-widest">Total</p>
         <span className="font-Roboto font-medium">
-          {formatCurrency(order.order.orderItems.reduce((acc, curr) => acc + curr.offerPrice, 0))}
+          <ProductPrice amount={order.order.orderItems.reduce((acc, curr) => acc + curr.offerPrice, 0)} className="font-medium font-Roboto text-[.9rem] text-right" />
+          
         </span>
       </div>
       <hr className="my-5 w-full border-gray-300" />
@@ -111,7 +113,7 @@ function OrderItem(orderItem: ItemSummary) {
               <span className="text-xs">&#x2716;</span>
               {orderItem.quantity}
             </p>
-            <h1 className="text-right font-Roboto font-medium">{formatCurrency(orderItem.offerPrice)}</h1>
+            <div className="text-right "><ProductPrice amount={orderItem.offerPrice} className="font-medium font-Roboto text-[.9rem] text-right" /></div>
           </div>
         </div>
       </div>

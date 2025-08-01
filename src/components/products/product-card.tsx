@@ -60,6 +60,7 @@ import { formatCurrency } from "@/lib/utils";
 import Image from "next/image";
 import { ProductCardProps } from "@/lib/types/types";
 import Link from "next/link";
+import { ProductPrice } from "../currency/price-display";
 const ProductCard = ({
   title,
   imgUrl,
@@ -88,7 +89,9 @@ const ProductCard = ({
         <h3 className="font-medium text-[clamp(1rem,1.2vw,1.8rem)] line-clamp-2 ">{title}</h3>
         <p className="text-sm text-gray-500">{description}</p>
         <p className="text-lg text-orange-500 font-semibold">
-          {formatCurrency(price)}
+          <ProductPrice
+            amount={price}
+          />
         </p>
 
    

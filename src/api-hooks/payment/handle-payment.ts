@@ -1,15 +1,25 @@
-import axios from "@/config/axios.config";
-import { PaymentRes } from "@/lib/types/types";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query"
+import type { PaymentRes } from "@/lib/types/types"
+import axios from "@/config/axios.config"
 
-const handlePayment = async (addressId: string) => {
-  const { data } = await axios.post("api/payment", { addressId });
-  return data as PaymentRes;
-};
+interface PaymentRequest {
+  addressId: string
+  currency: string
+  exchangeRate: number
+  totalAmount?: number
+}
 
-export function usePayment(onSuccess: (data: PaymentRes) => void) {
+const handlePayment = async (data: PaymentRequest): Promise<PaymentRes> => {
+  const response = await axios.post("/api/payment", data)
+  return response.data
+}
+
+export const usePayment = (onSuccess: (data: PaymentRes) => void) => {
   return useMutation({
     mutationFn: handlePayment,
     onSuccess,
-  });
+    onError: (error) => {
+      console.error("Payment error:", error)
+    },
+  })
 }

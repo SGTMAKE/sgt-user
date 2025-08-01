@@ -53,7 +53,7 @@ const OrderCard = ({
       <div className="relative mt-5 flex gap-2">
         <div className="relative z-30 flex-shrink-0 flex-grow-0 rounded-md shadow-md">
           <Image
-            src={imageUrl[0].startsWith('/images') ? imageUrl[0] : process.env.NEXT_PUBLIC_IMAGE_URL + imageUrl[0]}
+            src={ imageUrl[0] ? process.env.NEXT_PUBLIC_IMAGE_URL + imageUrl[0] : "/placeholder.svg"}
             alt="product image"
             className="rounded-md border border-gray-300 bg-gray-100"
             width={100}

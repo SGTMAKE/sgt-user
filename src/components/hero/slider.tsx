@@ -3,6 +3,7 @@ import { motion as m } from "framer-motion";
 import Image from "next/image";
 import LinkButton from "../shared/link-button";
 import { HeroBanner } from "@prisma/client";
+import { ProductPrice } from "../currency/price-display";
 
 const Slider = ({
   slide,
@@ -51,10 +52,7 @@ const Slider = ({
           transition={{ delay: 0.1, duration: 0.75 }}
         >
           From{" "}
-          <span className="font-Roboto font-medium text-slate-200 line-through decoration-white">
-            {formatCurrency(slide.basePrice)}
-          </span>{" "}
-          <b className="font-Roboto">{formatCurrency(slide.offerPrice)}</b>
+          <ProductPrice amount={slide.basePrice} originalPrice={slide.offerPrice}/>
         </m.p> :""}
         <m.div
           initial={{ opacity: 0 }}

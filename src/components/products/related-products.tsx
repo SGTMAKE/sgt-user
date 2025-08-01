@@ -1,13 +1,13 @@
-import { Card, CardFooter } from "@nextui-org/card";
-import { Image as NextUIImage } from "@nextui-org/image";
+import NextImage from "next/image";
+import { Card, CardBody, CardFooter } from "@nextui-org/card";
 import { calculatePercentage, formatCurrency } from "@/lib/utils";
 import LinkButton from "../shared/link-button";
 import Link from "next/link";
 import { ScrollShadow } from "@nextui-org/scroll-shadow";
 import { getFilteredProduct } from "@/lib/api/products/get-filtered-products";
 import { CategoryProduct } from "@/lib/types/types";
-import Image from "next/image";
-
+import { ProductPrice } from "../currency/price-display";
+import { Image } from "@nextui-org/image";
 const RelatedProducts = async ({
   categoryId,
   pid,
@@ -46,55 +46,51 @@ function RelatedProductCard({
   title,
   offerPrice,
   basePrice,
+  
 }: Omit<CategoryProduct, "stock">) {
   return (
-    <Card
-      isPressable
-      radius="lg"
-      className="flex-shrink-0 border-none shadow-none"
-      style={{ width: "200px" }}
-    >
-      <Link href={`/store/${slug}?pid=${pid}`}>
-        <NextUIImage
-          alt={`${title} Image`}
-          className="rounded-none bg-gray-200 object-cover"
-          height={200}
-          width={200}
-          classNames={{
-            img: "hover:scale-110",
-            zoomedWrapper: "rounded-none",
-          }}
-          isZoomed
-          as={Image}
-          src={process.env.NEXT_PUBLIC_IMAGE_URL + image}
-        />
-      </Link>
-      <CardFooter className="flex flex-1 flex-col items-start gap-3">
-        <Link
-          className="cutoff-text text-left text-xs font-medium md:text-sm"
-          href={`/store/${slug}?pid=${pid}`}
-        >
-          {title}
-        </Link>
-        <div className="flex w-full flex-1 flex-col">
-          <p className="mb-5 text-left text-destructive">
-            {calculatePercentage(basePrice, offerPrice)}{" "}
-            <span className="font-Roboto text-base font-medium text-black">
-              {formatCurrency(offerPrice)}
-            </span>{" "}
-            <span className="font-Roboto text-xs text-muted-foreground line-through">
-              {formatCurrency(basePrice)}
-            </span>
-          </p>
-          <LinkButton
-            href={`/store/${slug}?pid=${pid}`}
-            size="sm"
-            className="mt-auto w-full flex-shrink-0 font-Roboto text-xs font-medium md:text-sm"
-          >
-            {`From ${formatCurrency(offerPrice)}`}
-          </LinkButton>
-        </div>
-      </CardFooter>
-    </Card>
+     <Card shadow="none" isPressable className=" relative group flex-1 bg-gray-200 max-w-[250px] shadow-lg" radius="md"  >
+       <Link href={`/store/${slug}?pid=${pid}`}>
+          <CardBody className= "  flex-grow-0 overflow-visible transition-all group-hover:p-1 ">
+            <Image
+              as={NextImage}
+              shadow="none"
+              radius="lg"
+              width={400}
+              height={400}
+              isZoomed
+              alt={title}
+              className="w-full overflow-hidden object-cover h-60"
+              classNames={{
+                img: "hover:scale-110 transition-all",
+              }}
+              src={process.env.NEXT_PUBLIC_IMAGE_URL + image}
+            />
+          </CardBody>
+          <CardFooter className="    bg-[#ffffff9d] backdrop-blur-md rounded-md  flex flex-col w-full  h-full ">
+      
+            <div className="">
+                    <h2 className="text-md font-semibold line-clamp-1">{title}</h2>
+                    
+                    <p>
+                      <span className=" font-bold ">
+                        <ProductPrice
+                          amount={offerPrice}
+                          originalPrice={
+                            basePrice > offerPrice ? basePrice : undefined
+                          }
+                          className="text-orange-500"
+                        />
+                      </span>{" "}
+                      </p>
+                   {/* <p className="text-[0.7rem] text-destructive">
+              {stock <= 5 && stock > 0 && `Hurry, only ${stock} left`}
+            </p>*/}
+          </div>
+       
+       
+          </CardFooter>
+          </Link>
+        </Card>
   );
 }

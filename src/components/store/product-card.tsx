@@ -2,6 +2,7 @@ import { calculatePercentage, formatCurrency } from "@/lib/utils";
 import NextImage from "next/image";
 import { Card, CardBody, CardFooter } from "@nextui-org/card";
 import { Image } from "@nextui-org/image";
+import { ProductPrice } from "../currency/price-display";
 
 type ProductCardProps = {
   image: string;
@@ -44,8 +45,17 @@ const ProductCard = ({
         <div className="">
                 <h2 className="text-md font-semibold line-clamp-1">{title}</h2>
                 
-                <p><span className="text-orange-500 font-bold ">{formatCurrency(offerPrice)}
-                </span>  <span className="text-gray-400 line-through text-xs font-normal"> {formatCurrency(basePrice)}</span></p>
+                <p>
+                  <span className=" font-bold ">
+                    <ProductPrice
+                      amount={offerPrice}
+                      originalPrice={
+                        basePrice > offerPrice ? basePrice : undefined
+                      }
+                      className="text-orange-500"
+                    />
+                  </span>{" "}
+                  </p>
                 <p className="text-[0.7rem] text-destructive">
           {stock <= 5 && stock > 0 && `Hurry, only ${stock} left`}
         </p>

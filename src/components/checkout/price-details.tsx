@@ -1,5 +1,6 @@
 import { formatCurrency } from "@/lib/utils"
 import PlaceOrder from "./place-order"
+import { ProductPrice } from "../currency/price-display"
 
 type PriceDetailsProps = {
   subtotal: number
@@ -11,20 +12,20 @@ const PriceDetails = ({ subtotal, total }: PriceDetailsProps) => {
     <div className="col-span-2 md:col-start-2">
       <div className="my-2 grid grid-cols-2 text-[.9rem]">
         <p className="text-muted-foreground">Item Subtotal</p>
-        <span className="text-right font-Roboto font-medium">{formatCurrency(subtotal)}</span>
+        <div className="text-right "><ProductPrice amount={subtotal} className="font-medium font-Roboto text-[.9rem] text-right" /></div>
       </div>
       <div className="my-2 grid grid-cols-2 text-[.9rem]">
         <p className="text-muted-foreground">Item Discount</p>
-        <span className="text-right font-Roboto font-medium">&#8722; {formatCurrency(subtotal - total)}</span>
+        <div className="text-right "><ProductPrice amount={subtotal-total} className="font-medium font-Roboto text-[.9rem] text-right" /></div>
       </div>
       <div className="my-2 grid grid-cols-2 text-[.9rem]">
         <p className="text-muted-foreground">Shipping Fee</p>
-        <span className="text-right font-Roboto font-medium">{formatCurrency(0)}</span>
+        <span className="text-right font-Roboto font-medium text-green-500">Free</span>
       </div>
       <hr className="my-5" />
       <div className="my-2 grid grid-cols-2 items-center text-[.9rem]">
         <p className="text-muted-foreground">Total</p>
-        <span className="font-roboto text-right font-Roboto text-xl font-medium">{formatCurrency(total)}</span>
+        <div className="text-right "><ProductPrice amount={total} className="font-medium font-Roboto text-[.9rem] text-right" /></div>
       </div>
       <PlaceOrder />
     </div>

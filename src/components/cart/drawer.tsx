@@ -20,6 +20,7 @@ import { formatCurrency } from "@/lib/utils";
 import Cart from "../navbar/cart";
 import { Button } from "@nextui-org/button";
 import LinkButton from "../shared/link-button";
+import { ProductPrice } from "../currency/price-display";
 
 const Drawer = () => {
   const { cartItems, setCartItems } = useGlobalContext();
@@ -90,12 +91,9 @@ const Drawer = () => {
               >
                 Checkout
                 <span className="ms-2 font-Roboto">
-                  {formatCurrency(
-                    cartItems.reduce(
-                      (acc, curr) => acc + curr.offerPrice * curr.quantity,
-                      0,
-                    ),
-                  )}
+                  {<ProductPrice
+                    amount={cartItems.reduce((acc, curr) => acc + curr.offerPrice * curr.quantity,0,)
+                  }/>}
                 </span>
               </Button>
             </div>

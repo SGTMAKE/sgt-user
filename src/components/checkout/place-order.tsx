@@ -9,12 +9,15 @@ import { useGlobalContext } from "@/context/store"
 import PaymentProcessingDialog from "../dialog/payment-processing-dialog"
 import { useState } from "react"
 import { Button } from "@nextui-org/button"
+import { useCurrency } from "@/context/currency-context"
 
 const PlaceOrder = () => {
   const [processing, setProcessing] = useState(false)
   const router = useRouter()
+
   const payment_mutation = usePayment(makePayment)
   const { deliveryAddress } = useGlobalContext()
+  const { selectedCurrency , getExchangeRate } = useCurrency()
 
   function makePayment(data: PaymentRes) {
     const options = {
@@ -24,7 +27,18 @@ const PlaceOrder = () => {
       amount: data.amount,
       order_id: data.id,
       description: "Thank You for Your Purchase!",
-      //   image: "",
+      image: "/favicon.ico",
+      prefill: {
+        name: deliveryAddress?.name || "",
+        contact: deliveryAddress?.phone || "",
+      },
+      notes: {
+        address: deliveryAddress?.address || "",
+        currency: selectedCurrency.code,
+      },
+      theme: {
+        color: "#f97316",
+      },
       handler: async (response: any) => {
         if (response.razorpay_signature) {
           const payload = {
@@ -45,9 +59,7 @@ const PlaceOrder = () => {
           toast.error("Payment failed. Please contact support!")
         }
       },
-      theme: {
-        color: "#000",
-      },
+     
     }
 
     const paymentObject = new (window as any).Razorpay(options)
@@ -60,8 +72,10 @@ const PlaceOrder = () => {
   }
 
   function placeOrder() {
+
+   
     setProcessing(true)
-    if (deliveryAddress?.id) payment_mutation.mutate(deliveryAddress?.id)
+    if (deliveryAddress?.id) payment_mutation.mutate({ addressId: deliveryAddress.id, currency: selectedCurrency.code, exchangeRate: getExchangeRate() })
   }
 
   return (

@@ -1,6 +1,7 @@
 import type React from "react"
 import { formatCurrency } from "@/lib/utils"
 import Image from "next/image"
+import { ProductPrice } from "../currency/price-display"
 
 // Define the props type explicitly
 interface ItemSummaryProps {
@@ -60,7 +61,7 @@ const ItemSummary: React.FC<ItemSummaryProps> = ({
               <span className="text-xs">&#x2716;</span>
               {quantity}
             </p>
-            <h1 className="text-right font-Roboto font-medium">{formatCurrency(basePrice)}</h1>
+            <div className="text-right "><ProductPrice amount={basePrice} className="font-medium font-Roboto text-[.9rem] text-right" /></div>
           </div>
         </div>
       </div>

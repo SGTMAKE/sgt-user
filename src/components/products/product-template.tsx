@@ -10,6 +10,7 @@ import Link from "next/link";
 import ProductActions from "./product-actions";
 import { ProductProps } from "@/lib/types/types";
 import RelatedProducts from "./related-products";
+import { ProductPrice } from "../currency/price-display";
 
 type ProductTemplateProps = {
   product: ProductProps & {
@@ -44,15 +45,15 @@ const ProductTemplate = ({ product, searchParams }: ProductTemplateProps) => {
         <div className="flex w-full flex-col gap-y-1 py-8 md:sticky md:top-20 md:max-w-[344px] md:py-0 lg:max-w-[500px]">
           <h1 className="text-xl font-medium md:text-2xl">{product.title}</h1>
           <p className="mt-5 flex items-center gap-3 font-Roboto text-2xl">
-            {formatCurrency(product.offerPrice)}{" "}
+            <ProductPrice amount={product.offerPrice} className="text-orange-500" />
             <b className="rounded-sm bg-success px-1 py-0.5 text-xs font-medium text-white">
               save {calculatePercentage(product.basePrice, product.offerPrice)}
             </b>
           </p>
-          <p className="mb-6 text-sm text-slate-500">
+          <p className="mb-6 text-sm text-slate-500 flex flex-wrap gap-2">
             M.R.P.{" "}
             <span className="font-Roboto line-through">
-              {formatCurrency(product.basePrice)}
+              <ProductPrice amount={product.basePrice} className=" text-sm  font-normal" />
             </span>{" "}
             (inclusive of all taxes){" "}
           </p>
@@ -110,7 +111,12 @@ const ProductTemplate = ({ product, searchParams }: ProductTemplateProps) => {
           <div className="my-5 md:my-10">
             <h1 className="font-medium">Description</h1>
             <hr className="my-2" />
-            <p className="text-sm font-light">{ product.description || product.category.description || "No Description"}</p> 
+            <p
+  className="text-sm font-light"
+  dangerouslySetInnerHTML={{
+    __html: product.description || product.category?.description || "No Description",
+  }}
+/>
           </div>
         </div>
       </div>

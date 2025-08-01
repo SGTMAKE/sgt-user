@@ -21,6 +21,15 @@ function formatCurrency(amount: number) {
   const price = currencyFormatter.format(amount);
   return price.toString().split(".")[0];
 }
+export function formatCurrencyWithLocale(amount: number, currency: string, locale = "en-US") {
+  const formatter = new Intl.NumberFormat(locale, {
+    style: "currency",
+    currency: currency,
+    minimumFractionDigits: currency === "JPY" ? 0 : 2,
+    maximumFractionDigits: currency === "JPY" ? 0 : 2,
+  })
+  return formatter.format(amount)
+}
 
 function calculatePercentage(basePrice: number, offerPrice: number) {
   const decrease = basePrice - offerPrice;
