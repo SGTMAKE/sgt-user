@@ -11,7 +11,8 @@ import Choose from "@/app/components/Choose";
 import Serve from "@/app/components/Serve";
 import CustomerReview from "@/app/components/Review";
 import GlobalDelivery from "@/app/components/GlobalDelivery";
-
+export const dynamic = "force-dynamic"
+export const revalidate = 0
 
 const rows = ["popular"];
 function makeRowTitle(title: string) {

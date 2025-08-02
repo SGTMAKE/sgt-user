@@ -1,6 +1,5 @@
 import { Navbar as NextNavbar, NavbarBrand, NavbarContent } from "@nextui-org/navbar"
 import Link from "next/link"
-import { getNavbarCategories } from "@/lib/api/get-category-tree"
 import { getFilteredProduct } from "@/lib/api/products/get-filtered-products"
 import Drawer from "../cart/drawer"
 import Profile from "./profile"
@@ -15,9 +14,9 @@ import LinkButton from "../shared/link-button"
 import QuoteCartDropdown from "./quote-cart-dropdown"
 import Marquee from "./marquee"
 import { CurrencySelector } from "@/components/currency/currency-selector"
-
+export const dynamic = "force-dynamic"
+export const revalidate = 0
 export default async function Navbar() {
-  const navItems = await getNavbarCategories()
   const session = await getServerSession(authOptions)
   const popular = await getFilteredProduct({
     category: "popular",
@@ -49,10 +48,14 @@ export default async function Navbar() {
                 </DropdownContainer>
               ))} */}
               <Navlist />
+
+              <span className="my-auto">
+              <CurrencySelector  />
+              </span>
             </div>
           </NavbarContent>
-          <NavbarContent className="flex items-center gap-4 md:!flex-grow-0 w-[70%]" justify="end">
-             <CurrencySelector />
+          <NavbarContent className="flex items-center gap-4 md:!flex-grow-0 w-[50%]" justify="end">
+             
             <div className="hidden gap-4 lg:block">
               <Search bestSeller={popular} />
             </div>

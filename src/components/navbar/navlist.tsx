@@ -104,7 +104,7 @@ export default function Navlist() {
             <Link
               key={i}
               href={d.link ?? "#"}
-              className="relative group  px-2 py-3 transition-all "
+              className="relative group   py-3 transition-all "
             >
               <span className="flex cursor-pointer items-center gap-2 text-gray-900 group-hover:text-black ">
                 <span>{d.label}</span>

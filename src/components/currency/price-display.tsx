@@ -38,7 +38,7 @@ export function PriceDisplay({
     style: showSymbol ? "currency" : "decimal",
     currency: selectedCurrency.code,
     minimumFractionDigits: formatOptions?.minimumFractionDigits ?? 0,
-    maximumFractionDigits: formatOptions?.maximumFractionDigits ?? 0,
+    maximumFractionDigits: formatOptions?.maximumFractionDigits ?? 2,
   })
 
   const formattedPrice = formatter.format(convertedAmount)
@@ -62,7 +62,7 @@ export function ProductPrice({
   originalPrice?: number
 }) {
   return (
-    <span className=" space-x-2">
+    <span className=" space-x-2 flex flex-wrap items-center">
       <PriceDisplay amount={amount} className={cn("text-lg font-bold ", className)} />
       {originalPrice && originalPrice > amount && (
         <PriceDisplay amount={originalPrice} className="text-sm text-gray-500 line-through" />

@@ -91,7 +91,7 @@ const Drawer = () => {
               >
                 Checkout
                 <span className="ms-2 font-Roboto">
-                  {<ProductPrice
+                  {<ProductPrice className=" "
                     amount={cartItems.reduce((acc, curr) => acc + curr.offerPrice * curr.quantity,0,)
                   }/>}
                 </span>

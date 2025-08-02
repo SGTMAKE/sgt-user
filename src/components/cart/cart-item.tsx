@@ -161,7 +161,7 @@ const CartItem = (item: CartItemProps & { session: Session | null }) => {
         </div>
       </div>
       <div className="text-right">
-        <ProductPrice amount={item.offerPrice} originalPrice={item.basePrice} />
+        <ProductPrice amount={item.offerPrice} className=" text-orange-500" />
       </div>
     </motion.div>
   )

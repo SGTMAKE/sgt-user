@@ -26,27 +26,16 @@ export class CurrencyService {
   }
 
   async updateExchangeRates(): Promise<void> {
-    try {
-      // Using a free exchange rate API
-      const response = await fetch("https://api.exchangerate-api.com/v4/latest/INR")
-      const data = await response.json()
-
-      if (data.rates) {
+    
         this.exchangeRates = {
           INR: 1,
-          USD: data.rates.USD || 0.012, // Fallback rate
+          USD: 0.01146, // Fallback rate
         }
         this.lastUpdated = new Date()
 
         // Cache in localStorage
         localStorage.setItem("exchangeRates", JSON.stringify(this.exchangeRates))
         localStorage.setItem("ratesLastUpdated", this.lastUpdated.toISOString())
-      }
-    } catch (error) {
-      console.error("Failed to fetch exchange rates:", error)
-      // Load from localStorage if available
-      this.loadCachedRates()
-    }
   }
 
   private loadCachedRates(): void {
@@ -61,7 +50,7 @@ export class CurrencyService {
     } catch (error) {
       console.error("Failed to load cached rates:", error)
       // Use fallback rates
-      this.exchangeRates = { INR: 1, USD: 0.012 }
+      this.exchangeRates = { INR: 1, USD: 0.01146 }
     }
   }
 
@@ -91,8 +80,8 @@ export class CurrencyService {
     const formatter = new Intl.NumberFormat(currency.locale, {
       style: "currency",
       currency: currency.code,
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
     })
 
     return formatter.format(convertedAmount)
