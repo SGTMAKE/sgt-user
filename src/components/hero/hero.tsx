@@ -15,7 +15,7 @@ import "swiper/css/pagination"
 import "swiper/css/autoplay"
 import "swiper/css/effect-fade"
 
-const Hero = ({ slides }: { slides: HeroBanner[] }) => {
+const Hero = ({ slides }: { slides?: HeroBanner[] }) => {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isPlaying, setIsPlaying] = useState(true)
   const [progress, setProgress] = useState(0)

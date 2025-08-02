@@ -1,12 +1,22 @@
-import axios from "@/config/axios.config";
-import { MarqueeOffersRes } from "../types/types";
+import axios from "@/config/axios.config"
+import type { MarqueeOffersRes } from "../types/types"
 
-export async function getMarqueeOffers() {
+export async function getMarqueeOffers(): Promise<MarqueeOffersRes | null> {
   try {
-    const { data } = await axios.get("/api/offers/marquee");
-    if (data) return data as MarqueeOffersRes;
-    return null;
+    const { data } = await axios.get("/api/offers/marquee", {
+      headers: {
+        "Cache-Control": "no-cache, no-store, must-revalidate",
+        Pragma: "no-cache",
+        Expires: "0",
+      },
+    })
+
+    if (data) {
+      return data as MarqueeOffersRes
+    }
+    return null
   } catch (error) {
-    return null;
+    console.error("Failed to fetch marquee offers:", error)
+    return null
   }
 }
