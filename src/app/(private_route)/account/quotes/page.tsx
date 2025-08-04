@@ -12,6 +12,7 @@ import { toast } from "sonner"
 import Image from "next/image"
 import Link from "next/link"
 import SmartImage from "@/components/ui/ImageCorrector"
+import { ProductPrice } from "@/components/currency/price-display"
 
 interface QuoteRequest {
   id: string
@@ -328,17 +329,11 @@ export default function UserQuotesPage() {
                           <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg">
                             <div className="flex items-center justify-between mb-2">
                               <span className="text-sm text-gray-600 dark:text-gray-400">Total Price:</span>
-                              <span className="text-lg font-bold text-green-600 dark:text-green-400 flex items-center">
-                                <IndianRupee className="w-4 h-4" />
-                                {quote.quotedPrice.toLocaleString("en-IN")}
+                              <span className=" flex items-center">
+                                <ProductPrice className="text-lg font-bold text-green-600 dark:text-green-400" amount={quote.quotedPrice}/>
                               </span>
                             </div>
-                            <div className="flex items-center justify-between">
-                              <span className="text-xs text-gray-500">Per item avg:</span>
-                              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                                ₹{(quote.quotedPrice / quote.totalItems).toFixed(2)}
-                              </span>
-                            </div>
+                            
                           </div>
                         </div>
                       </>
