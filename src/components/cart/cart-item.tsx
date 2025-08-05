@@ -136,15 +136,15 @@ const CartItem = (item: CartItemProps & { session: Session | null }) => {
 
           <div className="flex gap-5">
             <div className="flex w-fit rounded-md border border-[rgba(0,0,0,0.4)]">
-              <button
+             {!isCustomProduct && <button
                 className="px-2 disabled:cursor-not-allowed"
                 disabled={item.quantity <= 1 || remove_cart_item_mutation.isLoading || item_quantity_mutation.isLoading}
                 onClick={decreaseQuantity}
               >
                 <Minus size={15} />
-              </button>
+              </button>}
               <span className="min-w-[1em] py-0.5 text-center md:min-w-[1.5em] md:py-1">{item.quantity}</span>
-              <button
+             {!isCustomProduct && <button
                 className="px-2 disabled:cursor-not-allowed"
                 disabled={
                   item.quantity >= 10 || remove_cart_item_mutation.isLoading || item_quantity_mutation.isLoading
@@ -152,7 +152,7 @@ const CartItem = (item: CartItemProps & { session: Session | null }) => {
                 onClick={increaseQuantity}
               >
                 <Plus size={15} />
-              </button>
+              </button>}
             </div>
             <button className="text-xs text-muted-foreground underline" onClick={removeFromCart}>
               Remove

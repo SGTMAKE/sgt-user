@@ -10,6 +10,7 @@ import { Menu } from "lucide-react";
 import DropdownItem from "./dropdown-item";
 import ClientLink from "@/components/shared/client-link";
 import { navItems } from "../navlist";
+import { CurrencySelector } from "@/components/currency/currency-selector";
 // export type NavItem = {
 //   label: string;
 //   link?: string;
@@ -83,6 +84,7 @@ const SidebarNav = () => {
       <SheetContent side={"left"}>
         <SheetHeader className="mb-5 text-left">
           <SheetTitle>SGT Make</SheetTitle>
+          <CurrencySelector  />
         </SheetHeader>
         <ul className="text-left">
           {navItems?.map((item, i) => <DropdownItem item={item} key={i} />)}
@@ -90,6 +92,7 @@ const SidebarNav = () => {
         
           </div>
         </ul>
+        
       </SheetContent>
     </Sheet>
   );

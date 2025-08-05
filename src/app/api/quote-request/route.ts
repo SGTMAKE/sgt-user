@@ -3,7 +3,6 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import { db } from "@/lib/prisma"
 import { emailService } from "@/lib/email/email-service"
-// import { emailService } from "@/lib/email/email-service"
 
 export async function POST(request: NextRequest) {
   try {

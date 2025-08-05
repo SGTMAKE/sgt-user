@@ -44,7 +44,7 @@ export async function GET(
         colorVariants: makeColorVariant({
           colors: dbProduct.color,
           images: dbProduct.images,
-        }),
+        }).reverse(),
       },
     });
   } catch (error) {

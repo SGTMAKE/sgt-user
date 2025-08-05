@@ -44,7 +44,7 @@ export default async function page() {
 
   return (
     <div className=" space-y-14">
-     <Hero slides={heroBanners || []} />
+    {heroBanners?.length ? <Hero slides={heroBanners}  /> : ""}
       <Banner />
     
        <Services/>

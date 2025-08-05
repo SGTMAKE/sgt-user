@@ -126,7 +126,7 @@ const Search = ({ bestSeller }: { bestSeller: CategoryProduct[] | null }) => {
         <button
           type="button"
           onClick={handleSearchButtonClick}
-          className="hidden sm:block absolute md:flex items-center justify-center w-12 h-12 rounded-full z-10 -top-[0.13rem] border hover:bg-gray-50 transition-colors"
+          className="hidden  absolute md:flex items-center justify-center w-12 h-12 rounded-full z-10 -top-[0.13rem] border hover:bg-gray-50 transition-colors"
           aria-label="Search"
         >
           <SearchIcon className="w-5 h-5" />

@@ -73,26 +73,25 @@ export default function UserQuotesPage() {
     }
 
     setAddingToCart(quote.id)
+    
 
     try {
       // Calculate price per item
-      const pricePerItem = quote.quotedPrice / quote.totalItems
+      const pricePerItem = (quote.quotedPrice / quote.totalItems)
 
       // Add each item to cart as custom product
       for (const item of quote.items) {
         const customProduct = {
-          title: `${item.categoryName} - ${item.title}`,
-          basePrice: pricePerItem * item.quantity,
-          offerPrice: pricePerItem * item.quantity,
-          image: item.image || "/placeholder.svg?height=200&width=200",
+          title: item.title,
+          basePrice: parseFloat((pricePerItem * item.quantity).toFixed(2)),
+          offerPrice: parseFloat((pricePerItem * item.quantity).toFixed(2)),
+          image:   `${process.env.NEXT_PUBLIC_IMAGE_URL}${item.image}` || "/placeholder.svg?height=200&width=200",
           options: {
             ...item.specifications,
-            fastenerType: item.type,
+            type: item.type,
             categoryName: item.categoryName,
-            quotedItem: true,
             quoteId: quote.id,
-            originalQuantity: item.quantity,
-            pricePerUnit: pricePerItem,
+            quantity: item.quantity,
           },
         }
 

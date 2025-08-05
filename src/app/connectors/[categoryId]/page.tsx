@@ -15,6 +15,7 @@ import { ArrowLeft, ShoppingCart, Package, Loader2, Plus, Minus } from "lucide-r
 import { toast } from "sonner"
 import { useQuoteCart } from "@/hooks/use-quote-cart"
 import Image from "next/image"
+import SmartImage from "@/components/ui/ImageCorrector"
 
 interface Category {
   _id: string
@@ -113,9 +114,8 @@ export default function ConnectorCategoryPage() {
       const quoteItem = {
         id: `${category._id}-${Date.now()}`,
         type: "connector" as const,
-        categoryId: category._id,
         categoryName: category.name,
-        title: `${category.name} - Custom Configuration`,
+        title: `${category.name} `,
         quantity,
         specifications: {
           ...formData,
@@ -145,12 +145,12 @@ export default function ConnectorCategoryPage() {
       switch (option.type) {
         case "select":
           return (
-            <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+            <div className="flex flex-wrap gap-2">
               {option.values?.map((optionValue, index: number) => (
                 <button
-                  key={`${option.name}-${optionValue}-${index}`}
+                  key={`${optionValue}-${index}`}
                   type="button"
-                  className={`p-3 border rounded-lg transition text-sm font-medium flex flex-col items-center gap-2  ${
+                  className={`p-3 border rounded-lg transition text-sm font-medium flex flex-col items-center gap-2 min-w-[70px]  ${
                     value === optionValue
                       ? "bg-orange-500 text-white border-orange-500 shadow-md"
                       : "hover:bg-gray-50 border-gray-300 dark:hover:bg-gray-800 dark:border-gray-600"
@@ -236,7 +236,7 @@ export default function ConnectorCategoryPage() {
   }
 
   return (
-    <div className="min-h-screen max-w-7xl mx-auto bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen max-w-7xl mx-auto  dark:bg-gray-900">
       <div className="container mx-auto px-4 py-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -255,16 +255,13 @@ export default function ConnectorCategoryPage() {
               Back to Connectors
             </Button>
           </div>
-:
           <div className=" flex flex-col-reverse md:grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Product Info */}
            
 
             {/* Configuration Form */}
             <Card className="col-span-1 lg:col-span-2">
-              <CardHeader>
-                <CardTitle className="text-xl text-gray-900 dark:text-white">Configure Specifications</CardTitle>
-              </CardHeader>
+             
               <CardContent className="space-y-6">
 
                 {/* Dynamic Options */}
@@ -373,15 +370,15 @@ export default function ConnectorCategoryPage() {
             </Card>
 
              <Card className="col-span-1 ">
-              <CardHeader>
+              <CardHeader className="static md:sticky top-0 left-0">
                 {category.image ? (
-                    <div className=" rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800 flex-shrink-0">
-                      <Image
+                    <div className=" rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800 flex-shrink-0 ">
+                      <SmartImage
                         src={category.image || "/placeholder.svg"}
                         alt={category.name}
-                        width={80}
-                        height={80}
-                        className="object-cover w-full h-full"
+                        width={230}
+                        height={230}
+                        className="object-cover w-full h-72   "
                       />
                     </div>
                   ) : (

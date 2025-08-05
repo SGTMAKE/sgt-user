@@ -208,12 +208,12 @@ export default function FastenerCategoryPage() {
     switch (option.type) {
       case "select":
         return (
-          <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+          <div className="flex flex-wrap gap-2">
             {option.values.map((optionValue: FastenerOptionValue, index: number) => (
               <button
                 key={`${option.name}-${optionValue.value}-${index}`}
                 type="button"
-                className={`p-3 border rounded-lg w-full transition text-sm font-medium flex flex-col items-center gap-2 ${
+                className={`p-3 border rounded-lg  transition text-sm font-medium flex flex-col items-center gap-2 min-w-[70px] ${
                   value === optionValue.value
                     ? "bg-orange-500 text-white border-orange-500 shadow-md"
                     : "hover:bg-gray-50 border-gray-300 dark:hover:bg-gray-800 dark:border-gray-600"
@@ -221,13 +221,13 @@ export default function FastenerCategoryPage() {
                 onClick={() => setValue(option.name as any, optionValue.value, { shouldValidate: true })}
               >
                 {optionValue.image && (
-                  <div className="w-8 h-8 flex items-center justify-center">
+                  <div className=" flex items-center justify-center">
                     <SmartImage
                       src={optionValue.image || "/placeholder.svg"}
                       alt={optionValue.value}
                       width={24}
                       height={24}
-                      className="object-contain"
+                      className="object-contain w-12 h-12"
                     />
                   </div>
                 )}
@@ -331,41 +331,29 @@ export default function FastenerCategoryPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <div className=" mx-auto px-4 py-6">
+    <div className="min-h-screen ">
+      <div className=" mx-auto px-4 ">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
           {/* Header */}
           <div className="mb-6">
             <Button
               variant="ghost"
               onClick={() => router.push("/fasteners")}
-              className="text-orange-600 hover:text-orange-700 hover:bg-orange-50 mb-4"
+              className="text-orange-600 hover:text-orange-700 hover:bg-orange-50 "
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Fasteners
             </Button>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          <div className=" flex flex-col-reverse md:grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Sidebar */}
-            <div className="lg:col-span-1">
-              <Card className="sticky top-6">
-                <CardContent className="p-4">
-                  <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-4">Fasteners</h2>
-                  <div className="space-y-2">
-                    <div className="px-3 py-2 bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-200 rounded-md font-medium">
-                      {category.name}
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-
+           
             {/* Main Content */}
-            <div className="lg:col-span-2">
+            <div className="col-span-1 lg:col-span-2">
               <form onSubmit={handleSubmit(handleAddToQuote)} className="space-y-6">
                 {/* Description */}
-                <Card>
+                <Card >
                   <CardContent className="p-6">
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Description</h3>
                     <p className="text-gray-600 dark:text-gray-400">{category.description}</p>
@@ -374,8 +362,7 @@ export default function FastenerCategoryPage() {
 
                 {/* Configuration Options */}
                 {category.options.map((option) => (
-                  <Card key={option._id}>
-                    <CardContent className="p-6">
+                  <div key={option._id} >
                       <div className="mb-4">
                         <h4 className="text-base font-semibold text-gray-900 dark:text-white">
                           {option.label}
@@ -393,8 +380,7 @@ export default function FastenerCategoryPage() {
                           {errors[option.name as keyof typeof errors]?.message as string}
                         </p>
                       )}
-                    </CardContent>
-                  </Card>
+                  </div>
                 ))}
 
                 {/* Quantity */}
@@ -464,15 +450,15 @@ export default function FastenerCategoryPage() {
             {/* Product Image */}
             <div className="lg:col-span-1">
               <Card className="sticky top-6">
-                <CardContent className="p-6">
-                  <div className="aspect-square bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center mb-4">
+                <CardContent >
+                  <div className="  bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center my-3 ">
                     {category.image ? (
                       <SmartImage
                         src={category.image || "/placeholder.svg"}
                         alt={category.name}
                         width={200}
                         height={200}
-                        className="object-contain"
+                        className="object-contain w-full max-w-sm min-h-72 h-min"
                       />
                     ) : (
                       <Package className="w-16 h-16 text-gray-400" />
@@ -480,18 +466,10 @@ export default function FastenerCategoryPage() {
                   </div>
 
                   <div className="text-center">
-                    <h3 className="font-semibold text-gray-900 dark:text-white mb-2">{category.name}</h3>
-                    <Badge variant="secondary" className="mb-4">
-                      {category.options?.length || 0} configuration options
-                    </Badge>
+                    <h3 className="font-semibold text-gray-900 dark:text-white ">{category.name}</h3>
                   </div>
 
-                  <div className="border-t pt-4">
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-gray-600 dark:text-gray-400">Total Price:</span>
-                      <span className="text-lg font-bold text-orange-600">Quote Request</span>
-                    </div>
-                  </div>
+                  
                 </CardContent>
               </Card>
             </div>

@@ -27,7 +27,7 @@ const SmartImage: React.FC<SmartImageProps> = ({
 
   // If it's a public ID from Cloudinary, build the full URL
   const imageUrl = isCloudinaryPublicId(src)
-    ? `${cloudinaryBaseUrl}/image/upload/${src}`
+    ? `${cloudinaryBaseUrl}image/upload/${src}`
     : src;
 
   const useNextImage = isCloudinaryPublicId(src) || imageUrl.includes("res.cloudinary.com");

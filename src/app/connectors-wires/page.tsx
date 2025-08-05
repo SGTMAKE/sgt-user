@@ -8,6 +8,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Zap, Cable, ChevronRight } from "lucide-react"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
+import SmartImage from "@/components/ui/ImageCorrector"
 
 interface Category {
   id: string
@@ -157,10 +158,12 @@ export default function ConnectorsWiresPage() {
                     <CardContent className="p-6 space-y-4">
                       {category.image ? (
                         <div className="relative w-full h-48 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800">
-                          <img
+                          <SmartImage
                             src={category.image || "/placeholder.svg"}
                             alt={category.name}
-                            className="object-cover group-hover:scale-110 transition-transform duration-300"
+                            width={200}
+                            height={200}
+                            className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-300"
                           />
                         </div>
                       ) : (
@@ -175,7 +178,7 @@ export default function ConnectorsWiresPage() {
 
                       <div className="space-y-3">
                         <div className="flex items-center justify-between">
-                          <h3 className="text-xl font-bold text-gray-900 dark:text-white group-hover:text-orange-600 transition-colors">
+                          <h3 className="text-xl font-bold text-gray-900 dark:text-white group-hover:text-orange-600 transition-colors line-clamp-1">
                             {category.name}
                           </h3>
                           <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-orange-500 group-hover:translate-x-1 transition-all" />
