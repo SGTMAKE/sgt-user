@@ -16,6 +16,7 @@ import Image from "next/image"
 import { useSession, signIn } from "next-auth/react";
 import SmartImage from "../ui/ImageCorrector"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { useMediaQuery } from "@mantine/hooks"
 
 export default function QuoteCartDropdown() {
   const { items, removeItem, clearCart, getTotalItems } = useQuoteCart()
@@ -24,7 +25,7 @@ export default function QuoteCartDropdown() {
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const totalItems = getTotalItems()
-
+  const isMobile = useMediaQuery("(max-width: 768px)")
 
   
 
@@ -129,11 +130,9 @@ export default function QuoteCartDropdown() {
       <AnimatePresence>
         {isOpen && (
           <>
-            {/* Backdrop for desktop dropdown only */}
-            <div className=" bg-black/30 hidden md:block" onClick={() => setIsOpen(false)} />
-
+          
             {/* Mobile Modal (only visible on small screens) */}
-            <div className="md:hidden">
+           {isMobile ? <div className="block md:hidden">
               <Dialog open={isOpen} onOpenChange={setIsOpen}>
                 <DialogContent className="w-full h-full max-w-none m-0 p-0 rounded-none">
                   <div className="flex flex-col h-full">
@@ -148,9 +147,7 @@ export default function QuoteCartDropdown() {
                             </Badge>
                           )}
                         </DialogTitle>
-                        <Button variant="ghost" size="sm" onClick={() => setIsOpen(false)} className="h-8 w-8 p-0">
-                          <X className="w-5 h-5" />
-                        </Button>
+                        
                       </div>
                     </DialogHeader>
                     <div className="flex-1 overflow-hidden">
@@ -276,15 +273,15 @@ export default function QuoteCartDropdown() {
                   </div>
                 </DialogContent>
               </Dialog>
-            </div>
+            </div> : ""}
 
             {/* Desktop Dropdown (only visible on md and up) */}
-            <motion.div
+            {!isMobile ?<motion.div
               initial={{ opacity: 0, y: -10, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -10, scale: 0.95 }}
               transition={{ duration: 0.2 }}
-              className=" top-full mt-2 w-96 z-50 hidden md:block"
+              className="absolute right-0 top-full mt-2 w-96 z-50 hidden md:block"
             >
               <Card className="shadow-xl border-2 border-orange-200 dark:border-orange-800">
                 <CardHeader className="bg-gradient-to-r from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20 pb-3">
@@ -435,7 +432,7 @@ export default function QuoteCartDropdown() {
                   )}
                 </CardContent>
               </Card>
-            </motion.div>
+            </motion.div> : ""}
           </>
         )}
       </AnimatePresence>

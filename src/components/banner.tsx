@@ -12,9 +12,9 @@ const Banner = async () => {
   return (
     <div className="bg-black py-5">
       <Container className="py-10 md:py-20">
-        <div className="flex justify-evenly gap-10">
-          <div className="flex flex-col justify-between text-white md:max-w-[50%]">
-            <div>
+        <div className=" flex justify-evenly gap-10">
+          <div className="flex flex-col justify-between text-white md:max-w-[50%] w-[80%] sm:w-1/2 md:w-auto">
+            <div className="">
               <span className="text-sm font-light text-gray-400 md:text-lg">
                 <span className="border-b-2 border-red-500">Best</span> deal
               </span>

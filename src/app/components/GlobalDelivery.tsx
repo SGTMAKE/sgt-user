@@ -1,6 +1,6 @@
 export default function DeliveryBanner() {
     return (
-      <div className="bg-[#181818] text-white rounded-2xl px-6 py-12 text-center max-w-6xl mx-auto">
+      <div className="bg-[#181818] text-white rounded-none xl:rounded-2xl px-6 py-12 text-center max-w-6xl mx-auto">
         <h2 className="text-3xl font-bold">Your Orders, <br /> Delivered Globally</h2>
         <p className="text-gray-400 mt-3 max-w-lg mx-auto">
           We offer reliable delivery services to customers in over 200 countries, facilitated by our network of trusted agents.

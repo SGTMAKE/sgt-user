@@ -24,7 +24,7 @@ export const ServicesData = [
             link:"/service?service=laser-cutting"
         },
         {
-            imgSrc: "/battery-packs.jpg",
+            imgSrc: "/home/battery-packs.jpg",
             title: "Battery Packs",
             description: "SGTMake designs and assembles custom battery packs tailored to your specific power requirements for EVs, solar setups, and more.",
             link:"/service/batterypack"
