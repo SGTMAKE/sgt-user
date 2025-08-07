@@ -163,7 +163,7 @@ export default function ResetPasswordForm() {
 
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
               <p className="text-sm text-blue-800">
-                <strong>Security Tip:</strong> Keep your password safe and don\'t share it with anyone.
+                <strong>Security Tip:</strong> Keep your password safe and dont share it with anyone.
               </p>
             </div>
 

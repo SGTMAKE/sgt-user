@@ -53,7 +53,7 @@ export default function ForgotPasswordForm() {
             </div>
             <CardTitle className="text-2xl font-bold text-gray-900">Check Your Email</CardTitle>
             <CardDescription className="text-gray-600">
-              We\'ve sent a password reset link to your email address
+              We have sent a password reset link to your email address
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -69,7 +69,7 @@ export default function ForgotPasswordForm() {
               <ul className="list-disc list-inside space-y-1 ml-2">
                 <li>Check your email inbox (and spam folder)</li>
                 <li>Look for an email from SGTMake</li>
-                <li>Click the "Reset My Password" button</li>
+                <li>Click the (Reset My Password) button</li>
                 <li>Create your new secure password</li>
               </ul>
             </div>
@@ -78,9 +78,9 @@ export default function ForgotPasswordForm() {
               <div className="flex items-start space-x-2">
                 <AlertCircle className="w-4 h-4 text-amber-600 mt-0.5 flex-shrink-0" />
                 <div>
-                  <p className="text-sm text-amber-800 font-medium">Didn\'t receive the email?</p>
+                  <p className="text-sm text-amber-800 font-medium">Did not receive the email?</p>
                   <p className="text-sm text-amber-700 mt-1">
-                    Check your spam folder or click "Send Another Email" below.
+                    Check your spam folder or click (Send Another Email) below.
                   </p>
                 </div>
               </div>
@@ -113,7 +113,7 @@ export default function ForgotPasswordForm() {
           </div>
           <CardTitle className="text-2xl font-bold text-gray-900">Forgot Password?</CardTitle>
           <CardDescription className="text-gray-600">
-            Enter your email address and we\'ll send you a secure link to reset your password
+            Enter your email address and we will send you a secure link to reset your password
           </CardDescription>
         </CardHeader>
         <CardContent>
