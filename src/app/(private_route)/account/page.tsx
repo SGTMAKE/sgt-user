@@ -36,10 +36,10 @@ const Account = async () => {
         <Link href="/account/address">
           <Card icon={<MapPin />} title="Manage Address" />
         </Link>
-        <Link href="/account/services">
+        <Link href="/services">
           <Card icon={<Wrench />} title="My Services" />
         </Link>
-        <Link href="/account/quotes">
+        <Link href="/quotes">
           <Card icon={<MessageSquare />} title="My Quotations" />
         </Link>
       </div>

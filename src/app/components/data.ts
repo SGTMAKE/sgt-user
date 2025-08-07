@@ -2,7 +2,7 @@ export const ServicesData = [
         {
             imgSrc: "/3d-designing.jpg",
             title: "3D Designing",
-            description: "At SGTMake we provide designing solutions in CAD, any rough sketch or part, any drawing, or reverse engineering possible with our designing experts.",
+            description: "At Sgtmake, we provide design solutions in CAD. Any rough sketch or part, any drawing or reverse engineering is possible with our design experts.",
              link:"/contact"
         },
         {

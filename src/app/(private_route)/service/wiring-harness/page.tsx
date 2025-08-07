@@ -246,7 +246,7 @@ function WiringHarnessForm(props: WiringHarnessFormProps) {
                   <Upload className="w-5 h-5 mr-2" /> Select Your File
                 </label>
                 <div className="mt-2 text-sm text-gray-500 max-w-md px-4">
-                  <p className="mb-2">Support uploading cable pictures, cable drawings, and cable specifications</p>
+                  <p className="mb-2">Supports uploading cable pictures, cable drawings, and cable specifications</p>
                   <p>Supports .docx, .pdf, .jpg, .jpeg, .png, .xls, .xlsx, and .csv</p>
                 </div>
               </>
@@ -323,14 +323,14 @@ function WiringHarnessForm(props: WiringHarnessFormProps) {
               <h2 className="text-xl font-semibold mb-4">Notes:</h2>
               <div className="mb-6 text-gray-700">
                 <ul className="list-disc pl-5 space-y-2">
-                  <li>Upload the file in above section</li>
-                  <li>.xls or .xlsx file is most preferred with images for proper understanding</li>
-                  <li>Mention Connector names for left and right side in the description box</li>
-                  <li>For only connector on one side and wire end at other side mention clearly</li>
-                  <li>Mention wire length and color coding in the file you upload</li>
-                  <li>Mention Quantity of set of harness required in description box</li>
-                  <li>Type of electrical tape required on harness mention in Description box or in file</li>
-                  <li>Extra requirement you can mention in the description box below</li>
+                  <li>Upload the file in the above section.</li>
+                  <li>.xls or .xlsx files are most preferred with images for proper understanding.</li>
+                  <li>Mention the connector names for the left and right sides in the description box.</li>
+                  <li>For only a connector on one side and a wire end on the other side, mention clearly. </li>
+                  <li>Mention wire length and colour coding in the file you upload.</li>
+                  <li>Mention the quantity of sets of harnesses required in the description box.</li>
+                  <li>Type of electrical tape required on the harness mentioned in the description box or in the file. </li>
+                  <li>For extra requirements, you can mention in the description box below.</li>
                 </ul>
               </div>
 
