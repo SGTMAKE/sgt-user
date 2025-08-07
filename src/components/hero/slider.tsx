@@ -24,7 +24,7 @@ const Slider = ({
           loading="eager"
           priority={true}
           sizes="min(1600px, 100vw)"
-          src={forLargeScreen ? slide.imageUrl : slide.imageUrlSm}
+          src={forLargeScreen ? process.env.NEXT_PUBLIC_IMAGE_URL+slide.imageUrl : process.env.NEXT_PUBLIC_IMAGE_URL+slide.imageUrlSm}
           alt="slide images"
           fill
         />

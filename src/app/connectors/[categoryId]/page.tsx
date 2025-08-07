@@ -267,7 +267,7 @@ export default function ConnectorCategoryPage() {
                 {/* Dynamic Options */}
                  <div className="flex items-start gap-4">
                  
-                  <div className="flex-1">
+                  <div className="flex-1 pt-3">
                     <CardTitle className="text-2xl text-gray-900 dark:text-white">{category.name}</CardTitle>
                     {category.description && (
                       <p className="text-gray-600 dark:text-gray-400 mt-2">{category.description}</p>

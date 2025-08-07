@@ -4,6 +4,8 @@ import { generateServiceEmailTemplate } from "./templates/service-email-template
 import type { ItemSummary, AddressProps, ServiceStatus, ServiceType, ContactFormEmailData  } from "@/lib/types/types"
 import { generateQuoteRequestEmailTemplate } from "./templates/quote-request-email-template"
 import { generateContactEmailTemplate } from "./templates/contact-email-template"
+import { generatePasswordResetEmailTemplate } from "./templates/password-reset-email-template"
+
 export interface EmailResponse {
   success: boolean
   messageId?: string
@@ -42,6 +44,16 @@ interface ServiceEmailData extends ServiceStatus {
   customerName: string
   customerEmail: string
   customerPhone?: string
+}
+export interface PasswordResetEmailData {
+  userName: string
+  userEmail: string
+  resetToken: string
+  resetUrl: string
+  expiresIn: number // minutes
+  requestIp?: string
+  requestUserAgent?: string
+  requestDate: Date
 }
 
 export class EmailService {
@@ -147,6 +159,29 @@ export class EmailService {
       subject: `New Quote Request #${data.quoteRequestId.slice(-8)} from ${data.customerName}`,
       html,
     })
+  }
+    async sendPasswordResetEmail(data: PasswordResetEmailData): Promise<EmailResponse> {
+    try {
+      const htmlContent = generatePasswordResetEmailTemplate(data.resetUrl, data.userEmail)
+
+      const mailOptions = {
+        from: {
+          name: "SGTMake Account Security",
+          address: process.env.ZOHO_EMAIL!,
+        },
+        to: data.userEmail,
+        subject: `🔐 Password Reset Request - SGTMake Account`,
+        html: htmlContent,
+        priority: "high" as "high",
+      }
+
+      const result = await this.transporter.sendMail(mailOptions)
+      console.log("Password reset email sent successfully:", result.messageId)
+      return { success: true, messageId: result.messageId }
+    } catch (error) {
+      console.error("Failed to send password reset email:", error)
+      return { success: false, error: error instanceof Error ? error.message : "Unknown error" }
+    }
   }
 
    async sendContactFormNotification(data: ContactFormEmailData): Promise<EmailResponse> {

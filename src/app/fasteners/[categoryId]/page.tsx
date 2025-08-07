@@ -353,12 +353,10 @@ export default function FastenerCategoryPage() {
             <div className="col-span-1 lg:col-span-2">
               <form onSubmit={handleSubmit(handleAddToQuote)} className="space-y-6">
                 {/* Description */}
-                <Card >
-                  <CardContent className="p-6">
+                  <div>
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Description</h3>
                     <p className="text-gray-600 dark:text-gray-400">{category.description}</p>
-                  </CardContent>
-                </Card>
+                  </div>
 
                 {/* Configuration Options */}
                 {category.options.map((option) => (
@@ -384,8 +382,8 @@ export default function FastenerCategoryPage() {
                 ))}
 
                 {/* Quantity */}
-                <Card>
-                  <CardContent className="p-6">
+               
+                  <div>
                     <h4 className="text-base font-semibold text-gray-900 dark:text-white mb-4">Quantity (pcs)</h4>
                     <div className="flex items-center gap-3">
                       <Button
@@ -425,16 +423,15 @@ export default function FastenerCategoryPage() {
                     {errors.quantity && (
                       <p className="text-red-500 text-sm mt-2">{errors.quantity.message as string}</p>
                     )}
-                  </CardContent>
-                </Card>
+                  </div>
+                
 
                 {/* Remarks */}
-                <Card>
-                  <CardContent className="p-6">
+                
+                  <div>
                     <h4 className="text-base font-semibold text-gray-900 dark:text-white mb-4">Remarks</h4>
                     <Textarea className="min-h-[100px]" placeholder="Write here" {...register("remarks")} />
-                  </CardContent>
-                </Card>
+                  </div>
 
                 {/* Submit Button */}
                 <Button

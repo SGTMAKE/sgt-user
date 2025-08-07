@@ -17,6 +17,7 @@ import { Input } from "@nextui-org/input"
 import { useSession } from "next-auth/react"
 import { Loader2 } from "lucide-react"
 import { Button } from "@nextui-org/button"
+import Link from "next/link"
 
 // Updated Zod schema to include name field for signup
 const SignInSchema = z.object({
@@ -283,6 +284,7 @@ export function AuthForm({ onGoogleSignIn }: AuthFormProps) {
                 </FormItem>
               )}
             />
+            
             {error ? (
               <m.span
                 initial={{ opacity: 0, y: -5 }}
@@ -295,9 +297,16 @@ export function AuthForm({ onGoogleSignIn }: AuthFormProps) {
                 {error}
               </m.span>
             ) : (
-              <span className="mt-3 block h-5" />
+              <div className="flex items-center justify-between">
+                  <div className="text-sm">
+                    <Link href="/forgot-password" className="text-orange-600 hover:text-orange-700 font-medium">
+                      Forgot password?
+                    </Link>
+                  </div>
+                </div>
             )}
             <div className="mt-5">
+             
               <Button
                 isLoading={isLoading}
                 color="primary"
@@ -446,6 +455,7 @@ export function AuthForm({ onGoogleSignIn }: AuthFormProps) {
           </div>
         </Form>
       )}
+      
     </div>
   )
 }

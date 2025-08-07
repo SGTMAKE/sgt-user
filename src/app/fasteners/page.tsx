@@ -138,12 +138,12 @@ export default function FastenersPage() {
                         <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-3">{category.description}</p>
 
                         <div className="flex items-center justify-between pt-2">
-                          <Badge
+                          {/* <Badge
                             variant="secondary"
                             className="bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200"
                           >
                             {category.options?.length || 0} options
-                          </Badge>
+                          </Badge> */}
                           <span className="text-xs text-orange-600 font-medium group-hover:text-orange-700">
                             Configure →
                           </span>

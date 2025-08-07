@@ -24,7 +24,7 @@ const Banner = async () => {
               {deal?.deal?.imageUrl && (
                 <div className="relative h-60 w-full md:hidden">
                   <Image
-                    src={deal?.deal?.imageUrl}
+                    src={process.env.NEXT_PUBLIC_IMAGE_URL+deal?.deal?.imageUrl}
                     alt="Banner image"
                     fill
                     sizes="100vw"
@@ -50,7 +50,7 @@ const Banner = async () => {
             </div>
           </div>
           <div className="relative hidden h-96 min-w-[40%]  md:block">
-            <Image src={deal?.deal?.imageUrl || "/"} alt="Banner image" fill className="h-full" />
+            <Image src={deal?.deal?.imageUrl ? process.env.NEXT_PUBLIC_IMAGE_URL+deal?.deal?.imageUrl : "/"} alt="Banner image" fill className="h-full" />
           </div>
         </div>
       </Container>

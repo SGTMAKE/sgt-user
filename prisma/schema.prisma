@@ -167,6 +167,17 @@ model OrderItem {
   @@index([orderId])
   @@index([productId])
 }
+model PasswordResetToken {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  token     String
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expires   DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([expires])
+}
 
 model Payment {
   id             String  @id @default(auto()) @map("_id") @db.ObjectId
@@ -233,6 +244,7 @@ model User {
   sessions       Session[]
   services      Service[]
   quoteRequests QuoteRequest[]
+  passwordResetTokens  PasswordResetToken[]
 }
 
 model VerificationToken {

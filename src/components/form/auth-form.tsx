@@ -15,6 +15,7 @@ import { deleteCookie, getCookie } from "cookies-next"
 import { useRouter, useSearchParams } from "next/navigation"
 import { Button } from "@nextui-org/button"
 import { Input } from "@nextui-org/input"
+import Link from "next/link"
 
 
 // Updated Zod schema to include name field for signup
@@ -214,8 +215,15 @@ export function AuthForm() {
                 {error}
               </m.span>
             ) : (
-              <span className="mt-3 block h-5" />
+              <span className="" />
             )}
+            <div className="flex ">
+                           
+            <Link href="/forgot-password" className="text-gray-800 hover:underline font-medium ml-auto my-1 text-sm">
+                 Forgot password?
+            </Link>
+           </div>
+     
             <div className="mt-5">
               <Button
                 isLoading={isLoading}
