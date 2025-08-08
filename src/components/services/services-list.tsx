@@ -82,7 +82,7 @@ export function ServicesList({ services }: ServicesListProps) {
   return (
     <div className="space-y-4">
       {services.map((service) => (
-        <Link key={service.id} href={`/account/services/${service.id}`} className="block">
+        <Link key={service.id} href={`/services/${service.id}`} className="block">
           <div className="bg-white rounded-lg shadow-sm border p-4 hover:shadow-md transition-shadow">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
