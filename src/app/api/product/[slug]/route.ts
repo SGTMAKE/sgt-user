@@ -21,6 +21,7 @@ export async function GET(
       where: {
         slug: slug,
         id: pid,
+        isDeleted: false,
       },
       include: {
         images: true,

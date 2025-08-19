@@ -3,6 +3,7 @@ import { db } from "@/lib/prisma";
 async function getSearchItems(search: string, limit = 5, page: number) {
   return await db.product.findMany({
     where: {
+      isDeleted: false,
       OR: [
         {
           title: {
@@ -28,6 +29,7 @@ async function getSearchItems(search: string, limit = 5, page: number) {
 async function getCategorySearchItems(search: string, page: number) {
   return await db.category.findMany({
     where: {
+      isDeleted: false,
       name: {
         contains: search,
         mode: "insensitive",
@@ -35,6 +37,10 @@ async function getCategorySearchItems(search: string, page: number) {
     },
     include: {
       Product: {
+        where:{
+            stock: { not: 0 },
+            isDeleted: false,
+          },
         include: {
           images: true,
         },

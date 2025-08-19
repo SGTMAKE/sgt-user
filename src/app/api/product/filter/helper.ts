@@ -4,6 +4,7 @@ async function getAllProducts(page: number) {
   return await db.product.findMany({
     where: {
       stock: { not: 0 },
+      isDeleted: false,
     },
     orderBy: {
       createdAt: "desc",
@@ -22,12 +23,17 @@ async function getProductsWithCategories(
     .findMany({
       select: {
         Product: {
+          where:{
+            stock: { not: 0 },
+            isDeleted: false,
+          },
           include: {
             images: true,
           },
         },
       },
       where: {
+        isDeleted: false,
         id: {
           in: categories,
         },

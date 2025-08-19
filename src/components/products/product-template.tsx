@@ -112,7 +112,7 @@ const ProductTemplate = ({ product, searchParams }: ProductTemplateProps) => {
             <h1 className="font-medium">Description</h1>
             <hr className="my-2" />
             <p
-  className="text-sm font-light"
+  className=""
   dangerouslySetInnerHTML={{
     __html: product.description || product.category?.description || "No Description",
   }}
