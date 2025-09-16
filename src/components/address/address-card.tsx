@@ -14,7 +14,7 @@ const AddressCard = ({ address }: { address: AddressProps }) => {
         <h2 className="font-semibold">{address.name}</h2>
         <p>{address.address}</p>
         <p>{address.locality}</p>
-        <p>{address.district}</p>
+        <p>{address.city}</p>
         <p>
           {address.state} - {address.pincode}
         </p>
