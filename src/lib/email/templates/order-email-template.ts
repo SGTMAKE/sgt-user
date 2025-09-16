@@ -440,7 +440,7 @@ export const generateOrderEmailTemplate = (data: OrderEmailData) => {
                         ${shippingAddress.alternate_phone ? `<div class="address-line">📞 ${shippingAddress.alternate_phone} (Alt)</div>` : ""}
                         <div class="address-line">📍 ${shippingAddress.address}</div>
                         <div class="address-line">${shippingAddress.locality}</div>
-                        <div class="address-line">${shippingAddress.district}, ${shippingAddress.state}</div>
+                        <div class="address-line">${shippingAddress?.city}, ${shippingAddress.state}</div>
                         <div class="address-line">PIN: ${shippingAddress.pincode}</div>
                     </div>
                 </div>
