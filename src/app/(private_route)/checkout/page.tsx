@@ -1,7 +1,8 @@
 import DeliveryAddress from "@/components/checkout/delivery-address"
 import ItemSummary from "@/components/checkout/item-summary"
-import PriceDetails from "@/components/checkout/price-details"
+import PlaceOrder from "@/components/checkout/place-order"
 import Container from "@/components/container"
+import { ShippingProvider } from "@/context/shipping-context"
 import { getAddressServer } from "@/lib/api/address/get-address"
 import { getCheckout } from "@/lib/api/checkout/get-checkout"
 import { Hydrate, QueryClient, dehydrate } from "@tanstack/react-query"
@@ -21,6 +22,7 @@ const Checkout = async () => {
   const total = data.products?.reduce((acc, curr) => acc + curr.offerPrice, 0) || 0
 
   return (
+    <ShippingProvider>
     <Container className="py-0 md:py-0">
       <h1 className="text-center text-3xl">Checkout</h1>
       <div className="mx-auto max-w-3xl py-5">
@@ -43,11 +45,12 @@ const Checkout = async () => {
             />
           ))}
           <div className="mt-10 grid grid-cols-2 px-5">
-            <PriceDetails total={total} subtotal={subtotal} />
+            <PlaceOrder total={total} subtotal={subtotal} />
           </div>
         </div>
       </div>
     </Container>
+    </ShippingProvider>
   )
 }
 

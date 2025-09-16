@@ -28,7 +28,7 @@ const ImageGallery = ({ images }: ImageGalleryProps) => {
               <span className="sr-only">Go to image {index + 1}</span>
               <Image
                 src={process.env.NEXT_PUBLIC_IMAGE_URL + image.url}
-                className="absolute inset-0"
+                className="absolute inset-0 aspect-square"
                 alt="Thumbnail"
                 fill
                 priority

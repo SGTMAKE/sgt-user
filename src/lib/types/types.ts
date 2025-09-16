@@ -163,6 +163,7 @@ export type SingleOrderRes = Res & {
     via?: string;
     status : string;
     currency : string;
+    shippingCost? : number;
   } | null;
 };
 

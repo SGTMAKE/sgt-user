@@ -97,7 +97,7 @@ const Order = async ({ params }: { params: { oid: string } }) => {
               <div className="flex flex-wrap items-center gap-1">
                 <p className="flex-shrink-0">{order.order.address.address},</p>
                 <p className="flex-shrink-0">{order.order.address.locality},</p>
-                <p className="flex-shrink-0">{order.order.address.district},</p>
+              {order.order.address?.city?<p className="flex-shrink-0">{order.order.address.city},</p>:""}
                 <p className="flex-shrink-0">
                   {order.order.address.state} - {order.order.address.pincode}
                 </p>
@@ -126,21 +126,21 @@ const Order = async ({ params }: { params: { oid: string } }) => {
             <div className="col-span-2 md:col-start-2">
               <div className="my-2 grid grid-cols-2 text-[.9rem]">
                 <p className="text-muted-foreground">Item Subtotal</p>
-                <div className="text-right "><ProductPrice amount={subtotal} className="font-medium font-Roboto text-[.9rem] text-right" /></div>
+                <div className="text-right "><ProductPrice amount={subtotal} className="font-medium font-Roboto text-[.9rem] text-right ml-auto" /></div>
                 
               </div>
-              <div className="my-2 grid grid-cols-2 text-[.9rem]">
+              <div className="my-2 grid grid-cols-2 text-[.9rem] ">
                 <p className="text-muted-foreground">Item Discount</p>
-            <div className="text-right "><ProductPrice amount={subtotal-total} className="font-medium font-Roboto text-[.9rem] text-right" /></div>
+            <div className="text-right "><ProductPrice amount={subtotal-total} className="font-medium font-Roboto text-[.9rem] text-right ml-auto" /></div>
               </div>
               <div className="my-2 grid grid-cols-2 text-[.9rem]">
                 <p className="text-muted-foreground">Shipping Fee</p>
-                <span className="text-right font-Roboto font-medium text-green-500">Free</span>
+                <p className="text-right font-Roboto font-medium ">{order.order?.shippingCost ? <ProductPrice amount={order.order.shippingCost} className="font-medium font-Roboto text-[.9rem] text-right ml-auto" /> : <span className=" text-green-500"> Free </span> }</p>
               </div>
               <hr className="my-5" />
               <div className="my-2 grid grid-cols-2 items-center text-[.9rem]">
                 <p className="text-muted-foreground">Total</p>
-            <div className="text-right "><ProductPrice amount={total} className="font-medium font-Roboto text-[.9rem] text-right" /></div>
+            <div className="text-right "><ProductPrice amount={total+(order.order?.shippingCost||0)} className="font-medium font-Roboto text-[.9rem] text-right ml-auto" /></div>
               </div>
             </div>
           </div>

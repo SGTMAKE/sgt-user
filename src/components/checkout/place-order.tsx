@@ -7,17 +7,34 @@ import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 import { useGlobalContext } from "@/context/store"
 import PaymentProcessingDialog from "../dialog/payment-processing-dialog"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Button } from "@nextui-org/button"
 import { useCurrency } from "@/context/currency-context"
-
-const PlaceOrder = () => {
+import { ProductPrice } from "../currency/price-display"
+import { Country, State, City } from "country-state-city"
+import { useShipping } from "@/context/shipping-context"
+type PriceDetailsProps = {
+  subtotal: number
+  total: number
+}
+const PlaceOrder = ({ subtotal, total }: PriceDetailsProps) => {
   const [processing, setProcessing] = useState(false)
+
   const router = useRouter()
+  const {currentShipping,calculateShipping  } = useShipping()
 
   const payment_mutation = usePayment(makePayment)
   const { deliveryAddress } = useGlobalContext()
   const { selectedCurrency , getExchangeRate } = useCurrency()
+
+  useEffect(() => {
+      const countryData = Country.getAllCountries().find((c) => c.name === deliveryAddress?.country)
+      if (countryData) {
+        const ship = calculateShipping(countryData.isoCode, total)
+        console.log(ship)
+      }
+  }, [subtotal,deliveryAddress])
+  
 
   function makePayment(data: PaymentRes) {
     const options = {
@@ -71,16 +88,38 @@ const PlaceOrder = () => {
     setProcessing(false)
   }
 
+  
+
   function placeOrder() {
 
    
     setProcessing(true)
-    if (deliveryAddress?.id) payment_mutation.mutate({ addressId: deliveryAddress.id, currency: selectedCurrency.code, exchangeRate: getExchangeRate() })
+    if (deliveryAddress?.id) payment_mutation.mutate({ addressId: deliveryAddress.id, currency: selectedCurrency.code, exchangeRate: getExchangeRate() , shippingCost: currentShipping?.shippingCost || 0})
   }
 
   return (
     <>
       <Script id="razorpay-checkout-js" src="https://checkout.razorpay.com/v1/checkout.js" />
+
+      <div className="col-span-2 md:col-start-2">
+            <div className="my-2 grid grid-cols-2 text-[.9rem]">
+              <p className="text-muted-foreground">Item Subtotal</p>
+              <div className="text-right "><ProductPrice amount={subtotal} className="font-medium font-Roboto text-[.9rem] text-right ml-auto" /></div>
+            </div>
+            <div className="my-2 grid grid-cols-2 text-[.9rem]">
+              <p className="text-muted-foreground">Item Discount</p>
+              <div className="text-right flex ml-auto text-green-500"><span>-</span> <ProductPrice amount={subtotal-total} className="font-medium font-Roboto text-[.9rem] text-right  " /></div>
+            </div>
+            <div className="my-2 grid grid-cols-2 text-[.9rem]">
+              <p className="text-muted-foreground">Shipping Fee</p>
+              <p className="text-right font-Roboto font-medium ">{currentShipping?.shippingCost ? <ProductPrice amount={currentShipping?.shippingCost} className="font-medium font-Roboto text-[.9rem] text-right ml-auto" /> : <span className=" text-green-500"> Free </span> }</p>
+            </div>
+            <hr className="my-5" />
+            <div className="my-2 grid grid-cols-2 items-center text-[.9rem]">
+              <p className="text-muted-foreground">Total</p>
+              <div className="text-right "><ProductPrice amount={total+(currentShipping?.shippingCost || 0)} className="font-medium font-Roboto text-[.9rem] text-right ml-auto" /></div>
+            </div>
+          
       <Button
         color="primary"
         onClick={placeOrder}
@@ -90,6 +129,7 @@ const PlaceOrder = () => {
       >
         Place order
       </Button>
+      </div>
       {processing && <PaymentProcessingDialog open={processing} />}
     </>
   )

@@ -30,7 +30,7 @@ model Address {
   name             String
   phone            String?
   address          String
-  district         String
+  city         String
   state            String
   pincode          String
   landmark         String?
@@ -41,6 +41,7 @@ model Address {
   locality         String
   user             User    @relation(fields: [userId], references: [id])
   order            Order[]
+  country          String
 
   @@index([userId])
 }
@@ -150,6 +151,7 @@ model Order {
   orderItems        OrderItem[]
   payment          Payment?
   currency         String?
+  shippingCost     Int?
 }
 
 model OrderItem {
@@ -372,3 +374,15 @@ model QuoteRequest {
   @@index([userId, status], name: "QuoteRequest_userId_status_idx")
   @@index([createdAt], name: "QuoteRequest_createdAt_idx")
 }
+model ShippingRate {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  countryCode           String   @unique
+  countryName           String
+  baseRate              Float
+  freeShippingThreshold Float?
+  isActive              Boolean  @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+

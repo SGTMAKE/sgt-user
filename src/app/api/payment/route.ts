@@ -19,13 +19,16 @@ export async function POST(req: NextRequest) {
   const orderItems: any[] = []
 
   try {
-    const { addressId ,currency = "INR", exchangeRate = 1  } = await req.json()
+    const { addressId ,currency = "INR", exchangeRate = 1,shippingCost  } = await req.json()
     if (!addressId) return error400("Missing delivery address id", {})
 
     const checkoutCookie = req.cookies.get("checkout")?.value || ""
     const session = await getServerSession(authOptions)
     if (!session || !session.user || !session.user.id) {
       return error400("Missing user ID in the session.", { user: null })
+    }
+    if(exchangeRate === 0){
+      return error400("Exchange rate cannot be zero.", {})
     }
     const userId = session.user.id
 
@@ -113,7 +116,7 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    const totalInSelectedCurrency =  amount * exchangeRate
+    const totalInSelectedCurrency =  (amount * exchangeRate)+ (shippingCost || 0)
 
     const response = await razorpay.orders.create({
       amount: Math.round(totalInSelectedCurrency * 100), // Convert to smallest currency unit (paise)
@@ -123,7 +126,7 @@ export async function POST(req: NextRequest) {
     })
 
     const order_id = response.id.split("_")[1].toUpperCase()
-    await createOrder(order_id, amount, userId, addressId, orderItems, currency!== "INR" ? currency :undefined)
+    await createOrder(order_id, amount, userId, addressId, orderItems, currency!== "INR" ? currency :undefined,shippingCost? shippingCost :undefined)
 
     if (checkoutCookie === "") {
       // Delete the cart after creating the order

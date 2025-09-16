@@ -4,6 +4,7 @@ import { dehydrate } from "@tanstack/query-core";
 import Hydrate from "@/lib/query-utils/hydrate-client";
 import { QueryClient } from "@tanstack/react-query";
 import { getAddressServer } from "@/lib/api/address/get-address";
+import { ShippingProvider } from "@/context/shipping-context";
 
 const Address = async () => {
   const queryClient = new QueryClient();
@@ -11,6 +12,7 @@ const Address = async () => {
   const dehydratedState = dehydrate(queryClient);
 
   return (
+    <ShippingProvider>
     <div className="mx-auto max-w-6xl px-3">
       <div className="rounded-md border bg-white p-4">
         <div className="flex items-center justify-between">
@@ -26,6 +28,7 @@ const Address = async () => {
         </Hydrate>
       </div>
     </div>
+    </ShippingProvider>
   );
 };
 

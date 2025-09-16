@@ -81,6 +81,7 @@ export async function POST(req: NextRequest) {
       return error400("Invalid data format", { addresses: null });
     }
   } catch (error) {
+    console.log(error)
     return error500({ addresses: null });
   }
 }

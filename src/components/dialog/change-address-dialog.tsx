@@ -16,9 +16,11 @@ import { Radio, RadioGroup, RadioProps } from "@nextui-org/radio";
 import { cn } from "@nextui-org/system";
 
 const ChangeAddressDialog = ({
+  buttonValue = "Change",
   addresses,
 }: {
   addresses?: AddressProps[] | null;
+  buttonValue?: string;
 }) => {
   const { setDeliveryAddress } = useGlobalContext();
   const [selectedAddress, setSelectedAddress] = useState<
@@ -34,7 +36,7 @@ const ChangeAddressDialog = ({
     <Dialog>
       <DialogTrigger asChild>
         <Button color="primary" size="sm">
-          Change
+          {buttonValue}
         </Button>
       </DialogTrigger>
       <DialogContent>
@@ -111,7 +113,7 @@ function AddressCard({ address }: { address: AddressProps }) {
       <div className="flex flex-wrap items-center gap-1 text-sm">
         <p className="flex-shrink-0">{address.address},</p>
         <p className="flex-shrink-0">{address.locality},</p>
-        <p className="flex-shrink-0">{address.district},</p>
+        <p className="flex-shrink-0">{address.city},</p>
         <p className="flex-shrink-0">
           {address.state} - {address.pincode}
         </p>

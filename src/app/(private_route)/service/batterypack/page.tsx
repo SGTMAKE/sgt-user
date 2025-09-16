@@ -12,7 +12,7 @@ import { useFormSubmission } from "@/hooks/use-form-submission"
 import { ProtectedButton } from "@/components/protected-button"
 import Image from "next/image"
 
-const MAX_FILE_SIZE = 100 * 1024 * 1024 // 100MB
+const MAX_FILE_SIZE = 10 * 1024 * 1024 // 100MB
 const ALLOWED_FILE_TYPES = ["application/pdf", "application/vnd.ms-excel", "application/msword", "image/", "model/step"]
 
 const formSchema = z.object({
@@ -260,6 +260,10 @@ function BatteryPackForm(props: BatteryPackFormProps) {
                 <p className="mt-2 text-sm text-gray-500">
                   Supported formats: PDF, Excel, Word, Images, STP (Max 100MB)
                 </p>
+                <p className="mt-2 text-sm text-gray-500">
+                  Please compress files and keep the size under 10&nbsp;MB.  
+                  For larger files, kindly share them with us at <a href="mailto:support@sgtmake.com" className="text-orange-600 underline">support@sgtmake.com</a>.
+                  </p>
               </>
             ) : (
               <div className="flex flex-col items-center">

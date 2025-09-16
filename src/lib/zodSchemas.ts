@@ -1,6 +1,4 @@
 import { z } from "zod";
-import { stateList } from "./data";
-
 export const ZodAuthSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
   password: z.string().min(8, "Password must be 8 or more characters long"),
@@ -38,13 +36,10 @@ export const ZodAddressSchema = z.object({
     .string()
     .min(3, "Locality name must be 3 or more characters long")
     .max(30, "Locality name must be less than 30 characters long"),
-  district: z
-    .string()
-    .min(3, "District name must be 3 or more characters long")
-    .max(30, "District name must be less than 30 characters long"),
-  state: z.string().refine((value) => stateList.includes(value), {
-    message: "Invalid state name. Please select a valid state.",
-  }),
+  city: z
+    .string(),
+  state: z.string().min(2, "State is required"),
+  country: z.string().min(2, "Country is required"),
   landmark: z.string().optional(),
   alternate_phone: z
     .string()
@@ -53,3 +48,12 @@ export const ZodAddressSchema = z.object({
     })
     .optional(),
 });
+
+
+export const shippingRateSchema = z.object({
+  countryCode: z.string().min(2, "Country code is required"),
+  countryName: z.string().min(1, "Country name is required"),
+  baseRate: z.number().min(0, "Base rate must be non-negative"),
+  freeShippingThreshold: z.number().optional(),
+  isActive: z.boolean().default(true),
+})

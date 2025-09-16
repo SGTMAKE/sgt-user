@@ -13,7 +13,7 @@ import { useFormSubmission } from "@/hooks/use-form-submission"
 import { ProtectedButton } from "@/components/protected-button"
 
 // Define allowed file types and max size
-const MAX_FILE_SIZE = 100 * 1024 * 1024 // 100MB
+const MAX_FILE_SIZE = 10 * 1024 * 1024 // 100MB
 const ALLOWED_FILE_TYPES = [
   "application/pdf",
   "application/vnd.ms-excel",
@@ -248,6 +248,10 @@ function WiringHarnessForm(props: WiringHarnessFormProps) {
                 <div className="mt-2 text-sm text-gray-500 max-w-md px-4">
                   <p className="mb-2">Supports uploading cable pictures, cable drawings, and cable specifications</p>
                   <p>Supports .docx, .pdf, .jpg, .jpeg, .png, .xls, .xlsx, and .csv</p>
+                  <p className="mt-2 text-sm text-gray-500">
+                  Please compress files and keep the size under 10&nbsp;MB.  
+                  For larger files, kindly share them with us at <a href="mailto:support@sgtmake.com" className="text-orange-600 underline">support@sgtmake.com</a>.
+                  </p>
                 </div>
               </>
             ) : (

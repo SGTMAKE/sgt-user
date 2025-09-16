@@ -53,13 +53,13 @@ export async function POST(request: NextRequest): Promise<Response> {
       return NextResponse.json({ error: "No file provided" }, { status: 400 });
     }
 
-    // Validate file type
-    if (!ALLOWED_FILE_TYPES.includes(file.type)) {
-      return NextResponse.json(
-        { error: "Invalid file type. Only PDF, Excel, Word, images, and STEP files are allowed." },
-        { status: 400 }
-      );
-    }
+    // // Validate file type
+    // if (!ALLOWED_FILE_TYPES.includes(file.type)) {
+    //   return NextResponse.json(
+    //     { error: "Invalid file type. Only PDF, Excel, Word, images, and STEP files are allowed." },
+    //     { status: 400 }
+    //   );
+    // }
 
     // Validate file size
     if (file.size > MAX_FILE_SIZE) {

@@ -36,7 +36,7 @@ async function getCartItems(userId: string) {
   })
 }
 
-async function createOrder(orderId: string, amount: number, userId: string, addressId: string, orderItems: any[], currency?: string) {
+async function createOrder(orderId: string, amount: number, userId: string, addressId: string, orderItems: any[], currency?: string,shippingCost?:number) {
   // Create the order first
   const order = await db.order.create({
     data: {
@@ -44,7 +44,8 @@ async function createOrder(orderId: string, amount: number, userId: string, addr
       total: amount,
       userId,
       addressId,
-      currency
+      currency,
+      shippingCost
     },
   })
 

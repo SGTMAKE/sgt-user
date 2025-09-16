@@ -61,7 +61,7 @@ const ItemSummary: React.FC<ItemSummaryProps> = ({
               <span className="text-xs">&#x2716;</span>
               {quantity}
             </p>
-            <div className="text-right "><ProductPrice amount={basePrice} className="font-medium font-Roboto text-[.9rem] text-right" /></div>
+            <div className="text-right "><ProductPrice amount={basePrice} className="font-medium font-Roboto text-[.9rem] text-right ml-auto" /></div>
           </div>
         </div>
       </div>

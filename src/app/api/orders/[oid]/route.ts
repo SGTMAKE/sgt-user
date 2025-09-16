@@ -123,7 +123,9 @@ export async function GET(req: NextRequest, { params }: { params: { oid: string 
         payment_verified: order.payment_verified,
         method: formatMethod(order.payment?.method),
         via: formatVia(order.payment?.via, order.payment?.method),
-        status:order.status
+        status:order.status,
+        currency: order.currency || "INR",
+        shippingCost:order.shippingCost || 0
       },
     })
   } catch (error) {

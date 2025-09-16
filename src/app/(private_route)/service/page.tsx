@@ -14,15 +14,34 @@ import { ProtectedButton } from "@/components/protected-button"
 import Image from "next/image"
 
 // Define allowed file types and max size
-const MAX_FILE_SIZE = 100 * 1024 * 1024 // 100MB
+const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB
 const ALLOWED_FILE_TYPES = [
   "application/pdf",
   "application/vnd.ms-excel",
   "application/msword",
   "image/",
   "model/step",
-  "model/stl",
   "application/octet-stream",
+   "application/acad",
+  "application/x-acad",
+  "application/autocad",
+  "image/vnd.dwg",
+  "application/dwg",
+
+  "model/stl",
+  "application/sla",
+  "application/vnd.ms-pki.stl",
+
+  "image/vnd.dxf",
+  "application/dxf",
+  "application/x-dxf",
+
+  "model/iges",
+  "application/iges",
+
+  "model/step",
+  "application/step",
+  "application/x-step",
 ]
 
 // Define the base form schema
@@ -150,13 +169,15 @@ function ManufacturingServices(props: ManufacturingServicesProps) {
     if (e.target.files && e.target.files[0]) {
       const selectedFile = e.target.files[0]
 
-      // Check file type
-      const isAllowedType = ALLOWED_FILE_TYPES.some(
-        (type) => selectedFile.type.includes(type) || (type.endsWith("/") && selectedFile.type.startsWith(type)),
-      )
+      console.log(selectedFile)
 
-      if (!isAllowedType || selectedFile.size > MAX_FILE_SIZE) {
-        setErrorMessage("Invalid file type or size exceeds 100MB")
+      // Check file type
+      // const isAllowedType = ALLOWED_FILE_TYPES.some(
+      //   (type) => selectedFile.type.includes(type) || (type.endsWith("/") && selectedFile.type.startsWith(type)),
+      // )
+
+      if ( selectedFile.size > MAX_FILE_SIZE) {
+        setErrorMessage("Invalid size exceeds 100MB")
         return
       }
 
@@ -476,6 +497,11 @@ function ManufacturingServices(props: ManufacturingServicesProps) {
                   <p className="mt-2 text-sm text-gray-500">Upload your design files, drawings, or specifications</p>
                   <p className="mt-2 text-sm text-gray-500">
                     File type: {activeService === "3d-printing" ? "STL, OBJ, 3MF, X3G" : ".pdf .igs ,.dxf ,.dwg"}
+                  </p>
+
+                  <p className="mt-2 text-sm text-gray-500">
+                  Please compress files and keep the size under 10&nbsp;MB.  
+                  For larger files, kindly share them with us at <a href="mailto:support@sgtmake.com" className="text-orange-600 underline">support@sgtmake.com</a>.
                   </p>
                 </>
               ) : (

@@ -34,7 +34,7 @@ const OrderConfirmed = async ({ params }: { params: { oid: string } }) => {
             <div className="flex flex-wrap items-center gap-1">
               <p className="flex-shrink-0">{order.order.address.address},</p>
               <p className="flex-shrink-0">{order.order.address.locality},</p>
-              <p className="flex-shrink-0">{order.order.address.district},</p>
+              <p className="flex-shrink-0">{order.order.address.city},</p>
               <p className="flex-shrink-0">
                 {order.order.address.state} - {order.order.address.pincode}
               </p>
@@ -56,7 +56,7 @@ const OrderConfirmed = async ({ params }: { params: { oid: string } }) => {
       <div className="flex w-full justify-between">
         <p className="text-sm font-medium tracking-widest">Total</p>
         <span className="font-Roboto font-medium">
-          <ProductPrice amount={order.order.orderItems.reduce((acc, curr) => acc + curr.offerPrice, 0)} className="font-medium font-Roboto text-[.9rem] text-right" />
+          <ProductPrice amount={order.order.orderItems.reduce((acc, curr) => acc + curr.offerPrice, 0)+(order.order.shippingCost || 0)} className="font-medium font-Roboto text-[.9rem] text-right ml-auto" />
           
         </span>
       </div>
@@ -113,7 +113,7 @@ function OrderItem(orderItem: ItemSummary) {
               <span className="text-xs">&#x2716;</span>
               {orderItem.quantity}
             </p>
-            <div className="text-right "><ProductPrice amount={orderItem.offerPrice} className="font-medium font-Roboto text-[.9rem] text-right" /></div>
+            <div className="text-right "><ProductPrice amount={orderItem.offerPrice} className="font-medium font-Roboto text-[.9rem] text-right ml-auto" /></div>
           </div>
         </div>
       </div>

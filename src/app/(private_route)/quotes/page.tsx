@@ -76,23 +76,14 @@ export default function UserQuotesPage() {
     
 
     try {
-      // Calculate price per item
-      const pricePerItem = (quote.quotedPrice / quote.totalItems)
-
-      // Add each item to cart as custom product
-      for (const item of quote.items) {
         const customProduct = {
-          title: item.title,
-          basePrice: parseFloat((pricePerItem * item.quantity).toFixed(2)),
-          offerPrice: parseFloat((pricePerItem * item.quantity).toFixed(2)),
-          image:   `${process.env.NEXT_PUBLIC_IMAGE_URL}${item.image}` || "/placeholder.svg?height=200&width=200",
+          title: `QUOTE-${quote.id}`,
+          basePrice: parseFloat((quote.quotedPrice).toFixed(2)),
+          offerPrice: parseFloat(((quote.quotedPrice)).toFixed(2)),
+          image: "/services/quote.webp" ,
           options: {
-            ...item.specifications,
-            type: item.type,
-            categoryName: item.categoryName,
-            quoteId: quote.id,
-            quantity: item.quantity,
-          },
+            notes:quote.notes,
+          }
         }
 
         const response = await fetch("/api/cart", {
@@ -101,21 +92,21 @@ export default function UserQuotesPage() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            quantity: item.quantity,
+            quantity: 1,
             color: null,
             customProduct: customProduct,
           }),
         })
 
         if (!response.ok) {
-          throw new Error(`Failed to add ${item.categoryName} to cart`)
+          throw new Error(`Failed to add to cart`)
         }
-      }
+      
 
-      // Update quote status to ACCEPTED
-      await fetch(`/api/quote-request/${quote.id}/accept`, {
-        method: "POST",
-      })
+      // // Update quote status to ACCEPTED
+      // await fetch(`/api/quote-request/${quote.id}/accept`, {
+      //   method: "POST",
+      // })
 
       toast.success("All quoted items added to cart successfully!")
       fetchQuotes() // Refresh quotes

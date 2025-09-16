@@ -7,6 +7,7 @@ interface PaymentRequest {
   currency: string
   exchangeRate: number
   totalAmount?: number
+  shippingCost?:number
 }
 
 const handlePayment = async (data: PaymentRequest): Promise<PaymentRes> => {
