@@ -30,7 +30,7 @@ model Address {
   name             String
   phone            String?
   address          String
-  city         String
+  city         String?
   state            String
   pincode          String
   landmark         String?
