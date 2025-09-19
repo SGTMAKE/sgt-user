@@ -107,6 +107,7 @@ export async function POST(req: NextRequest) {
             })),
             shippingAddress: {
               ...successOrder.address,
+              city: successOrder.address.city ?? "",
               phone: successOrder.address.phone ?? "",
               landmark: successOrder.address.landmark ?? undefined,
               alternate_phone: successOrder.address.alternate_phone ?? undefined,

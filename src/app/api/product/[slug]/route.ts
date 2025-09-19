@@ -24,7 +24,7 @@ export async function GET(
         isDeleted: false,
       },
       include: {
-        images: true,
+        images: {select: { id: true, imagePublicId: true, productId: true, sequence: true }, orderBy: { sequence: "desc" } },
         category: true,
       },
     });

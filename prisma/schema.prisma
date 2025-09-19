@@ -131,6 +131,7 @@ model Image {
   imagePublicId String
   productId     String  @db.ObjectId
   Product       Product @relation(fields: [productId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  sequence    Int?
 
   @@unique([productId, id])
 }
