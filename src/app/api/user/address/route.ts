@@ -26,6 +26,7 @@ export async function GET(req: NextRequest) {
 
     return success200({ addresses });
   } catch (error) {
+    console.log(error)
     return error500({ addresses: null });
   }
 }

@@ -13,6 +13,8 @@ import { useCurrency } from "@/context/currency-context"
 import { ProductPrice } from "../currency/price-display"
 import { Country, State, City } from "country-state-city"
 import { useShipping } from "@/context/shipping-context"
+import { Skeleton } from "@nextui-org/skeleton"
+import { motion } from "framer-motion"
 type PriceDetailsProps = {
   subtotal: number
   total: number
@@ -21,11 +23,23 @@ const PlaceOrder = ({ subtotal, total }: PriceDetailsProps) => {
   const [processing, setProcessing] = useState(false)
 
   const router = useRouter()
-  const {currentShipping,calculateShipping  } = useShipping()
+  const {currentShipping,calculateShipping,isLoading  } = useShipping()
 
   const payment_mutation = usePayment(makePayment)
   const { deliveryAddress } = useGlobalContext()
   const { selectedCurrency , getExchangeRate } = useCurrency()
+
+const freeShippingThreshold = currentShipping?.freeShippingThreshold || 0
+
+// % progress towards free shipping
+const progressValue = freeShippingThreshold
+  ? Math.min((total / freeShippingThreshold) * 100, 100)
+  : 0
+
+// Amount remaining for free shipping
+const remaining = freeShippingThreshold > total
+  ? freeShippingThreshold - total
+  : 0
 
   useEffect(() => {
       const countryData = Country.getAllCountries().find((c) => c.name === deliveryAddress?.country)
@@ -102,6 +116,39 @@ const PlaceOrder = ({ subtotal, total }: PriceDetailsProps) => {
       <Script id="razorpay-checkout-js" src="https://checkout.razorpay.com/v1/checkout.js" />
 
       <div className="col-span-2 md:col-start-2">
+        {freeShippingThreshold > 0 && (
+  <div className="w-full my-6">
+      {/* Progress bar wrapper */}
+      <div className="h-3 w-full rounded-full bg-gray-200 overflow-hidden">
+        <motion.div
+          className="h-full rounded-full bg-gradient-to-r from-orange-400 to-pink-500"
+          initial={{ width: 0 }}
+          animate={{ width: `${progressValue}%` }}
+          transition={{ duration: 0.6, ease: "easeInOut" }}
+        />
+      </div>
+
+      {/* Status text */}
+      <p className="mt-2 text-sm text-center">
+        {progressValue === 100 ? (
+          <span className="text-green-600 font-medium">
+            🎉 You unlocked Free Shipping!
+          </span>
+        ) : (
+          <span className="text-gray-600 flex flex-wrap gap-2  text-center">
+            Add{" "}
+            <ProductPrice
+              amount={remaining}
+              className="font-semibold text-orange-600 text-sm "
+            />{" "}
+            more to unlock{" "}
+            <span className="font-bold text-gray-800">Free Shipping</span>
+          </span>
+        )}
+      </p>
+    </div>
+)}
+
             <div className="my-2 grid grid-cols-2 text-[.9rem]">
               <p className="text-muted-foreground">Item Subtotal</p>
               <div className="text-right "><ProductPrice amount={subtotal} className="font-medium font-Roboto text-[.9rem] text-right ml-auto" /></div>
@@ -112,7 +159,7 @@ const PlaceOrder = ({ subtotal, total }: PriceDetailsProps) => {
             </div>
             <div className="my-2 grid grid-cols-2 text-[.9rem]">
               <p className="text-muted-foreground">Shipping Fee</p>
-              <p className="text-right font-Roboto font-medium ">{currentShipping?.shippingCost ? <ProductPrice amount={currentShipping?.shippingCost} className="font-medium font-Roboto text-[.9rem] text-right ml-auto" /> : <span className=" text-green-500"> Free </span> }</p>
+              <p className="text-right font-Roboto font-medium ">{isLoading? <Skeleton className="h-5 w-14" /> :currentShipping?.shippingCost ? <ProductPrice amount={currentShipping?.shippingCost} className="font-medium font-Roboto text-[.9rem] text-right ml-auto" /> : <span className=" text-green-500"> Free </span> }</p>
             </div>
             <hr className="my-5" />
             <div className="my-2 grid grid-cols-2 items-center text-[.9rem]">
@@ -124,7 +171,7 @@ const PlaceOrder = ({ subtotal, total }: PriceDetailsProps) => {
         color="primary"
         onClick={placeOrder}
         isLoading={payment_mutation.isLoading}
-        isDisabled={!deliveryAddress?.id}
+        isDisabled={!deliveryAddress?.id || isLoading}
         className="w-full"
       >
         Place order

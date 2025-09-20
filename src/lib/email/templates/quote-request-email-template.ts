@@ -167,7 +167,7 @@ export function generateQuoteRequestEmailTemplate(data: QuoteRequestEmailData): 
                 }
 
                 <div class="action-buttons">
-                    <a href="${process.env.NEXT_PUBLIC_APP_URL || "https://sgtmake.com"}/admin/quotes/${data.quoteRequestId}" class="btn btn-primary">
+                    <a href="${process.env.NEXT_PUBLIC_APP_URL || "https://sgt-make-admin.vercel.app"}/dashboard/quote/" class="btn btn-primary">
                         📝 Respond to Quote
                     </a>
                     <a href="mailto:${data.customerEmail}?subject=Quote%20Inquiry%20%23${data.quoteRequestId.slice(-8)}" class="btn btn-secondary">

@@ -27,13 +27,16 @@ const ChangeAddressDialog = ({
     AddressProps | undefined
   >(addresses?.find((address) => address.is_default));
 
+  const [open, setOpen] = useState(false);
+
   function changeDeliveryAddress() {
     toast.success("Delivery address changed successfully.");
     setDeliveryAddress(selectedAddress);
+    setOpen(false);
   }
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen} >
       <DialogTrigger asChild>
         <Button color="primary" size="sm">
           {buttonValue}

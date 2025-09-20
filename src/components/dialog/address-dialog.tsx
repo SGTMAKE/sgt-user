@@ -1,3 +1,4 @@
+import { useState } from "react";
 import AddressForm from "../form/address-form";
 import {
   Dialog,
@@ -16,15 +17,18 @@ const AddressDialog = ({
   action: "edit" | "add";
   address?: AddressProps;
 } & LayoutProps) => {
+
+  const [open, setOpen] = useState(false);
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>{children}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
             {action === "add" ? "Add Address" : "Edit Address"}
           </DialogTitle>
-          <AddressForm address={address} action={action} />
+          <AddressForm address={address} action={action} setOpen={setOpen}  />
         </DialogHeader>
       </DialogContent>
     </Dialog>

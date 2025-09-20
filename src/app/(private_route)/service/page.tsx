@@ -177,7 +177,7 @@ function ManufacturingServices(props: ManufacturingServicesProps) {
       // )
 
       if ( selectedFile.size > MAX_FILE_SIZE) {
-        setErrorMessage("Invalid size exceeds 100MB")
+        setErrorMessage("Invalid size exceeds 10MB")
         return
       }
 
@@ -475,7 +475,7 @@ function ManufacturingServices(props: ManufacturingServicesProps) {
             <div className="my-2">
             <Image src={renderImage()} width={1000} className="w-full h-96 " alt="services image" height={300} />
           </div>
-            <div className="border border-gray-300 h-56 md:h-96 rounded-xl text-center bg-[#f5f3f3] mb-6 flex flex-col items-center justify-center">
+            <div className="border border-gray-300 h-56 md:h-96 rounded-xl text-center bg-[#f5f3f3] mb-6 px-4 flex flex-col items-center justify-center">
               <input
                 ref={fileInputRef}
                 type="file"
@@ -488,16 +488,17 @@ function ManufacturingServices(props: ManufacturingServicesProps) {
 
               {!file ? (
                 <>
-                  <label
-                    htmlFor="file"
-                    className="cursor-pointer flex items-center justify-center bg-orange-100 px-4 py-2 rounded-full text-orange-600 text-sm w-max"
-                  >
-                    <Upload className="w-5 h-5 mr-2" /> Select Your File
-                  </label>
-                  <p className="mt-2 text-sm text-gray-500">Upload your design files, drawings, or specifications</p>
+                <p className="mt-2 text-sm text-gray-500">Upload your design files, drawings, or specifications</p>
                   <p className="mt-2 text-sm text-gray-500">
                     File type: {activeService === "3d-printing" ? "STL, OBJ, 3MF, X3G" : ".pdf .igs ,.dxf ,.dwg"}
                   </p>
+                  <label
+                    htmlFor="file"
+                    className="cursor-pointer flex items-center justify-center bg-orange-100 px-4 py-2 rounded-full text-orange-600 text-sm w-max my-3"
+                  >
+                    <Upload className="w-5 h-5 mr-2" /> Select Your File
+                  </label>
+                  
 
                   <p className="mt-2 text-sm text-gray-500">
                   Please compress files and keep the size under 10&nbsp;MB.  

@@ -38,11 +38,13 @@ const AddressForm = ({
   action,
   orderTotal = 0,
   onSuccess: onSuccessCallback,
+  setOpen= (open)=>{}
 }: {
   address?: AddressProps
   action: "edit" | "add"
   orderTotal?: number
   onSuccess?: () => void
+  setOpen?: (open: boolean) => void
 }) => {
   const { availableCountries, refreshCountries } = useShipping()
   const [selectedCountry, setSelectedCountry] = useState<ICountry | null>(null)
@@ -141,6 +143,7 @@ const AddressForm = ({
   const onSuccess = () => {
     toast.success("Address saved successfully.")
     form.reset()
+    setOpen(false)
     if (onSuccessCallback) onSuccessCallback()
   }
 

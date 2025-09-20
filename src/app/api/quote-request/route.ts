@@ -13,9 +13,9 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const { items, notes, totalItems } = body
+    const { items, notes  } = body
 
-    console.log({ items, notes, totalItems })
+    console.log({ items, notes  })
 
     // Validate request data
     if (!items || !Array.isArray(items) || items.length === 0) {
@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
         userId: user.id,
         items: items,
         notes: notes || "",
-        totalItems: totalItems || items.reduce((sum: any, item: any) => sum + item.quantity, 0),
+        totalItems:  items.reduce((sum: any, item: any) => sum + item.quantity, 0),
         status: "PENDING",
         emailSent: false,
         emailOpened: false,

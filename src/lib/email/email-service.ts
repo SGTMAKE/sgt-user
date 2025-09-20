@@ -22,6 +22,7 @@ interface OrderEmailData {
   shippingAddress: AddressProps
   paymentStatus: boolean
   paymentMethod?: string
+  shippingCost?: number
 }
 interface QuoteRequestNotificationData {
   quoteRequestId: string

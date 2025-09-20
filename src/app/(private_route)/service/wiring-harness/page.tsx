@@ -79,7 +79,7 @@ function WiringHarnessForm(props: WiringHarnessFormProps) {
       const isAllowedType = ALLOWED_FILE_TYPES.includes(selectedFile.type)
 
       if (!isAllowedType || selectedFile.size > MAX_FILE_SIZE) {
-        setErrorMessage("Invalid file type or size exceeds 100MB")
+        setErrorMessage("Invalid file type or size exceeds 10MB")
         return
       }
 
@@ -226,7 +226,7 @@ function WiringHarnessForm(props: WiringHarnessFormProps) {
       ) : (
         <>
           {/* File Upload */}
-          <div className="border border-gray-300 h-56 md:h-96 rounded-xl text-center bg-[#f5f3f3] mb-6 flex flex-col items-center justify-center">
+          <div className="border border-gray-300 h-56 md:h-96 rounded-xl text-center bg-[#f5f3f3] mb-6 px-4 flex flex-col items-center justify-center">
             <input
               ref={fileInputRef}
               type="file"
@@ -239,15 +239,17 @@ function WiringHarnessForm(props: WiringHarnessFormProps) {
 
             {!file ? (
               <>
+                <div className="mt-2 text-sm text-gray-500  px-4">
+
+              <p className="mb-2">Supports uploading cable pictures, cable drawings, and cable specifications</p>
+                  <p>Supports .docx, .pdf, .jpg, .jpeg, .png, .xls, .xlsx, and .csv</p>
                 <label
                   htmlFor="file"
-                  className="cursor-pointer flex items-center justify-center bg-orange-100 px-4 py-2 rounded-full text-orange-600 text-sm w-max"
+                  className="cursor-pointer flex items-center justify-center bg-orange-100 px-4 py-2 rounded-full text-orange-600 text-sm w-max mx-auto my-3"
                 >
                   <Upload className="w-5 h-5 mr-2" /> Select Your File
                 </label>
-                <div className="mt-2 text-sm text-gray-500 max-w-md px-4">
-                  <p className="mb-2">Supports uploading cable pictures, cable drawings, and cable specifications</p>
-                  <p>Supports .docx, .pdf, .jpg, .jpeg, .png, .xls, .xlsx, and .csv</p>
+                  
                   <p className="mt-2 text-sm text-gray-500">
                   Please compress files and keep the size under 10&nbsp;MB.  
                   For larger files, kindly share them with us at <a href="mailto:support@sgtmake.com" className="text-orange-600 underline">support@sgtmake.com</a>.

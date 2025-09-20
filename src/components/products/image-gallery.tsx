@@ -44,17 +44,18 @@ const ImageGallery = ({ images }: ImageGalleryProps) => {
       <div className="mx-auto flex aspect-[29/30] w-full overflow-hidden md:sticky md:top-32 md:w-[80%]">
         {images.map((image, i) => (
           <div
-            className="relative h-full w-full flex-shrink-0 flex-grow-0"
+            className="relative h-full w-full flex justify-center items-center flex-shrink-0 flex-grow-0 "
             key={i}
           >
             <Image
-              fill
+              width={500}
+              height={500}
               src={process.env.NEXT_PUBLIC_IMAGE_URL + image.url}
               priority
-              sizes="(max-width: 999px) calc(100vw - 48px), 640px"
+              // sizes="(max-width: 999px) calc(100vw - 48px), 640px"
               alt="Product image"
               style={{ translate: `${-100 * imageIndex}%` }}
-              className="bg-gray-200 transition-[translate] duration-300 ease-in-out md:ms-0"
+              className="bg-gray-200 transition-[translate] duration-300 ease-in-out md:ms-0 w-full "
             />
           </div>
         ))}

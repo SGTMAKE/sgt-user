@@ -114,6 +114,7 @@ export async function POST(req: NextRequest) {
             },
             paymentStatus: true,
             paymentMethod: "Razorpay",
+            shippingCost: successOrder.shippingCost || 0
           })
         }
       } catch (emailError) {

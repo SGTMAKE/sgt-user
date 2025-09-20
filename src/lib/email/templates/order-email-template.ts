@@ -12,6 +12,7 @@ interface OrderEmailData {
   shippingAddress: AddressProps
   paymentStatus: boolean
   paymentMethod?: string
+  shippingCost?: number
 }
 
 export const generateOrderEmailTemplate = (data: OrderEmailData) => {
@@ -26,6 +27,7 @@ export const generateOrderEmailTemplate = (data: OrderEmailData) => {
     shippingAddress,
     paymentStatus,
     paymentMethod,
+    shippingCost
   } = data
 
   return `
@@ -404,11 +406,11 @@ export const generateOrderEmailTemplate = (data: OrderEmailData) => {
                             (item) => `
                             <tr>
                                 <td>
-                                    <img src="${item.imageUrl}" alt="${item.title}" class="item-image" onerror="this.style.display='none'">
+                                    <img src="${process.env.NEXT_PUBLIC_IMAGE_URL+item.imageUrl}" alt="${item.title}" class="item-image" onerror="this.style.display='none'">
                                 </td>
                                 <td>
                                     <div class="item-details">${item.title}</div>
-                                    ${item.color ? `<span class="item-color">Color: ${item.color}</span>` : ""}
+                                    ${item.color ? `<span class="item-color">Model No. : ${item.color}</span>` : ""}
                                     ${item.isCustomProduct ? '<span class="item-color">Custom Product</span>' : ""}
                                 </td>
                                 <td>
@@ -428,7 +430,7 @@ export const generateOrderEmailTemplate = (data: OrderEmailData) => {
                 </table>
                 
                 <div class="total-section">
-                    <div class="total-amount">${formatCurrency(totalAmount)}</div>
+                    <div class="total-amount">${formatCurrency(totalAmount)} + (${shippingCost ?formatCurrency(shippingCost) : "NO"} Shipping Charges)</div>
                     <div class="total-label">Total Order Value</div>
                 </div>
                 
@@ -440,7 +442,7 @@ export const generateOrderEmailTemplate = (data: OrderEmailData) => {
                         ${shippingAddress.alternate_phone ? `<div class="address-line">📞 ${shippingAddress.alternate_phone} (Alt)</div>` : ""}
                         <div class="address-line">📍 ${shippingAddress.address}</div>
                         <div class="address-line">${shippingAddress.locality}</div>
-                        <div class="address-line">${shippingAddress?.city}, ${shippingAddress.state}</div>
+                        <div class="address-line">${shippingAddress?.city}, ${shippingAddress.state},${shippingAddress.country}</div>
                         <div class="address-line">PIN: ${shippingAddress.pincode}</div>
                     </div>
                 </div>

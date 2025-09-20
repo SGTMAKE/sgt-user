@@ -23,11 +23,10 @@ type ProductTemplateProps = {
 
 const ProductTemplate = ({ product, searchParams }: ProductTemplateProps) => {
   const selectedColor = searchParams.color as string;
-  const color = capitalizeSearchParam(selectedColor);
 
   const setDefaultVariant = () => {
     const urlVariant = product.colorVariants.find(
-      (variant) => variant.color === color,
+      (variant) => variant.color?.toLocaleLowerCase() === selectedColor?.toLocaleLowerCase(),
     );
     if (!urlVariant) {
       return product.colorVariants[0];
