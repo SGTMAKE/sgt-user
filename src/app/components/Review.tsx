@@ -1,46 +1,56 @@
 "use client";
-import { useState } from "react";
-import { ChevronLeft, ChevronRight, Star } from "lucide-react";
-import Image from "next/image";
-
+import { Swiper, SwiperSlide } from "swiper/react";
+import {Pagination, Autoplay } from "swiper/modules";
+import { useRef } from "react";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import { ChevronLeft, ChevronRight, Star, UserCircle2Icon } from "lucide-react";
 const reviews = [
   {
     quote:
-      "I was amazed by the vast range of products on this platform. From cutting-edge electronics to elegant home goods and fashion items, everything exceeded my expectations.",
-    name: "Mr. Raghav Malhotra",
-    position: "Operations Head, Sterling Group",
+      "We ordered a precision-machined component from SGTMake, and the results were outstanding — exceptional accuracy, superior finish, and attention to detail. Their professionalism, clear communication, and timely delivery made the process seamless. A truly reliable partner for quality engineering.",
+    name: "Shubham Kalra ",
+    position: "Antsys innovations Pvt ltd",
     img: "/testimonial1.png",
     rating: 5,
   },
   {
     quote:
-      "Outstanding service and premium product quality. The team is incredibly professional, and my entire experience was seamless from start to finish.",
-    name: "Ms. Priya Sharma",
-    position: "CEO, Horizon Tech Pvt Ltd",
+      "SGTMake delivered outstanding engineering services with deep technical expertise, timely execution, and practical solutions. Their innovation and attention to detail saved us time and resources, setting a benchmark in reliability and excellence.",
+    name: "Saivi Industries",
+    position: "",
     img: "/testimonial3.png",
     rating: 4,
   },
   {
     quote:
-      "Highly reliable platform with top-notch customer service. I was impressed by the attention to detail and quick delivery.",
-    name: "Ms. Shubhani Verma",
-    position: "Executive Administrative Assistant",
+      "The battery packs from SGTMake are top-notch — reliable, durable, and backed with excellent support. Perfect for our EV conversions!",
+    name: "Ravi K., Pune",
+    position: "",
+    img: "/testimonial2.png",
+    rating: 5,
+  },
+  {
+    quote:
+      "We ordered connectors and wiring harnesses from SGTMake, and the quality is far better than local alternatives. Timely delivery too.",
+    name: "Mehul S., Bangalore",
+    position: "",
+    img: "/testimonial2.png",
+    rating: 5,
+  },
+  {
+    quote:
+      "SGTMake EV parts are premium yet competitively priced. Their technical team guided us through installation without any hassle.",
+    name: "Priya M., Delhi",
+    position: "",
     img: "/testimonial2.png",
     rating: 5,
   },
 ];
 
 const CustomerReview = () => {
-  const [current, setCurrent] = useState(0);
-  const total = reviews.length;
-
-  const handlePrev = () => {
-    setCurrent((prev) => (prev === 0 ? total - 1 : prev - 1));
-  };
-
-  const handleNext = () => {
-    setCurrent((prev) => (prev === total - 1 ? 0 : prev + 1));
-  };
+  const swiperRef = useRef<any>(null);
 
   return (
     <section className="p-8 flex flex-col md:flex-row items-center gap-10 max-w-6xl mx-auto">
@@ -53,16 +63,18 @@ const CustomerReview = () => {
           Discover real experiences from satisfied customers who trust our
           products and services. See why businesses choose to work with us.
         </p>
+
+        {/* Custom Navigation Buttons */}
         <div className="flex justify-center md:justify-start gap-4">
           <button
-            onClick={handlePrev}
+            onClick={() => swiperRef.current?.slidePrev()}
             className="p-3 bg-gray-200 hover:bg-gray-300 rounded-full transition"
             aria-label="Previous Review"
           >
             <ChevronLeft />
           </button>
           <button
-            onClick={handleNext}
+            onClick={() => swiperRef.current?.slideNext()}
             className="p-3 bg-orange-400 hover:bg-orange-600 text-white rounded-full transition"
             aria-label="Next Review"
           >
@@ -71,60 +83,48 @@ const CustomerReview = () => {
         </div>
       </div>
 
-      {/* Right Section */}
+      {/* Right Section with Swiper */}
       <div className="md:w-2/3 bg-white shadow-lg rounded-2xl p-6 md:p-8 w-full max-w-lg mx-auto overflow-hidden">
-        <div key={current} className="fade-in-slide">
-          <p className="text-xl font-medium text-gray-800 italic mb-6">
-            “{reviews[current].quote}”
-          </p>
-          <div className="flex items-center gap-4 mb-4">
-            <Image
-              src={reviews[current].img}
-              alt={reviews[current].name}
-              height={50}
-              width={50}
-              className="rounded-full object-cover"
-            />
-            <div>
-              <p className="font-semibold text-gray-900">
-                {reviews[current].name}
-              </p>
-              <p className="text-gray-500 text-sm">{reviews[current].position}</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-1">
-            {[...Array(5)].map((_, index) => (
-              <Star
-                key={index}
-                size={20}
-                className={`${
-                  index < reviews[current].rating
-                    ? "text-yellow-400 fill-yellow-400"
-                    : "text-gray-300"
-                }`}
-              />
-            ))}
-          </div>
-        </div>
+        <Swiper
+          modules={[Pagination, Autoplay]}
+          // pagination={{ clickable: true }}
+          autoplay={{ delay: 4000, disableOnInteraction: false }}
+          loop
+          onSwiper={(swiper) => (swiperRef.current = swiper)}
+          className="w-full"
+          
+        >
+          {reviews.map((review, idx) => (
+            <SwiperSlide key={idx} className="flex justify-center items-center">
+              <div >
+                <p className="text-base md:text-lg font-medium text-gray-800 italic mb-6">
+                  “{review.quote}”
+                </p>
+                <div className="flex items-center gap-4 mb-4">
+                  <UserCircle2Icon size={40} />
+                  <div>
+                    <p className="font-semibold text-gray-900">{review.name}</p>
+                    <p className="text-gray-500 text-sm">{review.position}</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-1">
+                  {[...Array(5)].map((_, index) => (
+                    <Star
+                      key={index}
+                      size={20}
+                      className={`${
+                        index < review.rating
+                          ? "text-yellow-400 fill-yellow-400"
+                          : "text-gray-300"
+                      }`}
+                    />
+                  ))}
+                </div>
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
       </div>
-
-      {/* CSS for Animation */}
-      <style jsx>{`
-        .fade-in-slide {
-          animation: fadeSlide 0.5s ease-in-out;
-        }
-
-        @keyframes fadeSlide {
-          0% {
-            opacity: 0;
-            transform: translateX(20px);
-          }
-          100% {
-            opacity: 1;
-            transform: translateX(0);
-          }
-        }
-      `}</style>
     </section>
   );
 };

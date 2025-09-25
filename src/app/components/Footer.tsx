@@ -98,7 +98,7 @@ const Footer = () => {
   <LocateIcon className=" text-orange-500 w-5"/>
   </span>
     <p  className=" ">
-      G-152, Fourth Phase, Riico Industrial Area, Near Rajendra Toyota Service Center, Bhilwara, Rajasthan 311001, India.
+     6980/2, RIICO Fourth Phase, Industrial Area, Bhilwara 311001, Rajasthan, India
     </p>
   </div>
 
