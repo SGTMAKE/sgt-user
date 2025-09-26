@@ -1,4 +1,4 @@
-/** @format */
+
 "use client";
 
 import Image from "next/image";
@@ -7,11 +7,12 @@ import Link from "next/link";
 import { IoIosArrowUp } from "react-icons/io";
 
 import { AiOutlineClose } from "react-icons/ai";
-// import { useAutoAnimate } from "@formkit/auto-animate/react";
-
+import LinkButton from "../shared/link-button";
+import { Button } from "../ui/button";
+import { useRouter } from "next/navigation";
 export type NavItem = {
   label: string;
-  link?: string | object;
+  link?: string ;
   children?: NavItem[];
   iconImage?: string;
 };
@@ -86,6 +87,7 @@ export const navItems: NavItem[] = [
 export default function Navlist() {
 //   const [animationParent] = useAutoAnimate();
   const [isSideMenuOpen, setSideMenue] = useState(false);
+  const router = useRouter();
   function openSideMenu() {
     setSideMenue(true);
   }
@@ -99,23 +101,23 @@ export default function Navlist() {
       <section className="flex items-center gap-10">
     
         {isSideMenuOpen && <MobileNav closeSideMenu={closeSideMenu} />}
-        <div className="hidden md:flex items-center gap-4 transition-all">
+        <div className="hidden md:flex items-center gap-2 transition-all">
           {navItems.map((d, i) => (
-            <Link
+            <div
               key={i}
-              href={d.link ?? "#"}
-              className="relative group   py-3 transition-all "
+              onClick={()=>!d.children && router.push(d.link ?? "#")}
+              className="relative group px-2 py-3 transition-all bg-white hover:bg-orange-50  hover:text-orange-500  text-gray-900 font-normal dark:text-white rounded-lg"
             >
-              <span className="flex cursor-pointer items-center gap-2 text-gray-900 group-hover:text-black ">
+              <div className="flex cursor-pointer items-center gap-2 text-gray-900 group-hover:text-black ">
                 <span>{d.label}</span>
                 {d.children && (
                   <IoIosArrowUp className=" rotate-180  transition-all group-hover:rotate-0" />
                 )}
-              </span>
+              </div>
 
               {/* dropdown */}
               {d.children && (
-                <p className="absolute   left-0   top-10 hidden w-auto  flex-col gap-1   rounded-lg bg-white py-3 shadow-md  transition-all group-hover:flex ">
+                <div className="absolute   left-0   top-10 hidden w-auto  flex-col gap-1   rounded-lg bg-white py-3 shadow-md  transition-all group-hover:flex ">
                   {d.children.map((ch, i) => (
                     <Link
                       key={i}
@@ -133,9 +135,9 @@ export default function Navlist() {
                       </span>
                     </Link>
                   ))}
-                </p>
+                </div>
               )}
-            </Link>
+            </div>
           ))}
         </div>
         {/* navitems */}

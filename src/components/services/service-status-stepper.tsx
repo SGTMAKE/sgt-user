@@ -22,23 +22,7 @@ export function ServiceStatusStepper({ status, serviceType }: ServiceStatusStepp
       { id: "testing", label: "Quality Test", icon: <ClipboardCheck className="h-6 w-6" /> },
       { id: "shipped", label: "Shipped", icon: <FaShippingFast className="h-6 w-6" /> },
       { id: "delivered", label: "Delivered", icon: <CheckCircle2 className="h-6 w-6" /> },
-
     ]
-
-    // Add shipping step for physical products
-    if (["cnc-machining", "laser-cutting", "3d-printing"].includes(serviceType)) {
-      baseSteps.splice(5, 0, {
-        id: "ready_for_shipping",
-        label: "Ready for Shipping",
-        icon: <Package className="h-6 w-6" />,
-      })
-      baseSteps.splice(6, 0, {
-        id: "shipped",
-        label: "Shipped",
-        icon: <Truck className="h-6 w-6" />,
-      })
-    }
-
     return baseSteps
   }
 
