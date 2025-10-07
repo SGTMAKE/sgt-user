@@ -171,10 +171,9 @@ function ManufacturingServices(props: ManufacturingServicesProps) {
 
       console.log(selectedFile)
 
-      // Check file type
-      // const isAllowedType = ALLOWED_FILE_TYPES.some(
-      //   (type) => selectedFile.type.includes(type) || (type.endsWith("/") && selectedFile.type.startsWith(type)),
-      // )
+      const isAllowedType = ALLOWED_FILE_TYPES.some(
+        (type) => selectedFile.type.includes(type) || (type.endsWith("/") && selectedFile.type.startsWith(type)),
+      )
 
       if ( selectedFile.size > MAX_FILE_SIZE) {
         setErrorMessage("Invalid size exceeds 10MB")

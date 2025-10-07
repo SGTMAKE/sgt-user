@@ -2,7 +2,7 @@
 
 import { useSession } from "next-auth/react"
 import { toast } from "sonner"
-import { useAddFastenerToCart } from "@/api-hooks/cart/add-fastener-to-cart"
+import { useAddFastenerToCart } from "@/api-hooks/cart/add-custom-to-cart"
 import { useQueryClient } from "@tanstack/react-query"
 import { deleteCookie, getCookie, setCookie } from "cookies-next"
 import { useRouter } from "next/navigation"

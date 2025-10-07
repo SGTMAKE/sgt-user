@@ -5,13 +5,9 @@ import { useSession } from "next-auth/react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Separator } from "@/components/ui/separator"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { Package, Clock, CheckCircle, XCircle, Mail, ShoppingCart, Calendar, IndianRupee } from "lucide-react"
+import { Package, Clock, CheckCircle, XCircle, Mail, Calendar, ArrowRight, Eye } from "lucide-react"
 import { toast } from "sonner"
-import Image from "next/image"
 import Link from "next/link"
-import SmartImage from "@/components/ui/ImageCorrector"
 import { ProductPrice } from "@/components/currency/price-display"
 
 interface QuoteRequest {
@@ -37,11 +33,10 @@ interface QuoteRequest {
   updatedAt: string
 }
 
-export default function UserQuotesPage() {
+export default function QuotesListPage() {
   const { data: session } = useSession()
   const [quotes, setQuotes] = useState<QuoteRequest[]>([])
   const [loading, setLoading] = useState(true)
-  const [addingToCart, setAddingToCart] = useState<string | null>(null)
 
   useEffect(() => {
     if (session) {
@@ -66,58 +61,6 @@ export default function UserQuotesPage() {
     }
   }
 
-  const handleAddToCart = async (quote: QuoteRequest) => {
-    if (!quote.quotedPrice) {
-      toast.error("No price available for this quote")
-      return
-    }
-
-    setAddingToCart(quote.id)
-    
-
-    try {
-        const customProduct = {
-          title: `QUOTE-${quote.id}`,
-          basePrice: parseFloat((quote.quotedPrice).toFixed(2)),
-          offerPrice: parseFloat(((quote.quotedPrice)).toFixed(2)),
-          image: "/services/quote.webp" ,
-          options: {
-            notes:quote.notes,
-          }
-        }
-
-        const response = await fetch("/api/cart", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            quantity: 1,
-            color: null,
-            customProduct: customProduct,
-          }),
-        })
-
-        if (!response.ok) {
-          throw new Error(`Failed to add to cart`)
-        }
-      
-
-      // // Update quote status to ACCEPTED
-      // await fetch(`/api/quote-request/${quote.id}/accept`, {
-      //   method: "POST",
-      // })
-
-      toast.success("All quoted items added to cart successfully!")
-      fetchQuotes() // Refresh quotes
-    } catch (error) {
-      console.error("Error adding to cart:", error)
-      toast.error("Failed to add items to cart")
-    } finally {
-      setAddingToCart(null)
-    }
-  }
-
   const getStatusIcon = (status: string) => {
     switch (status) {
       case "PENDING":
@@ -136,15 +79,15 @@ export default function UserQuotesPage() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case "PENDING":
-        return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
+        return "bg-yellow-100 text-yellow-800 border-yellow-300"
       case "QUOTED":
-        return "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
+        return "bg-blue-100 text-blue-800 border-blue-300"
       case "ACCEPTED":
-        return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
+        return "bg-green-100 text-green-800 border-green-300"
       case "REJECTED":
-        return "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
+        return "bg-red-100 text-red-800 border-red-300"
       default:
-        return "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200"
+        return "bg-gray-100 text-gray-800 border-gray-300"
     }
   }
 
@@ -168,9 +111,9 @@ export default function UserQuotesPage() {
       <div className="container mx-auto px-4 py-8">
         <div className="animate-pulse space-y-6">
           <div className="h-8 bg-gray-200 rounded w-1/3"></div>
-          <div className="grid gap-6">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="h-48 bg-gray-200 rounded-lg"></div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[1, 2, 3, 4, 5, 6].map((i) => (
+              <div key={i} className="h-64 bg-gray-200 rounded-lg"></div>
             ))}
           </div>
         </div>
@@ -182,7 +125,7 @@ export default function UserQuotesPage() {
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">My Quote Requests</h1>
-        <p className="text-gray-600 dark:text-gray-400">Track your quote requests and add approved items to cart</p>
+        <p className="text-gray-600 dark:text-gray-400">Track and manage your quote requests</p>
       </div>
 
       {quotes.length === 0 ? (
@@ -202,26 +145,19 @@ export default function UserQuotesPage() {
           </CardContent>
         </Card>
       ) : (
-        <div className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {quotes.map((quote) => (
-            <Card key={quote.id} className="overflow-hidden">
+            <Card
+              key={quote.id}
+              className="overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer group"
+            >
               <CardHeader className="bg-gradient-to-r from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <CardTitle className="flex items-center gap-2 text-orange-800 dark:text-orange-200">
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <CardTitle className="flex items-center gap-2 text-orange-800 dark:text-orange-200 text-lg">
                       <Package className="w-5 h-5" />
                       Quote #{quote.id.slice(-8)}
                     </CardTitle>
-                    <div className="flex items-center gap-4 mt-2 text-sm text-orange-700 dark:text-orange-300">
-                      <div className="flex items-center gap-1">
-                        <Calendar className="w-4 h-4" />
-                        {new Date(quote.createdAt).toLocaleDateString()}
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <Package className="w-4 h-4" />
-                        {quote.totalItems} items
-                      </div>
-                    </div>
                   </div>
                   <Badge className={`${getStatusColor(quote.status)} flex items-center gap-1`}>
                     {getStatusIcon(quote.status)}
@@ -231,155 +167,49 @@ export default function UserQuotesPage() {
               </CardHeader>
 
               <CardContent className="p-6">
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                  {/* Items List */}
-                  <div className="lg:col-span-2">
-                    <h4 className="font-semibold text-gray-900 dark:text-white mb-4">Requested Items</h4>
-                    <ScrollArea className="max-h-64">
-                      <div className="space-y-3">
-                        {quote.items.map((item, index) => (
-                          <div
-                            key={index}
-                            className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg"
-                          >
-                            <div className="w-12 h-12 bg-white dark:bg-gray-700 rounded-md flex items-center justify-center flex-shrink-0">
-                              {item.image ? (
-                                <SmartImage
-                                  src={item.image || "/placeholder.svg"}
-                                  alt={item.categoryName}
-                                  width={32}
-                                  height={32}
-                                  className="object-contain"
-                                />
-                              ) : (
-                                <Package className="w-6 h-6 text-gray-400" />
-                              )}
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <h5 className="font-medium text-sm text-gray-900 dark:text-white truncate">
-                                {item.categoryName}
-                              </h5>
-                              <p className="text-xs text-gray-600 dark:text-gray-400 truncate">{item.title}</p>
-                              <div className="flex items-center gap-2 mt-1">
-                                <Badge variant="outline" className="text-xs">
-                                  {item.type}
-                                </Badge>
-                                <span className="text-xs text-gray-500">Qty: {item.quantity}</span>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </ScrollArea>
+                <div className="space-y-4">
+                  {/* Quote Summary */}
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="text-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                      <p className="text-2xl font-bold text-orange-600">{quote.totalItems}</p>
+                      <p className="text-xs text-gray-600 dark:text-gray-400">Total Items</p>
+                    </div>
+                    <div className="text-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                      <p className="text-2xl font-bold text-blue-600">{quote.items.length}</p>
+                      <p className="text-xs text-gray-600 dark:text-gray-400">Item Types</p>
+                    </div>
                   </div>
 
-                  {/* Quote Details */}
-                  <div className="space-y-4">
-                    {/* Status Timeline */}
-                    <div className="space-y-3">
-                      <h5 className="font-medium text-gray-900 dark:text-white">Status Timeline</h5>
-                      <div className="space-y-2">
-                        <div className="flex items-center gap-2 text-sm">
-                          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                          <span className="text-gray-600 dark:text-gray-400">Quote Submitted</span>
-                        </div>
-                        <div
-                          className={`flex items-center gap-2 text-sm ${quote.emailSent ? "text-green-600" : "text-gray-400"}`}
-                        >
-                          <div
-                            className={`w-2 h-2 rounded-full ${quote.emailSent ? "bg-green-500" : "bg-gray-300"}`}
-                          ></div>
-                          <span>Admin Notified</span>
-                        </div>
-                        <div
-                          className={`flex items-center gap-2 text-sm ${quote.status === "QUOTED" ? "text-green-600" : "text-gray-400"}`}
-                        >
-                          <div
-                            className={`w-2 h-2 rounded-full ${quote.status === "QUOTED" ? "bg-green-500" : "bg-gray-300"}`}
-                          ></div>
-                          <span>Quote Received</span>
-                        </div>
-                        <div
-                          className={`flex items-center gap-2 text-sm ${quote.status === "ACCEPTED" ? "text-green-600" : "text-gray-400"}`}
-                        >
-                          <div
-                            className={`w-2 h-2 rounded-full ${quote.status === "ACCEPTED" ? "bg-green-500" : "bg-gray-300"}`}
-                          ></div>
-                          <span>Quote Accepted</span>
-                        </div>
+                  {/* Date */}
+                  <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                    <Calendar className="w-4 h-4" />
+                    <span>{new Date(quote.createdAt).toLocaleDateString()}</span>
+                  </div>
+
+                  {/* Price (if quoted) */}
+                  
+                    <div className="bg-green-50 dark:bg-green-900/20 p-3 rounded-lg mb-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-gray-600 dark:text-gray-400">Quoted Price:</span>
+                        {quote.quotedPrice ? <ProductPrice
+                          className="text-lg font-bold text-green-600 dark:text-green-400"
+                          amount={quote.quotedPrice}
+                        /> : <span className="text-lg font-bold text-green-600 dark:text-green-400">PENDING</span>}
                       </div>
                     </div>
+                  
 
-                    {/* Price Information */}
-                    {quote.quotedPrice && (
-                      <>
-                        <Separator />
-                        <div className="space-y-2">
-                          <h5 className="font-medium text-gray-900 dark:text-white">Quote Details</h5>
-                          <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg">
-                            <div className="flex items-center justify-between mb-2">
-                              <span className="text-sm text-gray-600 dark:text-gray-400">Total Price:</span>
-                              <span className=" flex items-center">
-                                <ProductPrice className="text-lg font-bold text-green-600 dark:text-green-400" amount={quote.quotedPrice}/>
-                              </span>
-                            </div>
-                            
-                          </div>
-                        </div>
-                      </>
-                    )}
+                  
 
-                    {/* Admin Response */}
-                    {quote.adminResponse && (
-                      <>
-                        <Separator />
-                        <div className="space-y-2">
-                          <h5 className="font-medium text-gray-900 dark:text-white">Response Message</h5>
-                          <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg">
-                            <p className="text-sm text-gray-700 dark:text-gray-300">{quote.adminResponse}</p>
-                          </div>
-                        </div>
-                      </>
-                    )}
-
-                    {/* Customer Notes */}
-                    {quote.notes && (
-                      <>
-                        <Separator />
-                        <div className="space-y-2">
-                          <h5 className="font-medium text-gray-900 dark:text-white">Your Notes</h5>
-                          <div className="bg-gray-50 dark:bg-gray-800 p-3 rounded-lg">
-                            <p className="text-sm text-gray-700 dark:text-gray-300">{quote.notes}</p>
-                          </div>
-                        </div>
-                      </>
-                    )}
-
-                    {/* Actions */}
-                    {quote.status === "QUOTED" && quote.quotedPrice && (
-                      <div className="pt-4">
-                        <Button
-                          onClick={() => handleAddToCart(quote)}
-                          disabled={addingToCart === quote.id}
-                          className="w-full bg-orange-500 hover:bg-orange-600"
-                        >
-                          {addingToCart === quote.id ? (
-                            <div className="flex items-center gap-2">
-                              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                              Adding to Cart...
-                            </div>
-                          ) : (
-                            <div className="flex items-center gap-2">
-                              <ShoppingCart className="w-4 h-4" />
-                              Add All to Cart
-                            </div>
-                          )}
-                        </Button>
-                        <p className="text-xs text-gray-500 text-center mt-2">
-                          This will add all quoted items to your cart
-                        </p>
-                      </div>
-                    )}
+                  {/* View Details Button */}
+                  <div>
+                  <Link href={`/quotes/${quote.id}`} >
+                    <Button className="w-full bg-orange-500 hover:bg-orange-600 group-hover:bg-orange-600">
+                      <Eye className="w-4 h-4 mr-2" />
+                      View Details
+                      <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                    </Button>
+                  </Link>
                   </div>
                 </div>
               </CardContent>

@@ -143,3 +143,12 @@ input:-webkit-autofill:active {
 .serviceCard-bg .group-hover\:bg-none {
   background-image: none;
 }
+.no-spinners::-webkit-outer-spin-button,
+.no-spinners::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.no-spinners[type="number"] {
+  -moz-appearance: textfield;
+}

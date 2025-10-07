@@ -42,8 +42,8 @@ const ProductCard = ({
       </CardBody>
       <CardFooter className="    bg-[#ffffff9d] backdrop-blur-md rounded-md  flex flex-col w-full  h-full ">
   
-        <div className="">
-                <h2 className="text-md font-semibold line-clamp-1">{title}</h2>
+        <div className="w-full text-left">
+                <h2 className=" text-md font-semibold line-clamp-1">{title}</h2>
                 
                 <p>
                   <span className=" font-bold ">

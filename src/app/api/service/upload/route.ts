@@ -3,40 +3,8 @@ import cloudinary from "@/lib/cloudinary";
 import { Readable } from "stream";
 import { uid } from "uid";
 // Define allowed file types and max size
-const MAX_FILE_SIZE = 100 * 1024 * 1024; // 100MB
-const ALLOWED_FILE_TYPES = [
-  "application/pdf",
-  "application/vnd.ms-excel",
-  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-  "application/msword",
-  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-  "application/pdf",
-  "application/vnd.ms-excel",
-  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-  "application/msword",
-  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-  "image/jpeg",
-  "image/png",
-  "image/jpg",
-  "text/csv",
-  "image/jpeg",
-  "image/png",
-  "image/gif",
-  "image/webp",
-  "model/step",
-  "model/stl",
-  "application/step",
-  "application/sla",         // alternate .stl
-  "application/stl",         // alternate .stl
-  "text/plain",              // sometimes .obj files are uploaded as text/plain
-  "model/obj",               // .obj (rare, fallback MIME type)
-  "application/vnd.ms-3mfdocument", // .3mf
-  "application/x-3mf",       // alternate .3mf MIME
-  "application/x-x3g",  
-  "image/vnd.dxf",
-  "application/dxf",
-  "application/octet-stream",
-];
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 100MB
+
 
 // Helper function to convert File to buffer
 async function fileToBuffer(file: File): Promise<Buffer> {
@@ -63,7 +31,7 @@ export async function POST(request: NextRequest): Promise<Response> {
 
     // Validate file size
     if (file.size > MAX_FILE_SIZE) {
-      return NextResponse.json({ error: "File size exceeds 100MB limit" }, { status: 400 });
+      return NextResponse.json({ error: "File size exceeds 10MB limit" }, { status: 400 });
     }
 
     const buffer = await fileToBuffer(file);

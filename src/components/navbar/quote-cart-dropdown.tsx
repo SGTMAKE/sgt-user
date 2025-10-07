@@ -150,7 +150,7 @@ export default function QuoteCartDropdown() {
                         
                       </div>
                     </DialogHeader>
-                    <div className="flex-1 overflow-hidden">
+                    <div className="flex-1  ">
                       {items.length === 0 ? (
                         <div className="p-6 text-center space-y-3">
                           <div className="w-12 h-12 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto">
@@ -162,9 +162,9 @@ export default function QuoteCartDropdown() {
                           </div>
                         </div>
                       ) : (
-                        <div className="space-y-0">
-                          <ScrollArea className="max-h-64 p-4">
-                            <div className="space-y-3">
+                        <div className="flex flex-col h-screen">
+                          <ScrollArea className=" p-4 a">
+                            <div className="space-y-3 h-max">
                               {items.map((item, index) => (
                                 <motion.div
                                   key={item.id}
@@ -219,6 +219,7 @@ export default function QuoteCartDropdown() {
                               ))}
                             </div>
                           </ScrollArea>
+                          <div className="align-bottom h-fit">
                           <Separator />
                           <div className="p-4 space-y-3">
                             <Label className="text-sm font-medium flex items-center gap-2">
@@ -268,6 +269,7 @@ export default function QuoteCartDropdown() {
                             </div>
                           </div>
                         </div>
+                        </div>
                       )}
                     </div>
                   </div>
@@ -312,10 +314,10 @@ export default function QuoteCartDropdown() {
                       </div>
                     </div>
                   ) : (
-                    <div className="space-y-0">
+                    <div className="space-y-0 ">
                       {/* Items List */}
-                      <ScrollArea className="max-h-64 p-4">
-                        <div className="space-y-3">
+                      <ScrollArea className=" p-4">
+                        <div className="space-y-3 max-h-48">
                           {items.map((item, index) => (
                             <motion.div
                               key={item.id}

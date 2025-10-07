@@ -71,6 +71,7 @@ const remaining = freeShippingThreshold > total
         color: "#f97316",
       },
       handler: async (response: any) => {
+        console.log(response)
         if (response.razorpay_signature) {
           const payload = {
             order_id: response.razorpay_order_id,

@@ -8,73 +8,9 @@ import {
 } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 import DropdownItem from "./dropdown-item";
-import ClientLink from "@/components/shared/client-link";
 import { navItems } from "../navlist";
 import { CurrencySelector } from "@/components/currency/currency-selector";
-// export type NavItem = {
-//   label: string;
-//   link?: string;
-//   children?: NavItem[];
-// };
 
-// export const navItems: NavItem[] = [
-//   {
-//     label: "Products",
-//     link: "#",
-//     children: [
-//       {
-//         label: "Fasteners",
-//         link: "/fastner",
-//       },
-//       {
-//         label: "Tools & Equipment",
-//         link: "/store/c/ev-parts",
-//       },
-//       {
-//         label: "EV Parts",
-//         link: "store/c/tools-&-equipments",
-//       },
-//       {
-//         label: "Connectors & Wires",
-//         link: "/connectors-wires",
-//       }
-//     ]
-//   },
-//   {
-//     label: "Services",
-//     link: "#",
-//     children: [
-//       {
-//         label: "CNC Machining",
-//         link: "/service?service=cnc-machining"
-//       },
-//       {
-//         label: "Laser Cutting",
-//         link: "/service?service=laser-cutting"
-//       },
-//       {
-//         label: "3D Printing",
-//         link: "/service?service=designing"
-//       },
-//       {
-//         label: "Wiring Harness",
-//         link: "/service/wiring-harness"
-//       },
-//       {
-//         label: "Battery Pack",
-//         link: "/service/batterypack"
-//       }
-//     ]
-//   },
-//   {
-//     label: "Contact Us",
-//     link: "/contact"
-//   },
-//   {
-//     label: "Support",
-//     link: "/support"
-//   }
-// ];
 const SidebarNav = () => {
   return (
     <Sheet>

@@ -31,12 +31,12 @@ const DeliveryAddress = () => {
           <div className="flex flex-wrap items-center gap-1">
             <p className="flex-shrink-0">{deliveryAddress.address},</p>
             <p className="flex-shrink-0">{deliveryAddress.locality},</p>
-            <p className="flex-shrink-0">{deliveryAddress.city},</p>
+            {deliveryAddress.city && <p className="flex-shrink-0">{deliveryAddress.city},</p>}
             <p className="flex-shrink-0">
-              {deliveryAddress.state} - {deliveryAddress.pincode}
+              {deliveryAddress.state} {deliveryAddress.country} - {deliveryAddress.pincode}
             </p>
           </div>
-          <p className="me-2 inline-block">{deliveryAddress.phone},</p>
+          <p className="me-2 inline-block">{deliveryAddress.phone}</p>
           <p className="inline-block">{deliveryAddress.alternate_phone}</p>
           <div className="absolute right-3 top-1">
             <AddressDialog action="edit" address={deliveryAddress}>

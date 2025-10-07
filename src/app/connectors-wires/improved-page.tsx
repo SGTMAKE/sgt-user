@@ -7,7 +7,7 @@ import { useSession } from "next-auth/react"
 import { getCookie, setCookie } from "cookies-next"
 import ConnectorForm from "@/components/connectors-wires/connector-form"
 import WireForm from "@/components/connectors-wires/wire-form"
-import { useAddFastenerToCart } from "@/api-hooks/cart/add-fastener-to-cart"
+import { useAddFastenerToCart } from "@/api-hooks/cart/add-custom-to-cart"
 
 type TabType = "Harness Wires" | "Silicon Wires" | "Connectors"
 

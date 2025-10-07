@@ -13,7 +13,24 @@ import { ProtectedButton } from "@/components/protected-button"
 import Image from "next/image"
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024 // 100MB
-const ALLOWED_FILE_TYPES = ["application/pdf", "application/vnd.ms-excel", "application/msword", "image/", "model/step"]
+const ALLOWED_FILE_TYPES = [
+  "application/pdf", // .pdf
+  "application/vnd.ms-excel", // .xls
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", // .xlsx
+  "application/msword", // .doc
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // .docx
+  "image/jpeg", // .jpg, .jpeg
+  "image/png", // .png
+  "image/gif", // .gif
+  "image/webp", // .webp
+  "model/step", // .stp
+  "application/step", // .stp (alternative)
+  "application/x-step", // .stp (alternative)
+]
+
+const allowedExtensions = [
+  ".pdf", ".xls", ".xlsx", ".doc", ".docx", ".jpg", ".jpeg", ".png", ".gif", ".webp", ".stp", ".step"
+];
 
 const formSchema = z.object({
   chemistry: z.enum(["NCM", "NCA", "LifePO4", "LIPO"]),
@@ -84,13 +101,24 @@ function BatteryPackForm(props: BatteryPackFormProps) {
     if (e.target.files && e.target.files[0]) {
       const selectedFile = e.target.files[0]
 
+      
+
       // Check file type
       const isAllowedType = ALLOWED_FILE_TYPES.some(
         (type) => selectedFile.type.includes(type) || (type.endsWith("/") && selectedFile.type.startsWith(type)),
       )
 
-      if (!isAllowedType || selectedFile.size > MAX_FILE_SIZE) {
-        setErrorMessage("Invalid file type or size exceeds 10MB")
+      if (selectedFile.type && !isAllowedType ) {
+        setErrorMessage("Invalid file type")
+        return
+      }else{
+        if(!allowedExtensions.some(ext => selectedFile.name.toLowerCase().endsWith(ext))){
+          setErrorMessage("Invalid file type")
+        return
+        }
+      }
+      if (selectedFile.size > MAX_FILE_SIZE ) {
+        setErrorMessage("Size exceeds 10MB")
         return
       }
 
@@ -245,7 +273,7 @@ function BatteryPackForm(props: BatteryPackFormProps) {
               id="file"
               className="hidden"
               onChange={handleFileChange}
-              accept=".pdf,.xls,.xlsx,.doc,.docx,.jpg,.jpeg,.png,.gif,.webp,.stp"
+              accept=".pdf,.xls,.xlsx,.doc,.docx,.jpg,.jpeg,.png,.gif,.webp,.stp,.step"
               disabled={isSubmitting}
             />
 
@@ -258,7 +286,7 @@ function BatteryPackForm(props: BatteryPackFormProps) {
                   <Upload className="w-5 h-5 mr-2" /> Select Your File
                 </label>
                 <p className="mt-2 text-sm text-gray-500">
-                  Supported formats: PDF, Excel, Word, Images, STP (Max 100MB)
+                  Supported formats: PDF, Excel, Word, Images, STP (Max 10 MB)
                 </p>
                 <p className="mt-2 text-sm text-gray-500">
                   Please compress files and keep the size under 10&nbsp;MB.  
@@ -342,9 +370,10 @@ function BatteryPackForm(props: BatteryPackFormProps) {
                     <div key={dim} className="flex flex-col">
                       <input
                         {...register(`dimensions.${dim}` as `dimensions.${keyof FormData["dimensions"]}`)}
-                        className="border p-2 rounded-md max-w-[7rem] w-full bg-[#FAFAFA]"
+                        className="border p-2 rounded-md max-w-[7rem] w-full bg-[#FAFAFA] no-spinners "
                         placeholder={dim}
                         disabled={isSubmitting}
+                        type="number"
                       />
                       {errors.dimensions?.[dim as keyof FormData["dimensions"]] && (
                         <p className="text-red-500 text-sm">

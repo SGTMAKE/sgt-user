@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import { db } from "@/lib/prisma"
 import { error400, error500, success200 } from "@/lib/utils"
-import { createOrder, getCartItems, getProductWithImages } from "./helper"
+import { createOrder, getCartItems, getProductWithImages, getShippingPrice } from "./helper"
 import type { CheckoutItemProps } from "@/lib/types/types"
 import Razorpay from "razorpay"
 import { uid } from "uid"
@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
   const orderItems: any[] = []
 
   try {
-    const { addressId ,currency = "INR", exchangeRate = 1,shippingCost  } = await req.json()
+    const { addressId ,currency = "INR", exchangeRate = 1  } = await req.json()
     if (!addressId) return error400("Missing delivery address id", {})
 
     const checkoutCookie = req.cookies.get("checkout")?.value || ""
@@ -27,9 +27,9 @@ export async function POST(req: NextRequest) {
     if (!session || !session.user || !session.user.id) {
       return error400("Missing user ID in the session.", { user: null })
     }
-    // if(exchangeRate === 0){
-    //   return error400("Exchange rate cannot be zero.", {})
-    // }
+    if(exchangeRate === 0){
+      return error400("Exchange rate cannot be zero.", {})
+    }
     const userId = session.user.id
 
     if (checkoutCookie !== "") {
@@ -92,7 +92,7 @@ export async function POST(req: NextRequest) {
           orderItems.push({
             quantity: cartItem.quantity,
             color: null,
-            basePrice: (typeof cartItem.customProduct.basePrice === "number" ? cartItem.customProduct.basePrice : 0) * cartItem.quantity,
+            basePrice: (typeof cartItem.customProduct.offerPrice === "number" ? cartItem.customProduct.offerPrice : 0) * cartItem.quantity,
             offerPrice: itemPrice * cartItem.quantity,
             customProduct: cartItem.customProduct,
           })
@@ -116,7 +116,9 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    const totalInSelectedCurrency =  (amount * exchangeRate)+(shippingCost || 0)
+    const shippingCost = await getShippingPrice(addressId,userId,amount)
+
+    const totalInSelectedCurrency =  ((amount+(shippingCost||0))  * exchangeRate);
 
     const response = await razorpay.orders.create({
       amount: Math.round(totalInSelectedCurrency * 100), // Convert to smallest currency unit (paise)
@@ -126,7 +128,7 @@ export async function POST(req: NextRequest) {
     })
 
     const order_id = response.id.split("_")[1].toUpperCase()
-    console.log(order_id)
+    // console.log(order_id)
     await createOrder(order_id, amount, userId, addressId, orderItems, currency!== "INR" ? currency :undefined,shippingCost? shippingCost :undefined)
 
     if (checkoutCookie === "") {
@@ -145,7 +147,6 @@ export async function POST(req: NextRequest) {
       orderId: order_id,
     })
   } catch (error) {
-    console.log(error)
     return error500({})
   }
 }

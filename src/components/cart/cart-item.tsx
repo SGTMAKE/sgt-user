@@ -69,20 +69,18 @@ const CartItem = (item: CartItemProps & { session: Session | null }) => {
     })
   }
 
-  // Check if this is a fastener/custom product
+  // Check if this is a custom product
   const isCustomProduct = !!item.customProduct
 
   // For custom products, use the data from customProduct
-  const title = isCustomProduct ? item.customProduct?.title || "Custom Fastener" : item.title
-  const basePrice = isCustomProduct ? item.customProduct?.basePrice || 0 : item.basePrice
-  const offerPrice = isCustomProduct ? item.customProduct?.offerPrice || 0 : item.offerPrice
+  const title = isCustomProduct ? item.customProduct?.title || "Unknown Product" : item.title
   const imageSrc = isCustomProduct
     ? item.customProduct?.image || "/placeholder.svg"
     : process.env.NEXT_PUBLIC_IMAGE_URL + item.image || "/placeholder.svg"
 
   // For fasteners, we'll use a different URL structure
   const productUrl = isCustomProduct
-    ? "/fasteners"
+    ? `/quotes/${item.customProduct?.options.qid || "/quotes"}`
     : item.url || ""
 
   return (
@@ -114,21 +112,21 @@ const CartItem = (item: CartItemProps & { session: Session | null }) => {
         <div className="flex-grow-0">
           <Link href={productUrl}>
             <h1 className="cutoff-text text-sm font-medium md:text-base">{title}</h1>
+          {!isCustomProduct && item.color ? <p className="nd:text-sm mb-3 text-xs">{item.color}</p> : <span className="text-sm bg-gray-50 text-orange-600">View Qutoes</span> }
           </Link>
-          {!isCustomProduct && item.color && <p className="nd:text-sm mb-3 text-xs">{item.color}</p>}
 
           {/* Show selected options for custom products */}
           {isCustomProduct && (
             <div className="mb-3">
               {Object.entries(item.customProduct?.options || {}).map(([key, value]) => {
                 // Skip non-display fields
-                if (["quantity", "remarks", "totalPrice", "fastenerType", "image"].includes(key)) {
+                if (["quantity", "remarks", "totalPrice", "image","qid"].includes(key)) {
                   return null
                 }
                 return (
-                  <p key={key} className="text-xs text-gray-600">
+                  value && <p key={key} className="text-xs text-gray-600">
                     {key.charAt(0).toUpperCase() + key.slice(1)}: {value}
-                  </p>
+                  </p> 
                 )
               })}
             </div>

@@ -6,7 +6,11 @@ async function getProductWithImages(productId: string) {
       id: productId,
     },
     include: {
-      images: true,
+       images: {
+         orderBy: {
+          sequence: 'desc', // 👈 equivalent to MongoDB sequence: -1
+        },
+      },
     },
   })
 }
@@ -133,6 +137,50 @@ async function getOrderWithItems(orderId: string) {
       payment: true,
     },
   })
+}
+
+export async function getShippingPrice(addressId:string,userId: string, totalAmount: number) {
+  // Step 1: Get user's default address
+  const address = await db.address.findFirst({
+    where: {
+      userId,
+      id: addressId,
+      is_deleted: false,
+    },
+    select: {
+      id: true,
+      country: true,
+    },
+  })
+
+  if (!address) {
+    throw new Error("No default address found for the user")
+  }
+  
+
+  // Step 2: Get shipping rate based on country
+  const shippingRate = await db.shippingRate.findFirst({
+    where: {
+      countryName: address.country, // assuming countryCode = "IN", "US", etc.
+    },
+  })
+
+  if (!shippingRate || !shippingRate.isActive) {
+    throw new Error("Shipping not available for this region")
+  }
+
+  // Step 3: Determine final shipping price
+  let shippingPrice = shippingRate.baseRate
+
+  if (
+    shippingRate.freeShippingThreshold &&
+    totalAmount >= shippingRate.freeShippingThreshold
+  ) {
+    shippingPrice = 0
+  }
+
+  return shippingPrice
+
 }
 
 export { getCartItems, getProductWithImages, createOrder, updateOrder, createPayment, getOrderWithItems }

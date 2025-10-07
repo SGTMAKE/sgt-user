@@ -3,13 +3,13 @@ import type { CartItemRes } from "@/lib/types/types"
 import { useMutation } from "@tanstack/react-query"
 import { toast } from "sonner"
 
-type UseAddFastenerToCartProps = {
+type UseAddCustomToCartProps = {
   onMutate?: () => void
   onSuccess?: () => void
 }
 
-// This function handles adding a fastener (custom product) to the cart
-async function handleFastenerCart(values: {
+// This function handles adding a Custom (custom product) to the cart
+async function handleCustomCart(values: {
   quantity: number
   color: string | null
   customProduct: any
@@ -18,9 +18,9 @@ async function handleFastenerCart(values: {
   return data as CartItemRes
 }
 
-export function useAddFastenerToCart({ onMutate, onSuccess }: UseAddFastenerToCartProps = {}) {
+export function useAddCustomToCart({ onMutate, onSuccess }: UseAddCustomToCartProps = {}) {
   return useMutation({
-    mutationFn: handleFastenerCart,
+    mutationFn: handleCustomCart,
     onMutate,
     onSuccess,
     onError: ({ response }) => {

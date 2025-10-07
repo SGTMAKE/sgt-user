@@ -78,8 +78,12 @@ function WiringHarnessForm(props: WiringHarnessFormProps) {
       // Check file type
       const isAllowedType = ALLOWED_FILE_TYPES.includes(selectedFile.type)
 
-      if (!isAllowedType || selectedFile.size > MAX_FILE_SIZE) {
-        setErrorMessage("Invalid file type or size exceeds 10MB")
+      if (!isAllowedType ) {
+        setErrorMessage("Invalid file type")
+        return
+      }
+      if (selectedFile.size > MAX_FILE_SIZE ) {
+        setErrorMessage("Size exceeds 10MB")
         return
       }
 
@@ -226,7 +230,7 @@ function WiringHarnessForm(props: WiringHarnessFormProps) {
       ) : (
         <>
           {/* File Upload */}
-          <div className="border border-gray-300 h-56 md:h-96 rounded-xl text-center bg-[#f5f3f3] mb-6 px-4 flex flex-col items-center justify-center">
+          <div className="border border-gray-300 min-h-[14rem] md:h-96 rounded-xl text-center bg-[#f5f3f3] mb-6 px-4 flex flex-col items-center justify-center">
             <input
               ref={fileInputRef}
               type="file"

@@ -106,7 +106,7 @@ export default function Navlist() {
             <div
               key={i}
               onClick={()=>!d.children && router.push(d.link ?? "#")}
-              className="relative group px-2 py-3 transition-all bg-white hover:bg-orange-50  hover:text-orange-500  text-gray-900 font-normal dark:text-white rounded-lg"
+              className="relative group px-2 py-3 transition-all  hover:bg-white hover:text-orange-500  text-gray-900 font-normal dark:text-white rounded-lg"
             >
               <div className="flex cursor-pointer items-center gap-2 text-gray-900 group-hover:text-black ">
                 <span>{d.label}</span>

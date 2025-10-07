@@ -89,7 +89,7 @@ export async function POST(req: NextRequest) {
 
        try {
         if (successOrder) {
-          await emailService.sendOrderNotification({
+           emailService.sendOrderNotification({
             orderId: successOrder.orderID,
             customerName: successOrder.address.name,
             customerEmail: session.user.email || "",
