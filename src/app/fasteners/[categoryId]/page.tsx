@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { useParams, useRouter } from "next/navigation"
 import { motion } from "framer-motion"
 import { Card, CardContent } from "@/components/ui/card"
@@ -57,7 +57,7 @@ export default function FastenerCategoryPage() {
     }
   }, [categoryId])
 
-  const fetchCategory = async () => {
+  const fetchCategory = useCallback(async () => {
     try {
       const response = await fetch(`/api/fasteners/categories/${categoryId}`)
       const data = await response.json()
@@ -75,7 +75,7 @@ export default function FastenerCategoryPage() {
     } finally {
       setLoading(false)
     }
-  }
+  },[])
 
   // Build validation schema
   const buildValidationSchema = () => {

@@ -43,7 +43,6 @@ export async function POST(request: NextRequest) {
     if (!user) {
       return NextResponse.json({ success: false, error: "User not found" }, { status: 404 })
     }
-    console.log("vffb")
 
     // Create quote request in database
     const quoteRequest = await db.quoteRequest.create({
@@ -75,7 +74,7 @@ export async function POST(request: NextRequest) {
         customerName: user.name || "Unknown Customer",
         customerEmail: user.email,
         customerPhone: user.phone || "",
-        submissionDate: new Date(),
+        submissionDate: quoteRequest.createdAt,
         items: items,
         totalItems: quoteRequest.totalItems,
         notes: notes || "",

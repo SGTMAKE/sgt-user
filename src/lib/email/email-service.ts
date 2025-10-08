@@ -101,7 +101,7 @@ export class EmailService {
         batteryPack: "🔋",
       }
 
-      const emoji = serviceTypeEmojis[data.type ] || "🛠️"
+      const emoji = serviceTypeEmojis[data.type] || "🛠️"
 
       const mailOptions = {
         from: {
@@ -110,7 +110,7 @@ export class EmailService {
         },
         to: process.env.ADMIN_EMAIL || process.env.ZOHO_EMAIL,
         cc: process.env.ADMIN_CC_EMAILS?.split(",").filter(Boolean) || [],
-        subject: `${emoji} New Service Request - ${data.formDetails.type.toUpperCase()} (#${data.id})`,
+        subject: `${emoji} New Service Request - ${data.type.toUpperCase()} (#${data.id})`,
         html: htmlContent,
         
       }
@@ -155,6 +155,10 @@ export class EmailService {
     const html = generateQuoteRequestEmailTemplate(data)
 
     await this.transporter.sendMail({
+      from: {
+          name: "SGTMAKE Quotes",
+          address: process.env.ZOHO_EMAIL!,
+      },
       to: process.env.ADMIN_EMAIL || "support@sgtmake.com",
       cc: process.env.ADMIN_CC_EMAILS?.split(",") || [],
       subject: `New Quote Request #${data.quoteRequestId.slice(-8)} from ${data.customerName}`,

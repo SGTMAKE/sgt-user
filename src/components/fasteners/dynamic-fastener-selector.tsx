@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Minus, Plus } from "lucide-react"
 import { z } from "zod"
@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button } from "@nextui-org/button"
 import { toast } from "sonner"
+import SmartImage from "../ui/ImageCorrector"
 
 interface FastenerCategory {
   id: string
@@ -43,7 +44,7 @@ export default function DynamicFastenerSelector({ onAddToQuote, isLoading = fals
     fetchCategories()
   }, [])
 
-  const fetchCategories = async () => {
+  const fetchCategories = useCallback(async () => {
     try {
       const response = await fetch("/api/fasteners/categories")
       const data = await response.json()
@@ -59,7 +60,7 @@ export default function DynamicFastenerSelector({ onAddToQuote, isLoading = fals
     } finally {
       setLoading(false)
     }
-  }
+  },[])
 
   // Dynamically build validation schema based on selected category
   const buildValidationSchema = () => {
@@ -282,10 +283,12 @@ export default function DynamicFastenerSelector({ onAddToQuote, isLoading = fals
               onClick={() => setSelectedCategory(category)}
             >
               {category.image && (
-                <img
+                <SmartImage
                   src={category.image || "/placeholder.svg"}
                   alt={category.name}
                   className="w-full h-32 object-cover rounded-md mb-3"
+                  width={200}
+                  height={200}
                 />
               )}
               <h3 className="font-medium text-lg">{category.name}</h3>

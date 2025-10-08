@@ -1,6 +1,6 @@
 "use client"
 
-import { createContext, useContext, useState, useEffect, type ReactNode } from "react"
+import { createContext, useContext, useState, useEffect, type ReactNode, useCallback } from "react"
 import { toast } from "sonner"
 
 interface ShippingRate {
@@ -35,7 +35,7 @@ export function ShippingProvider({ children }: { children: ReactNode }) {
 
   
 
-  const fetchAvailableCountries = async () => {
+  const fetchAvailableCountries = useCallback(async () => {
     try {
       const response = await fetch("/api/shipping/countries")
       const data = await response.json()
@@ -46,9 +46,9 @@ export function ShippingProvider({ children }: { children: ReactNode }) {
     } catch (error) {
       console.error("Error fetching available countries:", error)
     }
-  }
+  },[])
 
-  const calculateShipping = async (countryCode: string, orderTotal: number) => {
+  const calculateShipping = useCallback(async (countryCode: string, orderTotal: number) => {
     setIsLoading(true)
     try {
       const response = await fetch("/api/shipping/calculate", {
@@ -83,7 +83,7 @@ export function ShippingProvider({ children }: { children: ReactNode }) {
     } finally {
       setIsLoading(false)
     }
-  }
+  },[])
 
   // const getShippingForCountry = (countryCode: string, orderTotal: number): ShippingCalculation | null => {
   //   const country = availableCountries.find((c) => c.countryCode === countryCode)
@@ -99,9 +99,9 @@ export function ShippingProvider({ children }: { children: ReactNode }) {
   //   }
   // }
 
-  const refreshCountries = async () => {
+  const refreshCountries = useCallback(async () => {
     await fetchAvailableCountries()
-  }
+  },[])
 
   return (
     <ShippingContext.Provider

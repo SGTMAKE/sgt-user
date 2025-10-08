@@ -161,10 +161,7 @@ function BatteryPackForm(props: BatteryPackFormProps) {
   })
 
   const onSubmit = async (data: FormData) => {
-    if (!file) {
-      setErrorMessage("Please upload a file before submitting")
-      return
-    }
+    
 
     setErrorMessage(null)
 
@@ -279,6 +276,10 @@ function BatteryPackForm(props: BatteryPackFormProps) {
 
             {!file ? (
               <>
+               <div className="inline-flex items-center gap-2 mb-2">
+                    <span className="text-sm font-medium text-gray-700">Design Files</span>
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-gray-200 text-gray-700">Optional</span>
+                  </div>
                 <label
                   htmlFor="file"
                   className="cursor-pointer my-3 flex items-center justify-center bg-orange-100 px-4 py-2 rounded-full text-orange-600 text-sm w-max"

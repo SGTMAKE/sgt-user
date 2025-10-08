@@ -36,7 +36,7 @@ export function generateQuoteRequestEmailTemplate(data: QuoteRequestEmailData): 
         <title>New Quote Request - SGTMake Admin</title>
         <style>
             body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; }
-            .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+            .container {  margin: 0 auto; padding: 20px; }
             .header { background: linear-gradient(135deg, #f97316 0%, #ea580c 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
             .content { background: white; padding: 30px; border: 1px solid #e0e0e0; }
             .footer { background: #f8f9fa; padding: 20px; text-align: center; border-radius: 0 0 10px 10px; }
@@ -58,7 +58,7 @@ export function generateQuoteRequestEmailTemplate(data: QuoteRequestEmailData): 
     <body>
         <div class="container">
             <div class="header">
-                <h1>🚨 New Quote Request Received!</h1>
+                <h1> New Quote Request Received!</h1>
                 <p>Quote ID: #${data.quoteRequestId.slice(-8)}</p>
             </div>
             

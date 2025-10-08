@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react"
 import type React from "react"
 
 import { useRouter, useSearchParams } from "next/navigation"
-import { Upload, CheckCircle, AlertCircle, Plus, Minus, Loader2 } from "lucide-react"
+import { Upload, CheckCircle, AlertCircle, Plus, Minus } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -12,6 +12,7 @@ import { SubmissionProgress } from "@/components/submission-progress"
 import { useFormSubmission } from "@/hooks/use-form-submission"
 import { ProtectedButton } from "@/components/protected-button"
 import Image from "next/image"
+import { Button } from "@/components/ui/button"
 
 // Define allowed file types and max size
 const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB
@@ -21,27 +22,8 @@ const ALLOWED_FILE_TYPES = [
   "application/msword",
   "image/",
   "model/step",
-  "application/octet-stream",
-   "application/acad",
-  "application/x-acad",
-  "application/autocad",
-  "image/vnd.dwg",
-  "application/dwg",
-
   "model/stl",
-  "application/sla",
-  "application/vnd.ms-pki.stl",
-
-  "image/vnd.dxf",
-  "application/dxf",
-  "application/x-dxf",
-
-  "model/iges",
-  "application/iges",
-
-  "model/step",
-  "application/step",
-  "application/x-step",
+  "application/octet-stream",
 ]
 
 // Define the base form schema
@@ -60,9 +42,9 @@ const designingSchema = baseFormSchema.extend({
 
 // Service options
 const serviceOptions = [
-  { id: "cnc-machining", label: "CNC Machining",image:"/services/CNC-Machining.png" },
-  { id: "laser-cutting", label: "Laser Cutting" ,image:"/services/laser-cutting.png" },
-  { id: "3d-printing", label: "3D Printing" ,image:"/services/threeD-printing.png" },
+  { id: "cnc-machining", label: "CNC Machining", image: "/services/CNC-Machining.png" },
+  { id: "laser-cutting", label: "Laser Cutting", image: "/services/laser-cutting.png" },
+  { id: "3d-printing", label: "3D Printing", image: "/services/threeD-printing.png" },
 ]
 
 // Material options
@@ -93,6 +75,9 @@ function ManufacturingServices(props: ManufacturingServicesProps) {
   const [formSuccess, setFormSuccess] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const formRef = useRef<HTMLFormElement>(null)
+  const [quantity, setQuantity] = useState(1)
+
+
 
   const session = useSession()
 
@@ -104,6 +89,12 @@ function ManufacturingServices(props: ManufacturingServicesProps) {
       default:
         return baseFormSchema
     }
+  }
+
+  const handleQuantityChange = (change: number) => {
+    const newQuantity = Math.max(1, Math.min(10000, quantity + change))
+    setQuantity(newQuantity)
+    setValue("quantity", newQuantity)
   }
 
   // Get default values based on active service
@@ -159,24 +150,26 @@ function ManufacturingServices(props: ManufacturingServicesProps) {
     // Update URL when service changes
     router.push(`/service?service=${activeService}`, { scroll: false })
   }, [activeService, reset, router])
+  useEffect(() => {
+    reset(getDefaultValues())
+    const service = searchParams.get("service") || "cnc-machining"
+    setActiveService(service)
+  }, [searchParams, reset])
+
+
 
   const handleServiceChange = (service: string) => {
     setActiveService(service)
-    setFile(null);
+    setFile(null)
   }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const selectedFile = e.target.files[0]
 
-      console.log(selectedFile)
-
-      const isAllowedType = ALLOWED_FILE_TYPES.some(
-        (type) => selectedFile.type.includes(type) || (type.endsWith("/") && selectedFile.type.startsWith(type)),
-      )
-
-      if ( selectedFile.size > MAX_FILE_SIZE) {
-        setErrorMessage("Invalid size exceeds 10MB")
+      // Check file size
+      if (selectedFile.size > MAX_FILE_SIZE) {
+        setErrorMessage("File size exceeds 10MB")
         return
       }
 
@@ -214,6 +207,7 @@ function ManufacturingServices(props: ManufacturingServicesProps) {
     handleAuthSuccess,
     error,
     isSubmitting,
+    // uploadProgress,
   } = useFormSubmission({
     onSubmitForm: submitFormToServer,
     onSuccess: () => {
@@ -223,28 +217,20 @@ function ManufacturingServices(props: ManufacturingServicesProps) {
 
   // Update the onSubmit function to use the improved authentication flow
   const onSubmit = async (data: any) => {
-    if (!file) {
-      setErrorMessage("Please upload a file before submitting")
-      return
-    }
-
     setErrorMessage(null)
 
-    // Prepare the complete form data including the file and service type
     const completeFormData = {
       serviceType: activeService,
       ...data,
-      file: file,
+      // We do not send the raw file; the upload (if any) happens in the hook and returns fileData
     }
 
-    // Use the onFormSubmit function passed from ServiceFormWrapper if available
     if (props?.onFormSubmit) {
       await props.onFormSubmit(completeFormData)
       return
     }
 
-    // Otherwise use the local form submission logic
-    await handleFormSubmit(data, file)
+    await handleFormSubmit(data, file) // file can be null; the hook will skip upload
   }
 
   const renderImage = () => {
@@ -254,11 +240,12 @@ function ManufacturingServices(props: ManufacturingServicesProps) {
       case "laser-cutting":
         return "/services/laser-cutting.png"
       case "3d-printing":
-       return "/services/threeD-printing.png"
+        return "/services/threeD-printing.png"
       default:
         return ""
     }
   }
+
   // Render service-specific form fields
   const renderServiceFields = () => {
     switch (activeService) {
@@ -286,7 +273,7 @@ function ManufacturingServices(props: ManufacturingServicesProps) {
             : [{ value: "white", label: "White" }]
 
         return (
-          <div className="my-6 max-w-6xl mx-auto ">
+          <div className="my-6 max-w-6xl mx-auto">
             <h3 className="text-lg font-medium mb-4">3D Printing Specifications</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
@@ -380,36 +367,36 @@ function ManufacturingServices(props: ManufacturingServicesProps) {
     try {
       const storedFormPage = localStorage.getItem("pendingFormPage")
       const currentPath = window.location.pathname
-      
+
       // Only restore data if we're on the same page that stored it
       if (storedFormPage === currentPath) {
         const storedFormData = localStorage.getItem("pendingFormData")
         const hadFile = localStorage.getItem("hadPendingFile") === "true"
-        
+
         if (storedFormData) {
           console.log("Found stored form data for current page:", currentPath)
           const parsedData = JSON.parse(storedFormData)
-          
+
           // Restore the form data
           Object.entries(parsedData).forEach(([key, value]) => {
             setValue(key as any, value as any)
           })
-          
+
           // If service type was stored, set it
           if (parsedData.serviceType) {
             setActiveService(parsedData.serviceType)
           }
-          
+
           // If we had a file, show a message to re-select it
           if (hadFile) {
             setErrorMessage("Please re-select your file to complete your submission")
           }
-          
+
           // Clear the stored data
           localStorage.removeItem("pendingFormData")
           localStorage.removeItem("pendingFormPage")
           localStorage.removeItem("hadPendingFile")
-          
+
           // Trigger validation
           trigger()
         }
@@ -427,16 +414,16 @@ function ManufacturingServices(props: ManufacturingServicesProps) {
         currentStep={submissionStep === "idle" ? "authenticating" : submissionStep}
         error={error || undefined}
         onAuthSuccess={handleAuthSuccess}
+        // uploadProgress={uploadProgress}
       />
 
       {formSuccess ? (
         <div className="bg-green-50 my-6 max-w-6xl mx-auto p-6 rounded-xl border border-green-200 text-center">
           <CheckCircle className="w-12 h-12 text-green-500 mx-auto mb-4" />
-          <h2 className="text-2xl font-medium text-green-800 mb-2">Order Submitted Successfully</h2>
-          <p className="text-green-700 mb-2">
-            Thanks {session.data?.user?.name} for your order. We will get back to you soon with a quote.
+          <h2 className="text-2xl font-medium text-green-800 mb-2">Inquiry Submitted Successfully</h2>
+          <p className="text-green-700 mb-4">
+            Thanks {session.data?.user?.name} for your inquiry. We will get back to you soon.
           </p>
-          {submittedServiceId && <p className="text-green-700 mb-4">Service ID: {submittedServiceId}</p>}
           <button
             onClick={() => {
               setFormSuccess(false)
@@ -467,14 +454,23 @@ function ManufacturingServices(props: ManufacturingServicesProps) {
             ))}
           </div>
 
-         
-
-          <form id="serviceForm" ref={formRef} onSubmit={handleSubmit(onSubmit)} className="my-6 max-w-5xl mx-auto px-3 md:px-6 pb-20">
+          <form
+            id="serviceForm"
+            ref={formRef}
+            onSubmit={handleSubmit(onSubmit)}
+            className="my-6 max-w-5xl mx-auto px-3 md:px-6 pb-20"
+          >
             {/* File Upload */}
             <div className="my-2">
-            <Image src={renderImage()} width={1000} className="w-full h-96 " alt="services image" height={300} />
-          </div>
-            <div className="border border-gray-300 h-56 md:h-96 rounded-xl text-center bg-[#f5f3f3] mb-6 px-4 flex flex-col items-center justify-center">
+              <Image
+                src={renderImage() || "/placeholder.svg"}
+                width={1000}
+                className="w-full h-96"
+                alt="services image"
+                height={300}
+              />
+            </div>
+            <div className="border border-gray-300 h-56 md:h-96 rounded-xl text-center bg-[#f5f3f3] mb-6 flex flex-col items-center justify-center">
               <input
                 ref={fileInputRef}
                 type="file"
@@ -487,21 +483,26 @@ function ManufacturingServices(props: ManufacturingServicesProps) {
 
               {!file ? (
                 <>
-                <p className="mt-2 text-sm text-gray-500">Upload your design files, drawings, or specifications</p>
-                  <p className="mt-2 text-sm text-gray-500">
-                    File type: {activeService === "3d-printing" ? "STL, OBJ, 3MF, X3G" : ".pdf .igs ,.dxf ,.dwg"}
+                  <div className="inline-flex items-center gap-2 mb-2">
+                    <span className="text-sm font-medium text-gray-700">Design Files</span>
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-gray-200 text-gray-700">Optional</span>
+                  </div>
+                  <p className="mt-1 text-sm text-gray-600">Upload your design files, drawings, or specifications</p>
+                  <p className="mt-1 text-xs text-gray-500">
+                    File type: {activeService === "3d-printing" ? "STL, OBJ, 3MF, X3G" : ".PDF, .IGS, .DXF, .DWG"} • Max
+                    10MB
                   </p>
                   <label
                     htmlFor="file"
-                    className="cursor-pointer flex items-center justify-center bg-orange-100 px-4 py-2 rounded-full text-orange-600 text-sm w-max my-3"
+                    className="cursor-pointer flex items-center justify-center bg-orange-100 px-4 py-2 rounded-full text-orange-600 text-sm w-max my-3 shadow-sm hover:bg-orange-200"
                   >
-                    <Upload className="w-5 h-5 mr-2" /> Select Your File
+                    <Upload className="w-5 h-5 mr-2" /> Select file
                   </label>
-                  
-
-                  <p className="mt-2 text-sm text-gray-500">
-                  Please compress files and keep the size under 10&nbsp;MB.  
-                  For larger files, kindly share them with us at <a href="mailto:support@sgtmake.com" className="text-orange-600 underline">support@sgtmake.com</a>.
+                  <p className="mt-1 text-xs text-gray-500">
+                    For larger files, email us at{" "}
+                    <a href="mailto:support@sgtmake.com" className="text-orange-600 underline">
+                      support@sgtmake.com
+                    </a>
                   </p>
                 </>
               ) : (
@@ -591,43 +592,47 @@ function ManufacturingServices(props: ManufacturingServicesProps) {
             </div>
 
             {/* Quantity */}
-            <div className="mb-6">
-              <h3 className="text-lg font-medium mb-2">Quantity (pcs)</h3>
-              <div className="flex items-center">
-                <button
-                  type="button"
-                  onClick={() => {
-                    const currentValue = watch("quantity")
-                    if (currentValue > 1) {
-                      setValue("quantity", currentValue - 1)
-                    }
-                  }}
-                  className="border rounded-md p-2"
-                  disabled={watch("quantity") <= 1 || isSubmitting}
-                >
-                  <Minus className="w-4 h-4" />
-                </button>
-                <input
-                  type="number"
-                  {...register("quantity", { valueAsNumber: true })}
-                  min="1"
-                  className="w-16 text-center mx-2 border rounded-md p-2"
-                  disabled={isSubmitting}
-                />
-                <button
-                  type="button"
-                  onClick={() => {
-                    const currentValue = watch("quantity")
-                    setValue("quantity", currentValue + 1)
-                  }}
-                  className="border rounded-md p-2"
-                  disabled={isSubmitting}
-                >
-                  <Plus className="w-4 h-4" />
-                </button>
-              </div>
-              {errors.quantity && <p className="text-red-500 text-xs mt-1">{errors.quantity.message as string}</p>}
-            </div>
+            <div>
+                    <h4 className="text-base font-semibold text-gray-900 dark:text-white mb-4">Quantity (pcs)</h4>
+                    <div className="flex items-center gap-3">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleQuantityChange(-1)}
+                        disabled={quantity <= 1}
+                      >
+                        <Minus className="w-4 h-4" />
+                      </Button>
+                      <input
+                        type="number"
+                        className="px-4 py-2 border rounded w-24 text-center dark:bg-gray-800 dark:border-gray-600"
+                        value={quantity}
+                        {...register("quantity", { valueAsNumber: true })}
+                        onChange={(e) => {
+                          const value = Number.parseInt(e.target.value)
+                          if (!isNaN(value) && value >= 1 && value <= 10000) {
+                            setQuantity(value)
+                            setValue("quantity", value)
+                          }
+                        }}
+                        min="1"
+                        max="10000"
+                      />
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleQuantityChange(1)}
+                        disabled={quantity >= 10000}
+                      >
+                        <Plus className="w-4 h-4" />
+                      </Button>
+                    </div>
+                    {errors.quantity && (
+                      <p className="text-red-500 text-sm mt-2">{errors.quantity.message as string}</p>
+                    )}
+                  </div>
 
             {/* Remarks */}
             <div className="mb-6">
@@ -647,19 +652,24 @@ function ManufacturingServices(props: ManufacturingServicesProps) {
               disabled={isSubmitting}
               formId="serviceForm"
               formData={{ ...getValues(), serviceType: activeService }}
-            >{isSubmitting ? (
-              <>
-                <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                Processing...
-              </>
-            ) : (
-              "Submit"
-            )}
-          </ProtectedButton>
-        </form>
-      </>
-    )}
-  </div>
-)
+            >
+              {isSubmitting ? (
+                <div className="flex items-center gap-3">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
+                  </span>
+                  <span className="bg-gradient-to-r from-white/90 to-white/60 bg-clip-text text-transparent">
+                    Sending your request...
+                  </span>
+                </div>
+              ) : (
+                "Submit"
+              )}
+            </ProtectedButton>
+          </form>
+        </>
+      )}
+    </div>
+  )
 }
-

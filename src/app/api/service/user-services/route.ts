@@ -3,6 +3,7 @@ import { db } from "@/lib/prisma"
 import { error400, error500, success200 } from "@/lib/utils"
 import { getServerSession } from "next-auth"
 import type { NextRequest } from "next/server"
+export const dynamic = 'force-dynamic';
 
 export async function GET(req: NextRequest) {
   try {

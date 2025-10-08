@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect } from "react"
 import type React from "react"
 
-import { Upload, CheckCircle, AlertCircle, Loader2 } from "lucide-react"
+import { Upload, CheckCircle, AlertCircle, Loader2, Plus, Minus } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -11,6 +11,7 @@ import { useSession } from "next-auth/react"
 import { SubmissionProgress } from "@/components/submission-progress"
 import { useFormSubmission } from "@/hooks/use-form-submission"
 import { ProtectedButton } from "@/components/protected-button"
+import { Button } from "@/components/ui/button"
 
 // Define allowed file types and max size
 const MAX_FILE_SIZE = 10 * 1024 * 1024 // 100MB
@@ -52,8 +53,14 @@ function WiringHarnessForm(props: WiringHarnessFormProps) {
   const [submittedServiceId, setSubmittedServiceId] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const formRef = useRef<HTMLFormElement>(null)
+  const [quantity, setQuantity] = useState(1)
 
   const session = useSession()
+  const handleQuantityChange = (change: number) => {
+    const newQuantity = Math.max(1, Math.min(10000, quantity + change))
+    setQuantity(newQuantity)
+    setValue("quantity", newQuantity)
+  }
 
   const {
     register,
@@ -62,7 +69,7 @@ function WiringHarnessForm(props: WiringHarnessFormProps) {
     formState: { errors },
     setValue,
     trigger,
-    getValues,
+    watch,
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -128,10 +135,7 @@ function WiringHarnessForm(props: WiringHarnessFormProps) {
   })
 
   const onSubmit = async (data: FormData) => {
-    if (!file) {
-      setErrorMessage("Please upload a file before submitting")
-      return
-    }
+    
 
     setErrorMessage(null)
 
@@ -211,11 +215,10 @@ function WiringHarnessForm(props: WiringHarnessFormProps) {
       {formSuccess ? (
         <div className="bg-green-50 p-6 rounded-xl border border-green-200 text-center">
           <CheckCircle className="w-12 h-12 text-green-500 mx-auto mb-4" />
-          <h2 className="text-2xl font-medium text-green-800 mb-2">
-            Thanks {session.data?.user?.name || "for your order"}
-          </h2>
-          <p className="text-green-700 mb-2">We will get back to you soon with a quote.</p>
-          {submittedServiceId && <p className="text-green-700 mb-4">Service ID: {submittedServiceId}</p>}
+          <h2 className="text-2xl font-medium text-green-800 mb-2">Inquiry Submitted Successfully</h2>
+          <p className="text-green-700 mb-4">
+            Thanks {session.data?.user?.name} for your inquiry. We will get back to you soon.
+          </p>
           <button
             onClick={() => {
               setFormSuccess(false)
@@ -244,15 +247,19 @@ function WiringHarnessForm(props: WiringHarnessFormProps) {
             {!file ? (
               <>
                 <div className="mt-2 text-sm text-gray-500  px-4">
-
-              <p className="mb-2">Supports uploading cable pictures, cable drawings, and cable specifications</p>
-                  <p>Supports .docx, .pdf, .jpg, .jpeg, .png, .xls, .xlsx, and .csv</p>
+                   <div className="inline-flex items-center gap-2 mb-2">
+                    <span className="text-sm font-medium text-gray-700">Design Files</span>
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-gray-200 text-gray-700">Optional</span>
+                  </div>
+              <div className="mb-2 flex flex-col  "><span>Supports uploading cable pictures, cable drawings, and cable specifications</span></div>
                 <label
                   htmlFor="file"
                   className="cursor-pointer flex items-center justify-center bg-orange-100 px-4 py-2 rounded-full text-orange-600 text-sm w-max mx-auto my-3"
                 >
                   <Upload className="w-5 h-5 mr-2" /> Select Your File
                 </label>
+                  <p>Supports .docx, .pdf, .jpg, .jpeg, .png, .xls, .xlsx, and .csv</p>
+
                   
                   <p className="mt-2 text-sm text-gray-500">
                   Please compress files and keep the size under 10&nbsp;MB.  
@@ -357,7 +364,7 @@ function WiringHarnessForm(props: WiringHarnessFormProps) {
               </div>
 
               <div className="flex justify-between items-center">
-                <div>
+                {/* <div>
                   <h3 className="font-medium mb-2">Quantity</h3>
                   <input
                     type="number"
@@ -367,7 +374,50 @@ function WiringHarnessForm(props: WiringHarnessFormProps) {
                     disabled={isSubmitting}
                   />
                   {errors.quantity && <p className="text-red-500 text-xs mt-1">{errors.quantity.message}</p>}
-                </div>
+                </div> */}
+
+                {/* Quantity */}
+                 <div>
+                    <h4 className="text-base font-semibold text-gray-900 dark:text-white mb-4">Quantity (pcs)</h4>
+                    <div className="flex items-center gap-3">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleQuantityChange(-1)}
+                        disabled={quantity <= 1}
+                      >
+                        <Minus className="w-4 h-4" />
+                      </Button>
+                      <input
+                        type="number"
+                        className="px-4 py-2 border rounded w-24 text-center dark:bg-gray-800 dark:border-gray-600"
+                        value={quantity}
+                        {...register("quantity", { valueAsNumber: true })}
+                        onChange={(e) => {
+                          const value = Number.parseInt(e.target.value)
+                          if (!isNaN(value) && value >= 1 && value <= 10000) {
+                            setQuantity(value)
+                            setValue("quantity", value)
+                          }
+                        }}
+                        min="1"
+                        max="10000"
+                      />
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleQuantityChange(1)}
+                        disabled={quantity >= 10000}
+                      >
+                        <Plus className="w-4 h-4" />
+                      </Button>
+                    </div>
+                    {errors.quantity && (
+                      <p className="text-red-500 text-sm mt-2">{errors.quantity.message as string}</p>
+                    )}
+                  </div>
 
                 <ProtectedButton
                   type="submit"

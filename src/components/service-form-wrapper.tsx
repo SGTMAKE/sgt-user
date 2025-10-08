@@ -1,6 +1,6 @@
 "use client"
 
-import React from "react"
+import React, { useCallback } from "react"
 
 import { useState, useEffect } from "react"
 import { useSession } from "next-auth/react"
@@ -39,7 +39,7 @@ export function ServiceFormWrapper({ children, onSubmit, isSubmitting, setIsSubm
     await performSubmission(formData)
   }
 
-  const performSubmission = async (formData: any) => {
+  const performSubmission = useCallback(async (formData: any) => {
     setIsSubmitting(true)
     setSubmissionStep("submitting")
     setError(null)
@@ -62,7 +62,7 @@ export function ServiceFormWrapper({ children, onSubmit, isSubmitting, setIsSubm
     } finally {
       setIsSubmitting(false)
     }
-  }
+  },[])
 
   // When auth is successful and we have a pending submission
   const handleAuthSuccess = () => {

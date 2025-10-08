@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { useParams, useRouter } from "next/navigation"
 import { motion } from "framer-motion"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -8,13 +8,11 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { ArrowLeft, ShoppingCart, Package, Loader2, Plus, Minus } from "lucide-react"
 import { toast } from "sonner"
 import { useQuoteCart } from "@/hooks/use-quote-cart"
-import Image from "next/image"
 import SmartImage from "@/components/ui/ImageCorrector"
 
 interface Category {
@@ -55,7 +53,7 @@ export default function ConnectorCategoryPage() {
     }
   }, [categoryId])
 
-  const fetchCategoryData = async () => {
+  const fetchCategoryData = useCallback(async () => {
     setLoading(true)
     try {
       // Fetch category details
@@ -79,7 +77,7 @@ export default function ConnectorCategoryPage() {
     } finally {
       setLoading(false)
     }
-  }
+  },[])
 
   const handleInputChange = (name: string, value: any) => {
     setFormData((prev) => ({ ...prev, [name]: value }))

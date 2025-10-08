@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { useParams, useRouter } from "next/navigation"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -47,14 +47,7 @@ export default function QuoteDetailPage() {
   // const [addingToCart, setAddingToCart] = useState(false)
   const queryClient = useQueryClient();
   const { data: session } = useSession();
-
-  useEffect(() => {
-    if (quoteId) {
-      fetchQuoteDetail()
-    }
-  }, [quoteId])
-
-  const fetchQuoteDetail = async () => {
+   const fetchQuoteDetail = useCallback(async () => {
     try {
       const response = await fetch(`/api/quote-request/${quoteId}`)
       if (response.ok) {
@@ -71,7 +64,15 @@ export default function QuoteDetailPage() {
     } finally {
       setLoading(false)
     }
-  }
+  },[router,quoteId])
+
+  useEffect(() => {
+    if (quoteId) {
+      fetchQuoteDetail()
+    }
+  }, [fetchQuoteDetail])
+
+ 
   async function onSuccess() {
       await queryClient.cancelQueries({ queryKey: ["user", "cart"] });
       await queryClient.invalidateQueries(["user", "cart"]);

@@ -6,9 +6,9 @@ export interface ServiceStatus {
   createdAt: string | Date
   updatedAt: string | Date
   userId: string
-  fileUrl: string
-  filePublicId: string
-  fileType: string
+  fileUrl?: string
+  filePublicId?: string
+  fileType?: string
   type:  string
   formDetails : any
  

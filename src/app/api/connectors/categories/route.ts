@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { getConnectorCategories, getWireCategories } from "@/lib/api/connectors/get-connector-categories"
+export const dynamic = 'force-dynamic';
 
 export async function GET(request: Request) {
   try {

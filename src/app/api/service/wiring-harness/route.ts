@@ -20,7 +20,7 @@ const formSchema = z.object({
       type: z.string().optional(),
       size: z.number().optional(),
     })
-    .optional(),
+    .nullable().optional(),
 })
 
 export async function POST(request: Request) {
@@ -40,13 +40,12 @@ export async function POST(request: Request) {
     const service = await db.service.create({
       data: {
         userId: session.user.id ,
-        fileUrl: fileData.url || "",
-        filePublicId: fileData.public_id || "",
-        fileType: fileData.type || "",
+        fileUrl: fileData?.url || undefined,
+        filePublicId: fileData?.public_id || undefined,
+        fileType: fileData?.type || undefined,
         type:"wiringHarness", 
         // Store wiring harness form details in the formDetails JSON field
         formDetails: {
-          type: "wiringHarness", // Identify the form type
           description: validatedData.description,
           quantity: validatedData.quantity,
         },
@@ -58,6 +57,9 @@ export async function POST(request: Request) {
             ...service,
             customerName: session.user.name || "Unknown Customer",
             customerEmail: session.user.email ?? "",
+            filePublicId: service.filePublicId || undefined,
+        fileUrl: service.fileUrl || undefined,
+        fileType: service.fileType || undefined,
           })
         } catch (emailError) {
           console.error("Failed to send service notification email:", emailError)

@@ -11,8 +11,8 @@ interface ServiceDetailsProps {
     status: string
     createdAt: Date
     updatedAt: Date
-    fileUrl: string
-    fileType: string
+    fileUrl?: string | null
+    fileType?: string
     formDetails:any
     quotation?: any
     timeline?:any

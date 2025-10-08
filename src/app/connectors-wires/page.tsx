@@ -1,9 +1,8 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { motion } from "framer-motion"
 import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Zap, Cable, ChevronRight } from "lucide-react"
 import { toast } from "sonner"
@@ -31,7 +30,7 @@ export default function ConnectorsWiresPage() {
     fetchCategories()
   }, [activeTab])
 
-  const fetchCategories = async () => {
+  const fetchCategories = useCallback(async () => {
     setLoading(true)
     // Clear categories immediately when switching tabs to prevent stale data
     setCategories([])
@@ -54,7 +53,7 @@ export default function ConnectorsWiresPage() {
     } finally {
       setLoading(false)
     }
-  }
+  },[])
 
   const handleCategoryClick = (categoryId: string) => {
     // Ensure we're using the correct tab context for routing

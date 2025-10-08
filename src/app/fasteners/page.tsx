@@ -3,11 +3,9 @@
 import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import { Package, ChevronRight } from "lucide-react"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
-import Image from "next/image"
 import SmartImage from "@/components/ui/ImageCorrector"
 
 interface FastenerCategory {

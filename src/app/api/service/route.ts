@@ -23,7 +23,7 @@ const baseSchema = z.object({
   surfaceFinish: z.boolean(),
   quantity: z.number().min(1, "Quantity must be at least 1"),
   remarks: z.string().optional(),
-  file: fileSchema.optional(),
+  file: fileSchema.nullable().optional(),
 });
 
 
@@ -67,14 +67,14 @@ export async function POST(request: Request) {
         validatedData = baseSchema.parse(body)
     }
 
-    const fileData = validatedData.file || {};
+    const fileData = validatedData?.file || {} ;
 
     const service = await db.service.create({
       data: {
         userId: session.user.id , // Replace with real user id from session/auth
-        fileUrl: fileData.url || "",
-        filePublicId: fileData.public_id || "",
-        fileType: fileData.type || "",
+        fileUrl: fileData?.url || undefined,
+        filePublicId: fileData?.public_id || undefined,
+        fileType: fileData?.type || undefined,
         type:validatedData.serviceType,
         formDetails: {
           type: validatedData.serviceType,
@@ -97,6 +97,9 @@ export async function POST(request: Request) {
         ...service,
         customerName: session.user.name || "Unknown Customer",
         customerEmail: session.user.email ?? "",
+        filePublicId: service.filePublicId || undefined,
+        fileUrl: service.fileUrl || undefined,
+        fileType: service.fileType || undefined,
       })
     } catch (emailError) {
       console.error("Failed to send service notification email:", emailError)

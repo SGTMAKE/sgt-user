@@ -32,7 +32,7 @@ export default async function ServiceDetailPage({ params }: { params: { id: stri
         <ServiceStatusStepper status={service.status} serviceType={service.type || "Unknown"} />
       </div>
 
-      <ServiceDetails service={service} />
+      <ServiceDetails service={{ ...service, fileType: service.fileType ?? undefined }} />
     </Container>
   )
 }

@@ -37,28 +37,6 @@ export function SubmissionProgress({
     }
   }, [currentStep])
 
-  // Custom handler for Google sign-in
-  const handleGoogleSignIn = () => {
-    setIsAuthenticating(true)
-
-    // Open Google auth in a popup window
-    const width = 500
-    const height = 600
-    const left = window.screenX + (window.outerWidth - width) / 2
-    const top = window.screenY + (window.outerHeight - height) / 2
-
-    const popup = window.open(
-      `/api/auth/google-signin${pendingFormData ? `?state=${encodeURIComponent(JSON.stringify({ formData: pendingFormData }))}` : ""}`,
-      "GoogleSignIn",
-      `width=${width},height=${height},left=${left},top=${top}`,
-    )
-
-    // Check if popup was blocked
-    if (!popup || popup.closed || typeof popup.closed === "undefined") {
-      setIsAuthenticating(false)
-      alert("Popup blocked. Please allow popups for this website.")
-    }
-  }
 
   // Listen for messages from the popup window
   useEffect(() => {
@@ -80,8 +58,8 @@ export function SubmissionProgress({
   }, [onAuthSuccess])
 
   return (
-    <Dialog open={isOpen} onOpenChange={() => {}}>
-      <DialogContent className="sm:max-w-md p-0 overflow-hidden">
+    <Dialog open={isOpen} >
+      <DialogContent className="sm:max-w-md p-0 overflow-hidden [&>button]:hidden">
         <div className="flex flex-col items-center justify-center p-6">
           {/* Progress bar */}
           <div className="w-full h-2 bg-gray-200 rounded-full mb-8">

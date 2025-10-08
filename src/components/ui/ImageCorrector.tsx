@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @next/next/no-img-element */
 
 import Image, { ImageProps } from "next/image";
 import React from "react";
