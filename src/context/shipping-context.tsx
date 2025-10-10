@@ -85,19 +85,7 @@ export function ShippingProvider({ children }: { children: ReactNode }) {
     }
   },[])
 
-  // const getShippingForCountry = (countryCode: string, orderTotal: number): ShippingCalculation | null => {
-  //   const country = availableCountries.find((c) => c.countryCode === countryCode)
-  //   if (!country) return null
-
-  //   const isFreeShipping = country.freeShippingThreshold ? orderTotal >= country.freeShippingThreshold : false
-
-  //   return {
-  //     shippingCost: isFreeShipping ? 0 : country.shippingCost,
-  //     isFreeShipping,
-  //     freeShippingThreshold: country.freeShippingThreshold,
-  //     countryName: country.countryName,
-  //   }
-  // }
+  
 
   const refreshCountries = useCallback(async () => {
     await fetchAvailableCountries()
